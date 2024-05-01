@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Chatroom</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div id="container" class="col">
+        <div id="header" class="row">
+            <div id="title">The Chatroom
+                <span class="material-icons">chat</span>
+            </div>
+
+            <div class="spacer-grow"></div>
+
+            <div id="user-panel" class="row">
+                <div class="field-content row shadow">
+                    <span class="user-avatar"></span>
+                    <span class="user-name">-</span>
+                </div>
+                <button id="signout-button" class="icon"><span class="material-icons">logout</span></button>
+            </div>
+        </div>
+
+        <div id="main-panel" class="row">
+            <div id="chat-panel" class="col">
+                <div id="chat-area" class="col"></div>
+                <div id="current-typing-area"></div>
+                <form id="chat-input-form" autocomplete="off">
+                    <input id="chat-input" placeholder="Enter your message"></input>
+                </form>
+            </div>
+
+            <div id="online-users-panel" class="col">
+                <div id="online-users-area" class="col"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="signin-overlay" class="overlay row">
+        <div class="content shadow row">
+            <form id="signin-form" class="col">
+                <div class="caption">SIGN IN WITH YOUR ACCOUNT</div>
+                <div class="spacer-0"></div>
+                <input id="signin-username" placeholder="Enter your username"></input>
+                <input id="signin-password" type="password" placeholder="Enter your password"></input>
+                <div class="spacer-0"></div>
+                <button type="submit">Sign In</button>
+                <div id="signin-message" class="warning center"></div>
+                <div class="spacer-grow"></div>
+            </form>
+
+            <div class="spacer-0"></div>
+
+            <form id="register-form" class="col">
+                <div class="caption">OR, REGISTER IF YOU DO NOT HAVE ONE</div>
+                <div class="spacer-0"></div>
+                <input id="register-username" maxlength="10" placeholder="Enter your username"></input>
+                <!--
+                                    <select id="register-avatar">
+                    <option value="">Select your avatar</option>
+                </select>
+                -->
+
+                <input id="register-name" maxlength="16" placeholder="Enter your name"></input>
+                <input id="register-password" type="password" placeholder="Enter your password"></input>
+                <input id="register-confirm" type="password" placeholder="Enter your password again"></input>
+                <div class="spacer-0"></div>
+                <button type="submit">Register</button>
+                <div id="register-message" class="warning center"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="character-selection" class="overlay col">
+        <div class="selected-container">
+            <div class="chosen-character">
+                <div class="chosen-character-image-container">    
+                    <img class="chosen-character-image" id ="own-chosen-character-image" src="./image/unknown.png" alt="unknown">
+                </div>
+                <div class="player-text">YOU</div>
+
+            </div>
+            <div id="verus-button">
+                <img id="verus-image" src="./image/verus.png" alt="verus">
+            </div>
+            <div class="chosen-character">
+                <div class="chosen-character-image-container">    
+                    <img class="chosen-character-image" id ="enemy-chosen-character-image" src="./image/unknown.png" alt="unknown">
+                </div>
+                <div class="player-text">Enemy</div>
+
+            </div>
+        </div>
+        
+        <div class="character-container">
+
+            <div class="character" id="char 1">
+                <img class="character-image" src="./image/dog1head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 2">
+                <img class="character-image" src="./image/dog1head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 3">
+                <img class="character-image" src="./image/dog2head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 4">
+                <img class="character-image" src="./image/dog2head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 5">
+                <img class="character-image" src="./image/cat1head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 6">
+                <img class="character-image" src="./image/cat1head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 7">
+                <img class="character-image" src="./image/cat2head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 8">
+                <img class="character-image" src="./image/cat2head.png" alt="Nomore monster">
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/socket.io/socket.io.min.js"></script>
+    <script src="scripts/socket.js"></script>
+    <script src="scripts/avatar.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/registration.js"></script>
+    <script src="scripts/authentication.js"></script>
+    <script>
+    $(function() {
+        // Initialize the UI
+        UI.initialize();
+
+        // Validate the signin
+        Authentication.validate(
+            () => {
+                SignInForm.hide();
+                UserPanel.update(Authentication.getUser());
+                CharacterSelectionPanel.show();
+
+                UserPanel.show();
+
+                Socket.connect();
+            },
+            () => { SignInForm.show(); }
+        );
+    });
+    </script>
+</body>
+</html>
