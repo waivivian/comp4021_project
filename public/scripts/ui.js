@@ -23,7 +23,6 @@ const SignInForm = (function() {
                     UserPanel.update(Authentication.getUser());
                     CharacterSelectionPanel.show();
                     UserPanel.show();
-
                     Socket.connect(); 
                 },
                 (error) => { $("#signin-message").text(error); }
@@ -94,8 +93,11 @@ const CharacterSelectionPanel = (function() {
                 const characterId = character.id;
                 console.log(characterId);
                 // change the chosen-character image to the  selected character's image
-                $("#own-chosen-character-image").attr("src",document.getElementById(characterId).childNodes[1].src);
-              });
+                selected_image_src = document.getElementById(characterId).childNodes[1].src;
+                $("#own-chosen-character-image").attr("src",selected_image_src);
+                console.log("selected_image_src",selected_image_src);
+                Socket.helpChangeOppoImage(selected_image_src);  
+            });
         });
         // Click event for the start game button
         $("#start-game-button").on("click", () => {
@@ -120,15 +122,9 @@ const CharacterSelectionPanel = (function() {
     };
 
     // This function updates the user panel
-    const update = function(user) {
-        /*if (user) {
-            //$("#user-panel .user-avatar").html(Avatar.getCode(user.avatar));
-            $("#user-panel .user-name").text(user.name);
-        }
-        else {
-            //$("#user-panel .user-avatar").html("");
-            $("#user-panel .user-name").text("");
-        }*/
+    const update = function(selected_image_src) {
+        $("#enemy-chosen-character-image").attr("src",selected_image_src);
+
 
     };
 

@@ -1,6 +1,7 @@
 const Socket = (function() {
     // This stores the current Socket.IO socket
     let socket = null;
+    let oppo_user = null;
 
     // This function gets the socket from the module
     const getSocket = function() {
@@ -21,11 +22,12 @@ const Socket = (function() {
         });
 
         // Set up the users event
-        socket.on("users", (onlineUsers) => {
-            onlineUsers = JSON.parse(onlineUsers);
-
+        socket.on("users", (oppoUsers) => {
+            oppo_user = oppoUsers;
+            console.log("hhhhh",oppo_user);
+            //onlineUsers = JSON.parse(onlineUsers);
             // Show the online users
-            OnlineUsersPanel.update(onlineUsers);
+            //OnlineUsersPanel.update(onlineUsers);
         });
 
         // Set up the add user event
@@ -67,7 +69,32 @@ const Socket = (function() {
             }
         });
 
+        // Update the oppo image of this browser
+        socket.on("update oppo image",(image) => {
+            CharacterSelectionPanel.update(image);
+        });
+
     };
+
+
+    // This function disconnects the socket from the server
+    /*const helpChangeOppoImage = function(selected_image_src) {
+        CharacterSelectionPanel.update(selected_image_src);
+    };
+*/
+    // This function disconnects the socket from the server
+    const helpChangeOppoImage = function(selected_image_src) {
+        //////Error here oppo_user is undefined even defined in line 26
+        if (oppo_user != null){
+            console.log("hhhh",oppo_user);
+            socket.emit("change oppo image", JSON.stringify({
+                to: oppo_user["username"],
+                image: selected_image_src
+            }));
+        }
+
+    };
+    
 
     
     // This function disconnects the socket from the server
@@ -89,5 +116,5 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };
-    return { getSocket, connect, disconnect, postMessage, typeMessage };
+    return { getSocket, helpChangeOppoImage, connect, disconnect, postMessage, typeMessage };
 })();

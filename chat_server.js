@@ -207,28 +207,34 @@ const httpServer = createServer(app); // switch from app to httpServer as our ex
 const io = new Server(httpServer); 
 const onlineUserList = {};
 const availableUserList = {};
+const sockets = {}; //maintain a list of sockets
 
 io.use((socket, next) => { //for socket server it doesn't use session if you don't ask for it, we need to explictly ask for the session
     chatSession(socket.request, {}, next);
 });
 
 //create a connection when someone sign in
-io.on("connection", (socket) => {    
+io.on("connection", (socket) => {   //this socket is browser
+    let user = null; 
     if (socket.request.session.user) { // if this information exist get the use's information
-        const user = socket.request.session.user;
-        //console.log(user);
-        const { username, avatar, name } = user;
+        user = socket.request.session.user;
+        const { username, avatar, name } = user;   
+        sockets[username]=socket;
+        //console.log("sockets",sockets);
         // add the usr into the list of online user
         onlineUserList[username] = user;
+        //console.log("onlineUserList",onlineUserList);
+        availableUserList[username] = user;
+        //console.log("availableUserList",availableUserList);
         //console.log(onlineUserList);
         // help everyone to update even for those who already connected to servr
-        io.emit('add user', JSON.stringify(user)); // not use socket but io because socket is dedicate to each user but io is for broadcasting
+        //io.emit('add user', JSON.stringify(user)); // not use socket but io because socket is dedicate to each user but io is for broadcasting
     }
 
     //when user sign out, disconnect but still in this connection event as we still need to use this socket variable from the connection event  
     socket.on("disconnect",()=>{
         if (socket.request.session.user) { // if this information exist get the use's information
-            const user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
+            user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
             const { username, avatar, name } = user; 
             if (onlineUserList[username]){ // if the user is in the current online user list
                 delete onlineUserList[username];
@@ -239,11 +245,34 @@ io.on("connection", (socket) => {
         }
     });
 
-    // allow newly sign in user to know the existing user
-    socket.on("get users", () => {
-        // Send the online users to the browser
-        socket.emit("users", JSON.stringify(onlineUserList));
+    if(Object.keys(availableUserList).length >  1){ // there are other user in this list
+        // allow newly sign in user to know the existing user
+        socket.on("get users", () => { // send to browser(socket)
+            user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
+            // Send the first available users to the browser
+
+            sockets[user["username"]].emit("users", JSON.stringify(availableUserList[Object.keys(availableUserList)[0]]));
+            // Send the current user to the first available users browser
+            if(sockets[Object.keys(availableUserList)[0]]){
+                sockets[Object.keys(availableUserList)[0]].emit("users",JSON.stringify(user));
+                console.log(JSON.stringify({user: user}));
+            }
+ 
+            delete availableUserList[user['username']]; // delete this user from availableUserList as he/she can find someone to match with
+            delete availableUserList[Object.keys(availableUserList)[0]]; // delete this user from availableUserList as he/she can find someone to match with
+            //console.log("bye",availableUserList);        
+
+        });
+    }
+
+    socket.on("change oppo image",(data)=>{
+        const {to, image} = JSON.parse(data);
+        console.log("oooo",to,image);
+        if (sockets[to]){ // if targeted socket exists
+            sockets[to].emit("update oppo image",image);
+        }
     });
+
 
     
     socket.on("get messages", () => {
