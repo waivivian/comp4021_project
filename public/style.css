@@ -251,6 +251,39 @@ button.icon:active {
     padding: 20px;
 }
 
+#waiting-opponent{
+    height: calc(100% - 80px);
+    margin-top: 80px;
+    width: 100%;
+    background: rgb(200, 64, 200);
+}
+
+#waiting-text {
+    font-size: 5vw;
+    font-family: 'Circular', sans-serif;
+    text-anchor: middle;
+    color: yellow
+  }
+  @keyframes dots {
+    0% {
+      content: "WAITING FOR OPPONENT";
+    }
+    25% {
+      content: "WAITING FOR OPPONENT.";
+    }
+    50% {
+      content: "WAITING FOR OPPONENT..";
+    }
+    75% {
+      content: "WAITING FOR OPPONENT...";
+    }
+  }
+
+  #waiting-text::after {
+    content: "WAITING FOR OPPONENT";
+    animation: dots 1.5s linear infinite;
+  } 
+
 /* Character selection */
 #character-selection {
     height: calc(100% - 80px);

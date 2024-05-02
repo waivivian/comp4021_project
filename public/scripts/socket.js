@@ -24,6 +24,8 @@ const Socket = (function() {
         // Set up the users event
         socket.on("users", (oppoUsers) => {
             oppo_user = JSON.parse(oppoUsers);
+            WaitingOpponentPanel.hide();
+            CharacterSelectionPanel.show();
             //onlineUsers = JSON.parse(onlineUsers);
             // Show the online users
             //OnlineUsersPanel.update(onlineUsers);

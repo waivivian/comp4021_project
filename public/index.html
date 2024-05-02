@@ -74,6 +74,13 @@
         </div>
     </div>
 
+    <div id="waiting-opponent" class="overlay row">        
+            <text id="waiting-text" x="45%" y="50%"></text>
+            <div id="loading-bar-container">
+                <div id="loading-bar"></div>
+              </div>
+    </div>
+
     <div id="character-selection" class="overlay col">
         <div class="selected-container">
             <div class="chosen-character">
@@ -141,10 +148,9 @@
             () => {
                 SignInForm.hide();
                 UserPanel.update(Authentication.getUser());
-                CharacterSelectionPanel.show();
-
+                //CharacterSelectionPanel.show();
+                WaitingOpponentPanel.show();
                 UserPanel.show();
-
                 Socket.connect();
             },
             () => { SignInForm.show(); }

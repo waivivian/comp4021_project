@@ -21,7 +21,8 @@ const SignInForm = (function() {
                 () => {
                     hide();
                     UserPanel.update(Authentication.getUser());
-                    CharacterSelectionPanel.show();
+                    //CharacterSelectionPanel.show();
+                    WaitingOpponentPanel.show();
                     UserPanel.show();
                     Socket.connect(); 
                 },
@@ -69,6 +70,28 @@ const SignInForm = (function() {
         $("#signin-message").text("");
         $("#register-message").text("");
         $("#signin-overlay").fadeOut(500);
+    };
+
+    return { initialize, show, hide };
+})();
+
+const WaitingOpponentPanel = (function() {
+    // This function initializes the UI
+    const initialize = function() {
+        // Hide it
+        $("#waiting-opponent").hide();
+        // Click event for the start game button
+    };
+
+    // This function shows the form with the user
+    const show = function() {
+        $("#waiting-opponent").show();
+        
+    };
+
+    // This function hides the form
+    const hide = function() {
+        $("#waiting-opponent").hide();
     };
 
     return { initialize, show, hide };
@@ -124,8 +147,6 @@ const CharacterSelectionPanel = (function() {
     // This function updates the user panel
     const update = function(selected_image_src) {
         $("#enemy-chosen-character-image").attr("src",selected_image_src);
-
-
     };
 
     return { initialize, show, hide, update };
@@ -358,7 +379,7 @@ const UI = (function() {
     };
 
     // The components of the UI are put here
-    const components = [SignInForm, CharacterSelectionPanel, UserPanel, OnlineUsersPanel, ChatPanel];
+    const components = [SignInForm, WaitingOpponentPanel, CharacterSelectionPanel, UserPanel, OnlineUsersPanel, ChatPanel];
 
     // This function initializes the UI
     const initialize = function() {
