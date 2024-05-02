@@ -23,8 +23,7 @@ const Socket = (function() {
 
         // Set up the users event
         socket.on("users", (oppoUsers) => {
-            oppo_user = oppoUsers;
-            console.log("hhhhh",oppo_user);
+            oppo_user = JSON.parse(oppoUsers);
             //onlineUsers = JSON.parse(onlineUsers);
             // Show the online users
             //OnlineUsersPanel.update(onlineUsers);
@@ -85,8 +84,8 @@ const Socket = (function() {
     // This function disconnects the socket from the server
     const helpChangeOppoImage = function(selected_image_src) {
         //////Error here oppo_user is undefined even defined in line 26
+        console.log("oppo_user",oppo_user);
         if (oppo_user != null){
-            console.log("hhhh",oppo_user);
             socket.emit("change oppo image", JSON.stringify({
                 to: oppo_user["username"],
                 image: selected_image_src

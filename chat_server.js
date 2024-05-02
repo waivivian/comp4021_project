@@ -255,7 +255,6 @@ io.on("connection", (socket) => {   //this socket is browser
             // Send the current user to the first available users browser
             if(sockets[Object.keys(availableUserList)[0]]){
                 sockets[Object.keys(availableUserList)[0]].emit("users",JSON.stringify(user));
-                console.log(JSON.stringify({user: user}));
             }
  
             delete availableUserList[user['username']]; // delete this user from availableUserList as he/she can find someone to match with
