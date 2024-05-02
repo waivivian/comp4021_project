@@ -337,8 +337,12 @@ const GamePanel = (function() {
         // Hide it
         const cv = $("canvas").get(0);
         context = cv.getContext("2d");
-        console.log("context",context);
-
+        let table_image = new Image();
+        table_image.onload = function(){
+            context.drawImage(table_image,
+                90, 90,100,50);
+        };
+        table_image.src = "./image/table.png";
     };
 
     // This function shows the form with the user
