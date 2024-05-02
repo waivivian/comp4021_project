@@ -31,7 +31,7 @@ function containWordCharsOnly(text) {
 // Handle the /register endpoint
 app.post("/register", (req, res) => {
     // Get the JSON data from the body (read from user input)
-    let { username, avatar, name, password } = req.body;
+    let { username, name, password } = req.body;
 
     //
     // D. Reading the users.json file (read from backend (our database))
@@ -40,13 +40,10 @@ app.post("/register", (req, res) => {
     //
     // E. Checking for the user data correctness
     //
-    if (!username || !avatar || !name || !password ){
+    if (!username || !name || !password ){
         let error_field = "";
         if (!username){
             error_field += "Username ";
-        }
-        if (!avatar){
-            error_field += "Avatar ";
         }
         if (!name){
              error_field += "Name ";
@@ -83,7 +80,7 @@ app.post("/register", (req, res) => {
     //
     const hash =bcrypt.hashSync(password, 10); //we need to hash it else it is not safe
     password = hash
-    users[username]= {avatar, name, password};
+    users[username]= {name, password};
     console.log(users[username]);
     //
     // H. Saving the users.json file
@@ -131,7 +128,6 @@ app.post("/signin", (req, res) => {
     //Before returning the success response, you need to put the user account into the current session
     req.session.user = {
         username: username,
-        avatar: users[username]["avatar"],
         name: users[username]["name"]
         
     }/* user account */;
@@ -141,7 +137,6 @@ app.post("/signin", (req, res) => {
     res.json({ status: "success", 
         user:{
             username: username,
-            avatar: users[username]["avatar"],
             name: users[username]["name"]
         
         }
@@ -165,7 +160,7 @@ app.get("/validate", (req, res) => {
         });
         return ;
     }
-    let { username, avatar, name } = req.session.user;
+    let { username, name } = req.session.user;
 
     //
     // D. Sending a success response with the user account
@@ -173,7 +168,6 @@ app.get("/validate", (req, res) => {
     res.json({ status: "success", 
         user:{
             username: username,
-            avatar: avatar,
             name: name
         
         }
@@ -218,7 +212,7 @@ io.on("connection", (socket) => {   //this socket is browser
     let user = null; 
     if (socket.request.session.user) { // if this information exist get the use's information
         user = socket.request.session.user;
-        const { username, avatar, name } = user;   
+        const { username, name } = user;   
         sockets[username]=socket;
         //console.log("sockets",sockets);
         // add the usr into the list of online user
@@ -235,7 +229,7 @@ io.on("connection", (socket) => {   //this socket is browser
     socket.on("disconnect",()=>{
         if (socket.request.session.user) { // if this information exist get the use's information
             user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
-            const { username, avatar, name } = user; 
+            const { username, name } = user; 
             if (onlineUserList[username]){ // if the user is in the current online user list
                 delete onlineUserList[username];
                 // help everyone to update even for those who already connected to servr
@@ -268,12 +262,24 @@ io.on("connection", (socket) => {   //this socket is browser
 
     socket.on("change oppo image",(data)=>{
         const {to, image} = JSON.parse(data);
-        console.log("oooo",to,image);
         if (sockets[to]){ // if targeted socket exists
             sockets[to].emit("update oppo image",image);
         }
     });
 
+    socket.on("chosen character id",(data)=>{
+        const {to, selected_character_id} = JSON.parse(data);
+        if (sockets[to]){ // if targeted socket exists
+            sockets[to].emit("update oppo character id",selected_character_id);
+        }
+    });
+
+    socket.on("game can start",(data)=>{
+        const {to, selected_character_id} = JSON.parse(data);
+        if (sockets[to]){ // if targeted socket exists
+            sockets[to].emit("start game",selected_character_id);
+        }
+    });
 
     
     socket.on("get messages", () => {

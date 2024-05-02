@@ -376,7 +376,7 @@ button.icon:active {
   font-family: "Comic Sans MS", cursive; 
 }
 
-#verus-button {
+#versus-button {
     float: left;
     width: 24vmin;
     height:24vmin;
@@ -389,12 +389,12 @@ button.icon:active {
     overflow: hidden;
 }
 
-#verus-button:hover {
+#versus-button:hover {
     border: 0vmin solid green;
 }
 
 /* - Set the style of the monster image */
-#verus-image {
+#versus-image {
     width: 100%;
     height: 100%;
     border-radius: 50%;

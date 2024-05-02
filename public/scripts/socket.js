@@ -2,6 +2,7 @@ const Socket = (function() {
     // This stores the current Socket.IO socket
     let socket = null;
     let oppo_user = null;
+    let oppo_character_id = null;
 
     // This function gets the socket from the module
     const getSocket = function() {
@@ -31,10 +32,28 @@ const Socket = (function() {
             //OnlineUsersPanel.update(onlineUsers);
         });
 
+        // Set up the update oppo character id event
+        socket.on("update oppo character id", (oppo_selected_character_id) => {
+            oppo_character_id = oppo_selected_character_id;
+            // Add the online user
+            console.log("oppo_character_id",oppo_character_id);
+        });
+
+        // Set up the add user event
+        socket.on("start game", (oppo_selected_character_id) => {
+            oppo_character_id = oppo_selected_character_id;
+            WaitingOpponentPanel.hide();
+            console.log("start oppo_character_id",oppo_character_id);
+            //////go to game panel!!!!!!!!
+            ////
+            ////
+            ////
+        });
+
+
         // Set up the add user event
         socket.on("add user", (user) => {
             user = JSON.parse(user);
-
             // Add the online user
             OnlineUsersPanel.addUser(user);
         });
@@ -78,14 +97,9 @@ const Socket = (function() {
     };
 
 
-    // This function disconnects the socket from the server
-    /*const helpChangeOppoImage = function(selected_image_src) {
-        CharacterSelectionPanel.update(selected_image_src);
-    };
-*/
-    // This function disconnects the socket from the server
+
+    // This function will send message to notify server to help us notify our opponent that we have select our character
     const helpChangeOppoImage = function(selected_image_src) {
-        //////Error here oppo_user is undefined even defined in line 26
         console.log("oppo_user",oppo_user);
         if (oppo_user != null){
             socket.emit("change oppo image", JSON.stringify({
@@ -95,6 +109,33 @@ const Socket = (function() {
         }
 
     };
+
+    // This function will send message to notify server to help us notify our opponent that we are ready for the game and send our final chosen character id to the opponent
+    const ready = function(selected_character_id) {
+        if (oppo_character_id != null){ // we can start the game as opponent is also ready
+            //socket.emit("chosen character id", selected_character_id);
+            socket.emit("game can start", JSON.stringify({ // onlty one of the competining browser will emit this
+                to: oppo_user["username"],
+                selected_character_id: selected_character_id
+            }));
+            //////go to game panel!!!!!!!!
+            ////
+            ////
+            ////
+        }
+        else{ // we only send our final choice of character and the game can not yet be started as opponent still not yet decide the character
+
+            socket.emit("chosen character id",JSON.stringify({
+                to: oppo_user["username"],
+                selected_character_id: selected_character_id
+            }));
+            CharacterSelectionPanel.hide();
+            WaitingOpponentPanel.show(); // go to wait the opponent user
+
+        }
+
+    };
+    
     
 
     
@@ -117,5 +158,5 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };
-    return { getSocket, helpChangeOppoImage, connect, disconnect, postMessage, typeMessage };
+    return { getSocket, helpChangeOppoImage, ready, connect, disconnect, postMessage, typeMessage };
 })();

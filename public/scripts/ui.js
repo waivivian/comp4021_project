@@ -41,7 +41,7 @@ const SignInForm = (function() {
             const name     = $("#register-name").val().trim();
             const password = $("#register-password").val().trim();
             const confirmPassword = $("#register-confirm").val().trim();
-
+            console.log("yyyhhhhhh", name, password);
             // Password and confirmation does not match
             if (password != confirmPassword) {
                 $("#register-message").text("Passwords do not match.");
@@ -109,11 +109,13 @@ const CharacterSelectionPanel = (function() {
 
         // Convert HTMLCollection to an array-like object
         const charactersArray = Array.from(characters);
-      
+        
+        // The index of the character selected
+        let characterId = null;
         // Use forEach on the array-like object
         charactersArray.forEach(character => {
             character.addEventListener('click', () => {
-                const characterId = character.id;
+                characterId = character.id;
                 console.log(characterId);
                 // change the chosen-character image to the  selected character's image
                 selected_image_src = document.getElementById(characterId).childNodes[1].src;
@@ -123,14 +125,16 @@ const CharacterSelectionPanel = (function() {
             });
         });
         // Click event for the start game button
-        $("#start-game-button").on("click", () => {
-            Authentication.signout(
-                () => {
-                    Socket.disconnect();
-                    hide();
-                    SignInForm.show();
-                }
-            );
+        $("#versus-button").on("click", () => {
+            if (characterId){ //ensure the user have chosen a character before clicking versus
+                Socket.ready(characterId);
+                hide();
+            }
+            else{
+                alert("Choose a character first!!!");
+            }
+
+
         });
     };
 
