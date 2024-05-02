@@ -10,7 +10,7 @@
     --overlay-content-background: linear-gradient(white, #fde0c5);
 
     --header-background: linear-gradient(to right, #eb4a40, #f59e72);
-    --main-panel-background: linear-gradient(white, #fde0c5);
+    --game-panel-background: linear-gradient(rgb(64, 206, 227), #fde0c5);
     --online-users-panel-background: linear-gradient(to right, #fde0c5, #facba6);
     --chat-panel-background: none;
 
@@ -184,11 +184,24 @@ button.icon:active {
 }
 
 /* Main panel */
-#main-panel {
+#game-panel {
     height: calc(100% - 80px);
-    background: var(--main-panel-background);
+    background: var(--game-panel-background);
 }
-
+canvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+canvas{
+    height: calc(100% - 80px);
+    margin-top: 80px;
+    width: 100%;
+}
+canvas {
+    background: url(/image/background.jpg);
+    background-size: cover;
+}
 /* Chat area */
 #chat-panel {
     flex-grow: 1;

@@ -1,6 +1,7 @@
 const Socket = (function() {
     // This stores the current Socket.IO socket
     let socket = null;
+    let own_character_id = null;
     let oppo_user = null;
     let oppo_character_id = null;
 
@@ -39,11 +40,12 @@ const Socket = (function() {
             console.log("oppo_character_id",oppo_character_id);
         });
 
-        // Set up the add user event
+        // Set up the start game event
         socket.on("start game", (oppo_selected_character_id) => {
             oppo_character_id = oppo_selected_character_id;
             WaitingOpponentPanel.hide();
             console.log("start oppo_character_id",oppo_character_id);
+            GamePanel.update(own_character_id,oppo_character_id);
             //////go to game panel!!!!!!!!
             ////
             ////
@@ -51,7 +53,7 @@ const Socket = (function() {
         });
 
 
-        // Set up the add user event
+        /*// Set up the add user event
         socket.on("add user", (user) => {
             user = JSON.parse(user);
             // Add the online user
@@ -65,8 +67,8 @@ const Socket = (function() {
             // Remove the online user
             OnlineUsersPanel.removeUser(user);
         });
-
-        // Set up the messages event
+        */
+        /*// Set up the messages event
         socket.on("messages", (chatroom) => {
             chatroom = JSON.parse(chatroom);
 
@@ -88,7 +90,7 @@ const Socket = (function() {
                 ChatPanel.addTyping(name);
             }
         });
-
+        */
         // Update the oppo image of this browser
         socket.on("update oppo image",(image) => {
             CharacterSelectionPanel.update(image);
@@ -112,12 +114,15 @@ const Socket = (function() {
 
     // This function will send message to notify server to help us notify our opponent that we are ready for the game and send our final chosen character id to the opponent
     const ready = function(selected_character_id) {
+        own_character_id = selected_character_id; //finalise own chosen character
         if (oppo_character_id != null){ // we can start the game as opponent is also ready
             //socket.emit("chosen character id", selected_character_id);
             socket.emit("game can start", JSON.stringify({ // onlty one of the competining browser will emit this
                 to: oppo_user["username"],
                 selected_character_id: selected_character_id
             }));
+            GamePanel.update(own_character_id,oppo_character_id);
+
             //////go to game panel!!!!!!!!
             ////
             ////
@@ -146,7 +151,7 @@ const Socket = (function() {
     };
 
     // This function sends a post message event to the server
-    const postMessage = function(content) {
+    /*const postMessage = function(content) {
         if (socket && socket.connected) {
             socket.emit("post message", content);
         }
@@ -157,6 +162,6 @@ const Socket = (function() {
         if (socket && socket.connected) {
             socket.emit("type message");
         }
-    };
-    return { getSocket, helpChangeOppoImage, ready, connect, disconnect, postMessage, typeMessage };
+    };*/
+    return { getSocket, helpChangeOppoImage, ready, connect, disconnect };
 })();

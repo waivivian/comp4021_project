@@ -200,7 +200,7 @@ const UserPanel = (function() {
     return { initialize, show, hide, update };
 })();
 
-const OnlineUsersPanel = (function() {
+/*const OnlineUsersPanel = (function() {
     // This function initializes the UI
     const initialize = function() {};
 
@@ -254,6 +254,7 @@ const OnlineUsersPanel = (function() {
 
     return { initialize, update, addUser, removeUser };
 })();
+
 
 const ChatPanel = (function() {
 	// This stores the chat area
@@ -328,46 +329,94 @@ const ChatPanel = (function() {
 
     return { initialize, update, addMessage, addTyping};
 })();
-
+*/
 const GamePanel = (function() {
+    let context = null;
     // This function initializes the UI
     const initialize = function() {
         // Hide it
-        $("#game-page").hide();
+        const cv = $("canvas").get(0);
+        context = cv.getContext("2d");
+        console.log("context",context);
 
-        /*// Click event for the start game button
-        $("#start-game-button").on("click", () => {
-            Authentication.signout(
-                () => {
-                    Socket.disconnect();
-                    console.log("hiiii");
-                    hide();
-                    SignInForm.show();
-                }
-            );
-        });*/
     };
 
     // This function shows the form with the user
     const show = function(user) {
-        $("#game-page").show();
+        $("#game-panel").show();
     };
 
     // This function hides the form
     const hide = function() {
-        $("#game-page").hide();
+        $("#game-panel").hide();
     };
 
     // This function updates the user panel
-    const update = function(user) {
-        /*if (user) {
-            //$("#user-panel .user-avatar").html(Avatar.getCode(user.avatar));
-            $("#user-panel .user-name").text(user.name);
+    const update = function(own_character_id, oppo_character_id) {
+        // insert own character image into canvas area
+        let own_character_image = new Image();
+        own_character_image.onload = function(){
+            context.drawImage(own_character_image,
+                50, 80);
+        };
+        switch (own_character_id){
+            case "char 1":
+                own_character_image.src = "./image/dog1.png";
+                break;
+            case "char 2":
+                own_character_image.src = "./image/dog1.png";
+                break;
+            case "char 3":
+                own_character_image.src = "./image/dog2.png";
+                break;
+            case "char 4":
+                own_character_image.src = "./image/dog2.png";
+                break;
+            case "char 5":
+                own_character_image.src = "./image/cat1.png";
+                break;
+            case "char 6":
+                own_character_image.src = "./image/cat1.png";
+                break;
+            case "char 7":
+                own_character_image.src = "./image/cat2.png";
+                break;
+            case "char 8":
+                own_character_image.src = "./image/cat2.png";
+                break;                
         }
-        else {
-            //$("#user-panel .user-avatar").html("");
-            $("#user-panel .user-name").text("");
-        }*/
+        // insert opponent character image into canvas area
+        let oppo_character_image = new Image();
+        oppo_character_image.onload = function(){
+                context.drawImage(oppo_character_image,
+                200, 80);
+        };
+        switch (oppo_character_id){
+            case "char 1":
+                oppo_character_image.src = "./image/dog1.png";
+                break;
+            case "char 2":
+                oppo_character_image.src = "./image/dog1.png";
+                break;
+            case "char 3":
+                oppo_character_image.src = "./image/dog2.png";
+                break;
+            case "char 4":
+                oppo_character_image.src = "./image/dog2.png";
+                break;
+            case "char 5":
+                oppo_character_image.src = "./image/cat1.png";
+                break;
+            case "char 6":
+                oppo_character_image.src = "./image/cat1.png";
+                break;
+            case "char 7":
+                oppo_character_image.src = "./image/cat2.png";
+                break;
+            case "char 8":
+                oppo_character_image.src = "./image/cat2.png";
+                break;                
+        }
     };
 
     return { initialize, show, hide, update };
@@ -383,7 +432,7 @@ const UI = (function() {
     };
 
     // The components of the UI are put here
-    const components = [SignInForm, WaitingOpponentPanel, CharacterSelectionPanel, UserPanel, OnlineUsersPanel, ChatPanel];
+    const components = [SignInForm, WaitingOpponentPanel, CharacterSelectionPanel, GamePanel, UserPanel];
 
     // This function initializes the UI
     const initialize = function() {
