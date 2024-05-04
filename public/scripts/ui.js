@@ -1,4 +1,7 @@
 const SignInForm = (function() {
+    let own_player =null;
+    let oppo_player = null;
+
     // This function initializes the UI
     const initialize = function() {
         // Populate the avatar selection
@@ -335,14 +338,14 @@ const GamePanel = (function() {
     // This function initializes the UI
     const initialize = function() {
         // Hide it
-        const cv = $("canvas").get(0);
-        context = cv.getContext("2d");
-        let table_image = new Image();
+        //const cv = $("canvas").get(0);
+        //context = cv.getContext("2d");
+        /*let table_image = new Image();
         table_image.onload = function(){
             context.drawImage(table_image,
                 90, 90,100,50);
-        };
-        table_image.src = "./image/table.png";
+        };*/
+        //table_image.src = "./image/table.png";
     };
 
     // This function shows the form with the user
@@ -356,71 +359,92 @@ const GamePanel = (function() {
     };
 
     // This function updates the user panel
-    const update = function(own_character_id, oppo_character_id) {
-        // insert own character image into canvas area
-        let own_character_image = new Image();
-        own_character_image.onload = function(){
-            context.drawImage(own_character_image,
-                50, 80);
-        };
-        switch (own_character_id){
-            case "char 1":
-                own_character_image.src = "./image/dog1.png";
-                break;
-            case "char 2":
-                own_character_image.src = "./image/dog1.png";
-                break;
-            case "char 3":
-                own_character_image.src = "./image/dog2.png";
-                break;
-            case "char 4":
-                own_character_image.src = "./image/dog2.png";
-                break;
-            case "char 5":
-                own_character_image.src = "./image/cat1.png";
-                break;
-            case "char 6":
-                own_character_image.src = "./image/cat1.png";
-                break;
-            case "char 7":
-                own_character_image.src = "./image/cat2.png";
-                break;
-            case "char 8":
-                own_character_image.src = "./image/cat2.png";
-                break;                
+    const update = function(own_character_id, oppo_character_id, own_name, oppo_name) {
+        // generate player objects for 2 player 
+        own_player = Player(own_name ,  1, own_character_id);
+        oppo_player = Player(oppo_name , 2 , oppo_character_id);
+        const showWinner = function(playerno) {
+	
+            $("#result").text(playerno);
+            $("#gameover-container").show();
+        
         }
-        // insert opponent character image into canvas area
-        let oppo_character_image = new Image();
-        oppo_character_image.onload = function(){
-                context.drawImage(oppo_character_image,
-                200, 80);
+        
+        const rest = function(time){
+            
+            $(document).off("keydown");
+            let timeout = setTimeout(start,time);
+            return timeout;
+        
         };
-        switch (oppo_character_id){
-            case "char 1":
-                oppo_character_image.src = "./image/dog1.png";
-                break;
-            case "char 2":
-                oppo_character_image.src = "./image/dog1.png";
-                break;
-            case "char 3":
-                oppo_character_image.src = "./image/dog2.png";
-                break;
-            case "char 4":
-                oppo_character_image.src = "./image/dog2.png";
-                break;
-            case "char 5":
-                oppo_character_image.src = "./image/cat1.png";
-                break;
-            case "char 6":
-                oppo_character_image.src = "./image/cat1.png";
-                break;
-            case "char 7":
-                oppo_character_image.src = "./image/cat2.png";
-                break;
-            case "char 8":
-                oppo_character_image.src = "./image/cat2.png";
-                break;                
-        }
+        const start = function(){
+            Food.update();
+            Cover.open();
+            let endtimeout = setTimeout(() =>{
+                Cover.close();
+                setTimeout(Food.eaten,1000);
+                rest(3000);
+                } ,4000	
+            );
+            
+            
+            $(document).on("keydown", function(e){ 
+    
+                if (e.keyCode == 32){ // player 1 move using sapce bar
+                    own_player.move();
+                    clearTimeout(endtimeout);
+                    let resttimeout = rest(4000); // start after 4 seconds
+                    setTimeout(()=>{
+                        Food.eaten();
+                        own_player.update(Food.getFoodtype().effect);	
+                        if (own_player.getScore() >= 5){
+                        
+                        
+                            clearTimeout(resttimeout); // stop the start 
+                            Timer.stop();
+                            showWinner(1); // show winning message of player 1
+                            return false;
+                        
+                        }
+                        Cover.close();
+                        own_player.back();
+                        
+                    },1000); // do the above after move which use 1 second 
+                        
+                }
+                
+                else if (e.keyCode == 40 ){
+                    oppo_player.move();
+                    clearTimeout(endtimeout);
+                    let resttimeout = rest(4000); // start after 4 seconds
+                    setTimeout(()=>{
+                        Food.eaten();
+                        oppo_player.update(Food.getFoodtype().effect);	
+                        if (oppo_player.getScore() >= 5){
+                        
+                            clearTimeout(resttimeout);  // stop the start 
+                            Timer.stop();
+                            showWinner(2); // show winning message of player 2
+                            return false;
+                        
+                        }
+                        Cover.close();	
+                        oppo_player.back();					
+                    },1000); // do the above after move which use 1 second 
+                                
+                }
+            
+            });
+            
+            
+        };
+        
+        //initialize
+        
+        rest(3000);
+        setTimeout(Timer.countDown, 1000); 
+        
+        
     };
 
     return { initialize, show, hide, update };

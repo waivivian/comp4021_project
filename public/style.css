@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Abel&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@700&display=swap");
+
 :root {
     --material-icons-color: black;
     --field-color: gray;
@@ -423,3 +425,93 @@ canvas {
     width: 270px;
     align-self: stretch;
 }
+
+
+
+    /* The container moves the text to the middle of the screen */
+    #gameover-container {
+        transform: translate(500px,200px);
+		display: none
+		
+    }
+    #gameover {
+        font-family: Dosis, sans-serif;
+    }
+	.st2{
+		fill:#ffe102
+	}
+	.st3{
+		fill:#fff
+	}
+
+	@keyframes move1 {
+	0%   { transform:translateX(0px) }
+	100%  { transform:translateX(325px) }
+	}
+	
+	@keyframes move2 {
+	0%   { transform:translateX(0px) }
+	100%  { transform:translateX(-325px) }
+	}
+	
+	@keyframes back1 {
+	0%   { transform:translateX(325px) }
+	100% { transform:translateX(0px)}
+	}
+	
+	@keyframes back2 {
+	0%   { transform:translateX(-325px) }
+	100% { transform:translateX(0px)}
+	}
+	
+	#player1{
+		
+		animation-fill-mode: forwards;
+		animation-name: none ;
+		animation-duration:1s ; 
+
+	}
+	
+	#player2{
+		
+		animation-fill-mode: forwards;
+		animation-name: none ;
+		animation-duration:1s ;
+	}
+	
+	@keyframes open{
+		
+	0%   { transform:translateY(0px) }
+	100%  { transform:translateY(-150px) }
+	}
+	
+	@keyframes close{
+		
+	0%   { transform:translateY(-150px) }
+	100%  { transform:translateY(0px) }
+	}
+	
+	#cover{
+		
+		animation-fill-mode: forwards;
+		animation-name: none ;
+		animation-duration:1s
+	}
+	
+	
+	
+	#counter{
+		font-size: 130%;
+		fill: red;
+        stroke: black;
+        stroke-width: 1px;
+		
+	}
+	
+	.scorecounter{
+		font-size: 130%;
+		fill: white;
+        stroke: black;
+        stroke-width: 1px;
+		
+	}

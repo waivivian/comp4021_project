@@ -2,6 +2,8 @@ const Socket = (function() {
     // This stores the current Socket.IO socket
     let socket = null;
     let own_character_id = null;
+    let own_username = null;
+    let own_name = null;
     let oppo_user = null;
     let oppo_character_id = null;
 
@@ -52,6 +54,14 @@ const Socket = (function() {
             ////
         });
 
+        socket.on("own information", (own_user) => {
+            // Get the online user list
+            //socket.emit("get users");
+            ({own_username,own_name} = JSON.parse(own_user));
+
+            // Get the chatroom messages
+            //socket.emit("get messages");
+        });
 
         /*// Set up the add user event
         socket.on("add user", (user) => {
@@ -121,7 +131,7 @@ const Socket = (function() {
                 to: oppo_user["username"],
                 selected_character_id: selected_character_id
             }));
-            GamePanel.update(own_character_id,oppo_character_id);
+            GamePanel.update(own_character_id,oppo_character_id, own_name, oppo_user["name"]);
 
             //////go to game panel!!!!!!!!
             ////

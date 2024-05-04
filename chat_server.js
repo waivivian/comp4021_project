@@ -219,6 +219,7 @@ io.on("connection", (socket) => {   //this socket is browser
         onlineUserList[username] = user;
         //console.log("onlineUserList",onlineUserList);
         availableUserList[username] = user;
+        socket.emit("own information", JSON.stringify(user));
         //console.log("availableUserList",availableUserList);
         //console.log(onlineUserList);
         // help everyone to update even for those who already connected to servr
