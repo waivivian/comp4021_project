@@ -47,11 +47,16 @@ const Socket = (function() {
             oppo_character_id = oppo_selected_character_id;
             WaitingOpponentPanel.hide();
             console.log("start oppo_character_id",oppo_character_id);
-            GamePanel.update(own_character_id,oppo_character_id);
+            GamePanel.update(own_character_id,oppo_character_id, own_name, oppo_user["name"]);
             //////go to game panel!!!!!!!!
             ////
             ////
             ////
+        });
+
+        // Set up the update oppo score event
+        socket.on("update oppo move and score", (oppo_score) => {
+            GamePanel.update_oppo(oppo_score);
         });
 
         socket.on("own information", (own_user) => {
@@ -151,6 +156,15 @@ const Socket = (function() {
 
     };
     
+    // This function will notify server to tell opposite browser about my move and my updated score
+    const update_oppo_own_move = function(own_score) {
+        if (oppo_user != null){
+            socket.emit("update oppo about my move", JSON.stringify({
+                to: oppo_user["username"],
+                score: selected_image_src
+            }));
+        }
+    };
     
 
     
@@ -173,5 +187,5 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };*/
-    return { getSocket, helpChangeOppoImage, ready, connect, disconnect };
+    return { getSocket, connect, helpChangeOppoImage, ready, update_oppo_own_move, disconnect };
 })();

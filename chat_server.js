@@ -245,7 +245,6 @@ io.on("connection", (socket) => {   //this socket is browser
         socket.on("get users", () => { // send to browser(socket)
             user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
             // Send the first available users to the browser
-
             sockets[user["username"]].emit("users", JSON.stringify(availableUserList[Object.keys(availableUserList)[0]]));
             // Send the current user to the first available users browser
             if(sockets[Object.keys(availableUserList)[0]]){
@@ -255,9 +254,6 @@ io.on("connection", (socket) => {   //this socket is browser
             delete availableUserList[user['username']]; // delete this user from availableUserList as he/she can find someone to match with
             delete availableUserList[Object.keys(availableUserList)[0]]; // delete this user from availableUserList as he/she can find someone to match with
             //console.log("bye",availableUserList);        
-
-
-
         });
     }
 
@@ -279,6 +275,13 @@ io.on("connection", (socket) => {   //this socket is browser
         const {to, selected_character_id} = JSON.parse(data);
         if (sockets[to]){ // if targeted socket exists
             sockets[to].emit("start game",selected_character_id);
+        }
+    });
+
+    socket.on("update oppo about my move",(data)=>{
+        const {to, score} = JSON.parse(data);
+        if (sockets[to]){ // if targeted socket exists
+            sockets[to].emit("update oppo move and score",score);
         }
     });
 

@@ -334,7 +334,6 @@ const ChatPanel = (function() {
 })();
 */
 const GamePanel = (function() {
-    let context = null;
     // This function initializes the UI
     const initialize = function() {
         // Hide it
@@ -364,90 +363,69 @@ const GamePanel = (function() {
         own_player = Player(own_name ,  1, own_character_id);
         oppo_player = Player(oppo_name , 2 , oppo_character_id);
         const showWinner = function(playerno) {
-	
             $("#result").text(playerno);
-            $("#gameover-container").show();
-        
+            $("#gameover-container").show(); 
         }
-        
-        const rest = function(time){
-            
-            $(document).off("keydown");
-            let timeout = setTimeout(start,time);
-            return timeout;
-        
-        };
-        const start = function(){
-            Food.update();
-            Cover.open();
-            let endtimeout = setTimeout(() =>{
-                Cover.close();
-                setTimeout(Food.eaten,1000);
-                rest(3000);
-                } ,4000	
-            );
-            
-            
-            $(document).on("keydown", function(e){ 
-    
-                if (e.keyCode == 32){ // player 1 move using sapce bar
-                    own_player.move();
-                    clearTimeout(endtimeout);
-                    let resttimeout = rest(4000); // start after 4 seconds
-                    setTimeout(()=>{
-                        Food.eaten();
-                        own_player.update(Food.getFoodtype().effect);	
-                        if (own_player.getScore() >= 5){
-                        
-                        
-                            clearTimeout(resttimeout); // stop the start 
-                            Timer.stop();
-                            showWinner(1); // show winning message of player 1
-                            return false;
-                        
-                        }
-                        Cover.close();
-                        own_player.back();
-                        
-                    },1000); // do the above after move which use 1 second 
-                        
-                }
-                
-                else if (e.keyCode == 40 ){
-                    oppo_player.move();
-                    clearTimeout(endtimeout);
-                    let resttimeout = rest(4000); // start after 4 seconds
-                    setTimeout(()=>{
-                        Food.eaten();
-                        oppo_player.update(Food.getFoodtype().effect);	
-                        if (oppo_player.getScore() >= 5){
-                        
-                            clearTimeout(resttimeout);  // stop the start 
-                            Timer.stop();
-                            showWinner(2); // show winning message of player 2
-                            return false;
-                        
-                        }
-                        Cover.close();	
-                        oppo_player.back();					
-                    },1000); // do the above after move which use 1 second 
-                                
-                }
-            
-            });
-            
-            
-        };
-        
-        //initialize
-        
         rest(3000);
-        setTimeout(Timer.countDown, 1000); 
-        
-        
+        setTimeout(Timer.countDown, 1000);
     };
+    
+    const start = function(){
+        Food.update();
+        Cover.open();
+        $(document).on("keydown", function(e){ 
+            if (e.keyCode == 32){ // player 1 move using sapce bar
+                own_player.move();
+                clearTimeout(endtimeout);
+                let resttimeout = rest(4000); // start after 4 seconds
+                setTimeout(()=>{
+                    Food.eaten();
+                    own_player.update(Food.getFoodtype().effect);
+                    Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
+                    if (own_player.getScore() >= 5){
+                        clearTimeout(resttimeout); // stop the start 
+                        Timer.stop();
+                        showWinner(1); // show winning message of player 1
+                        return false;
+                    
+                    }
+                    Cover.close();
+                    own_player.back();
+                },1000); // do the above after move which use 1 second 
+            }
+        });
+    };        
+    let endtimeout = setTimeout(() =>{
+        Cover.close();
+        setTimeout(Food.eaten,1000);
+        rest(3000);
+        } ,4000	
+    );
 
-    return { initialize, show, hide, update };
+    const rest = function(time){   
+        $(document).off("keydown");
+        let timeout = setTimeout(start,time);
+        return timeout;
+    };
+    // This function updates the user panel
+    const update_oppo = function(oppo_score) {
+        oppo_player.move();
+        clearTimeout(endtimeout);
+        let resttimeout = rest(4000); // start after 4 seconds
+        setTimeout(()=>{
+            Food.eaten();
+            oppo_player.update(Food.getFoodtype().effect);	
+            if (oppo_player.getScore() >= 5){
+                clearTimeout(resttimeout);  // stop the start 
+                Timer.stop();
+                showWinner(2); // show winning message of player 2
+                return false;
+            }
+            Cover.close();	
+            oppo_player.back();					
+            },1000); // do the above after move which use 1 second           
+    };
+    return { initialize, show, hide, update, update_oppo };
 })();
 
 const UI = (function() {
