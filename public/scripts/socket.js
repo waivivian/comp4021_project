@@ -55,8 +55,8 @@ const Socket = (function() {
         });
 
         // Set up the update oppo score event
-        socket.on("update oppo move and score", (oppo_score) => {
-            GamePanel.update_oppo(oppo_score);
+        socket.on("update oppo move and score", () => {
+            GamePanel.update_oppo();
         });
 
         socket.on("own information", (own_user) => {

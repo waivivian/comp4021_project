@@ -245,7 +245,6 @@ const GamePanel = (function() {
 
     let endtimeout;
     const start = function(){
-        console.log("hhhhhiiiii");
         Socket.generatefoodtype();
         //Food.update();
         Cover.open();	
@@ -282,13 +281,12 @@ const GamePanel = (function() {
     const rest = function(time){   
         $(document).off("keydown");
         // start the game
-        console.log("ohhhhhh");
         let timeout = setTimeout(start,time);
         return timeout;
     };
 
     // This function updates the user panel
-    const update_oppo = function(oppo_score) {
+    const update_oppo = function() {
         oppo_player.move();
         clearTimeout(endtimeout);
         let resttimeout = rest(4000); // start after 4 seconds
