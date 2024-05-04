@@ -111,6 +111,9 @@ const Socket = (function() {
             CharacterSelectionPanel.update(image);
         });
 
+        socket.on("food type generated",(food_type_generated) => {
+            Food.update(food_type_generated);
+        });
     };
 
 
@@ -166,7 +169,9 @@ const Socket = (function() {
         }
     };
     
-
+    const generatefoodtype = function() {
+        socket.emit("generate food type");
+    };
     
     // This function disconnects the socket from the server
     const disconnect = function() {
@@ -187,5 +192,5 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };*/
-    return { getSocket, connect, helpChangeOppoImage, ready, update_oppo_own_move, disconnect };
+    return { getSocket, connect, helpChangeOppoImage, ready, update_oppo_own_move, generatefoodtype, disconnect };
 })();

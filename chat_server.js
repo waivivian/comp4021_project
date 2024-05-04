@@ -309,12 +309,20 @@ io.on("connection", (socket) => {   //this socket is browser
         
     //}
     });
+    //  This is to generate a food type and broadcast to all user food is generated at server such that both users can see the same food
+    socket.on("generate food type", () => { 
+        //  Broadcast the type of food being generated to all playes 
+        const foodtype = {
+            cake:{ name:"cake" , effect:1 },
+            fruit:{ name:"fruit" , effect:1 },
+            battery : { name:"battery" , effect:-1 }
+        };
+        const foodtypeKey = Object.keys(foodtype)
+        const random = Math.floor(Math.random() * foodtypeKey.length);
+        const randomFoodtypeKey = foodtypeKey[random];
+        const randomFoodtype = foodtype[randomFoodtypeKey];
+        io.emit("food type generated", randomFoodtype);
 
-        socket.on("type message", () => {
-        //  Broadcast to all clients who is typing
-        if (socket.request.session.user) {
-            io.emit("type message", socket.request.session.user.name);
-        }
     });
     
 

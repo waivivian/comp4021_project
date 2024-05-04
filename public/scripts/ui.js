@@ -203,136 +203,7 @@ const UserPanel = (function() {
     return { initialize, show, hide, update };
 })();
 
-/*const OnlineUsersPanel = (function() {
-    // This function initializes the UI
-    const initialize = function() {};
 
-    // This function updates the online users panel
-    const update = function(onlineUsers) {
-        const onlineUsersArea = $("#online-users-area");
-
-        // Clear the online users area
-        onlineUsersArea.empty();
-
-		// Get the current user
-        const currentUser = Authentication.getUser();
-
-        // Add the user one-by-one
-        for (const username in onlineUsers) {
-            if (username != currentUser.username) {
-                onlineUsersArea.append(
-                    $("<div id='username-" + username + "'></div>")
-                        .append(UI.getUserDisplay(onlineUsers[username]))
-                );
-            }
-        }
-    };
-
-    // This function adds a user in the panel
-	const addUser = function(user) {
-        const onlineUsersArea = $("#online-users-area");
-		
-		// Find the user
-		const userDiv = onlineUsersArea.find("#username-" + user.username);
-		
-		// Add the user
-		if (userDiv.length == 0) {
-			onlineUsersArea.append(
-				$("<div id='username-" + user.username + "'></div>")
-					.append(UI.getUserDisplay(user))
-			);
-		}
-	};
-
-    // This function removes a user from the panel
-	const removeUser = function(user) {
-        const onlineUsersArea = $("#online-users-area");
-		
-		// Find the user
-		const userDiv = onlineUsersArea.find("#username-" + user.username);
-		
-		// Remove the user
-		if (userDiv.length > 0) userDiv.remove();
-	};
-
-    return { initialize, update, addUser, removeUser };
-})();
-
-
-const ChatPanel = (function() {
-	// This stores the chat area
-    let chatArea = null;
-    // This stores the timer of typing event
-    let typingTimer = null;
-    // This function initializes the UI
-    const initialize = function() {
-		// Set up the chat area
-		chatArea = $("#chat-area");
-
-        // Submit event for the input form
-        $("#chat-input-form").on("submit", (e) => {
-            // Do not submit the form
-            e.preventDefault();
-
-            // Get the message content
-            const content = $("#chat-input").val().trim();
-
-            // Post it
-            Socket.postMessage(content);
-
-			// Clear the message
-            $("#chat-input").val("");
-        });
-
-        // Keypress handler for input field
-        $("#chat-input").on("keydown", (e) => {            
-            Socket.typeMessage();
-        });
- 	};
-
-    // This function updates the chatroom area
-    const update = function(chatroom) {
-        // Clear the online users area
-        chatArea.empty();
-
-        // Add the chat message one-by-one
-        for (const message of chatroom) {
-			addMessage(message);
-        }
-    };
-
-    // This function adds a new message at the end of the chatroom
-    const addMessage = function(message) {
-		const datetime = new Date(message.datetime);
-		const datetimeString = datetime.toLocaleDateString() + " " +
-							   datetime.toLocaleTimeString();
-
-		chatArea.append(
-			$("<div class='chat-message-panel row'></div>")
-				.append(UI.getUserDisplay(message.user))
-				.append($("<div class='chat-message col'></div>")
-					.append($("<div class='chat-date'>" + datetimeString + "</div>"))
-					.append($("<div class='chat-content'>" + message.content + "</div>"))
-				)
-		);
-		chatArea.scrollTop(chatArea[0].scrollHeight);
-    };
-
-    // This function adds a line of who is typing
-    const addTyping = function(name) {
-        clearTimeout(typingTimer);
-        $("#current-typing-area").text(name + " is typing...");
-        typingTimer = setTimeout(removeTyping, 3000);
-    };
-
-    // This function removes the line of someone typing after 3 seconds
-    const removeTyping = function() {
-        $("#current-typing-area").text("");
-    }
-
-    return { initialize, update, addMessage, addTyping};
-})();
-*/
 const GamePanel = (function() {
     // This function initializes the UI
     const initialize = function() {
@@ -362,17 +233,28 @@ const GamePanel = (function() {
         // generate player objects for 2 player 
         own_player = Player(own_name ,  1, own_character_id);
         oppo_player = Player(oppo_name , 2 , oppo_character_id);
-        const showWinner = function(playerno) {
-            $("#result").text(playerno);
-            $("#gameover-container").show(); 
-        }
+        //initialize
         rest(3000);
-        setTimeout(Timer.countDown, 1000);
+        setTimeout(Timer.countDown, 1000); //start the timer ????
     };
-    
+
+    const showWinner = function(playerno) {
+        $("#result").text(playerno);
+        $("#gameover-container").show(); 
+    }
+
+    let endtimeout;
     const start = function(){
-        Food.update();
-        Cover.open();
+        console.log("hhhhhiiiii");
+        Socket.generatefoodtype();
+        //Food.update();
+        Cover.open();	
+        endtimeout = setTimeout(() =>{
+            Cover.close();
+            setTimeout(Food.eaten,1000); // why need set time out here?
+            rest(3000);
+            } ,4000	
+        );
         $(document).on("keydown", function(e){ 
             if (e.keyCode == 32){ // player 1 move using sapce bar
                 own_player.move();
@@ -395,18 +277,16 @@ const GamePanel = (function() {
             }
         });
     };        
-    let endtimeout = setTimeout(() =>{
-        Cover.close();
-        setTimeout(Food.eaten,1000);
-        rest(3000);
-        } ,4000	
-    );
+
 
     const rest = function(time){   
         $(document).off("keydown");
+        // start the game
+        console.log("ohhhhhh");
         let timeout = setTimeout(start,time);
         return timeout;
     };
+
     // This function updates the user panel
     const update_oppo = function(oppo_score) {
         oppo_player.move();

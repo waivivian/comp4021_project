@@ -22,9 +22,9 @@ const Food = (function() {
   
 	
 	
-	const setFoodtype = function(foodtype){
+	const setFoodtype = function(generatedfoodtype){
 				
-		currentFoodtype = foodtype;
+		currentFoodtype = generatedfoodtype;
 
 	}
 	
@@ -37,26 +37,20 @@ const Food = (function() {
 	
     
 	const eaten = function() {
-
         element.hide();
+	};
 		
-	}
-		
-		
-
-    const update = function() {
+    const update = function(foodtype) {
+		/* move to server (chat_server.js) so as to have the food type broadcast to both player and they see the same food 
 		const foodtypeKey = Object.keys(foodtype)
 		const random = Math.floor(Math.random() * foodtypeKey.length);
 		const randomFoodtypeKey = foodtypeKey[random];
 		const randomFoodtype = foodtype[randomFoodtypeKey];
-		
-		setFoodtype(randomFoodtype);
-
+		*/
+		setFoodtype(foodtype);
 		const path = "image/"+currentFoodtype.name+".svg";
 		element.attr("href", path );
 		element.show();
-		
-		
     };
 
     // The methods are returned as an object here.
