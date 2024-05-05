@@ -17,10 +17,10 @@ const Player = function( userName, playerNo, character_id ) {
 			character_image_file = "./image/dog1t.png";
 			break;
 		case "char 3":
-			character_image_file = "./image/dog2.png";
+			character_image_file = "./image/dog2t.png";
 			break;
 		case "char 4":
-			character_image_file = "./image/dog2.png";
+			character_image_file = "./image/dog3t.png";
 			break;
 		case "char 5":
 			character_image_file = "./image/cat1t.png";

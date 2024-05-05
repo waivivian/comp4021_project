@@ -44,7 +44,6 @@ const SignInForm = (function() {
             const name     = $("#register-name").val().trim();
             const password = $("#register-password").val().trim();
             const confirmPassword = $("#register-confirm").val().trim();
-            console.log("yyyhhhhhh", name, password);
             // Password and confirmation does not match
             if (password != confirmPassword) {
                 $("#register-message").text("Passwords do not match.");
@@ -190,10 +189,10 @@ const UserPanel = (function() {
                     Socket.disconnect();
                     hide();
                     SignInForm.show();
-                    WaitingOpponentPanel.hide();
-                    CharacterSelectionPanel.hide(); 
-                    GamePanel.hide();
-                    GameOverPanel.hide();
+                    //WaitingOpponentPanel.hide();
+                    //CharacterSelectionPanel.hide(); 
+                    //GamePanel.hide();
+                    //GameOverPanel.hide();
                     
                 }
             );
@@ -283,13 +282,9 @@ const GamePanel = (function() {
             sounds.win.addEventListener('ended', function() {
                 // ensure players are at origianl position
                 own_player.back();
-                end_game();
                 GameOverPanel.show();
-                Cover.close();
+                end_game(); // cannot be put in end_game() as it will be called by sign_ou
 
-                $("#gameover-container").hide(); 
-                $("#own-chosen-character-image").attr("src","./image/unknown.png");
-                $("#enemy-chosen-character-image").attr("src","./image/unknown.png");
             });
         }
         else{
@@ -299,13 +294,13 @@ const GamePanel = (function() {
             sounds.lose.addEventListener('ended', function() {
                 // ensure players are at origianl position
                 oppo_player.back();
+                GameOverPanel.show(); // cannot be put in end_game() as it will be called by sign_out
                 end_game();
             });        
         }
         $("#gameover-container").show(); 
     }
     const end_game= function(){
-        GameOverPanel.show();
         Cover.close();
         Timer.reset();
         $("#gameover-container").hide();
@@ -407,7 +402,7 @@ const GamePanel = (function() {
             oppo_player.back();					
             },1000); // do the above after move which use 1 second           
     };
-    return { initialize, show, hide, update, update_oppo };
+    return { initialize, show, hide, update, update_oppo, end_game };
 })();
 
 

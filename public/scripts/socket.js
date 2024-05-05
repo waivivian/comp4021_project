@@ -191,6 +191,7 @@ const Socket = (function() {
         own_name = null;
         oppo_user = null;
         oppo_character_id = null;
+        GamePanel.end_game();
     };
 
     // This function notify server that this user is availbale to match with another user

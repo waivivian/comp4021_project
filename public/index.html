@@ -136,10 +136,73 @@
                         <text id="gameover" x="0" y="0" fill="red"
                               font-size="80px" text-anchor="middle"></text>
                     </g>
-                    
-                
             </svg>
         </div>
+
+        <div id="waiting-opponent" class="overlay row">        
+            <text id="waiting-text" x="45%" y="50%"></text>
+            <div id="loading-bar-container">
+                <div id="loading-bar"></div>
+            </div>
+        </div>
+
+        <div id="character-selection" class="overlay col">
+            <div class="selected-container">
+                <div class="chosen-character">
+                    <div class="chosen-character-image-container">    
+                        <img class="chosen-character-image" id ="own-chosen-character-image" src="./image/unknown.png" alt="unknown">
+                    </div>
+                    <div class="player-text">YOU</div>
+                </div>
+
+            <div id="versus-button">
+                <img id="versus-image" src="./image/versus.png" alt="versus">
+            </div>
+
+            <div class="chosen-character">
+                <div class="chosen-character-image-container">    
+                    <img class="chosen-character-image" id ="enemy-chosen-character-image" src="./image/unknown.png" alt="unknown">
+                </div>
+                <div class="player-text">Enemy</div>
+            </div>
+        </div>
+        
+        <div class="character-container">
+            <div class="character" id="char 1">
+                <img class="character-image" src="./image/dog1head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 2">
+                <img class="character-image" src="./image/dog1head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 3">
+                <img class="character-image" src="./image/dog2head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 4">
+                <img class="character-image" src="./image/dog3head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 5">
+                <img class="character-image" src="./image/cat1head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 6">
+                <img class="character-image" src="./image/cat1head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 7">
+                <img class="character-image" src="./image/cat2head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 8">
+                <img class="character-image" src="./image/cat2head.png" alt="Nomore monster">
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="game-over-page" class="overlay col">
+        <button id="restart-button">
+            <i class="material-icons" style="font-size:48px;color:white; font-weight: 1000">replay</i>            </div>
+        </button>
+
+    </div>
     </div>
 
     <div id="signin-overlay" class="overlay row">
@@ -177,70 +240,7 @@
         </div>
     </div>
 
-    <div id="waiting-opponent" class="overlay row">        
-            <text id="waiting-text" x="45%" y="50%"></text>
-            <div id="loading-bar-container">
-                <div id="loading-bar"></div>
-              </div>
-    </div>
 
-    <div id="character-selection" class="overlay col">
-        <div class="selected-container">
-            <div class="chosen-character">
-                <div class="chosen-character-image-container">    
-                    <img class="chosen-character-image" id ="own-chosen-character-image" src="./image/unknown.png" alt="unknown">
-                </div>
-                <div class="player-text">YOU</div>
-            </div>
-
-            <div id="versus-button">
-                <img id="versus-image" src="./image/versus.png" alt="versus">
-            </div>
-
-            <div class="chosen-character">
-                <div class="chosen-character-image-container">    
-                    <img class="chosen-character-image" id ="enemy-chosen-character-image" src="./image/unknown.png" alt="unknown">
-                </div>
-                <div class="player-text">Enemy</div>
-            </div>
-        </div>
-        
-        <div class="character-container">
-            <div class="character" id="char 1">
-                <img class="character-image" src="./image/dog1head.png" alt="Nomore monster">
-            </div>
-            <div class="character" id="char 2">
-                <img class="character-image" src="./image/dog1head.png" alt="Nomore monster">
-            </div>
-            <div class="character" id="char 3">
-                <img class="character-image" src="./image/dog2head.png" alt="Nomore monster">
-            </div>
-            <div class="character" id="char 4">
-                <img class="character-image" src="./image/dog2head.png" alt="Nomore monster">
-            </div>
-            <div class="character" id="char 5">
-                <img class="character-image" src="./image/cat1head.png" alt="Nomore monster">
-            </div>
-            <div class="character" id="char 6">
-                <img class="character-image" src="./image/cat1head.png" alt="Nomore monster">
-            </div>
-            <div class="character" id="char 7">
-                <img class="character-image" src="./image/cat2head.png" alt="Nomore monster">
-            </div>
-            <div class="character" id="char 8">
-                <img class="character-image" src="./image/cat2head.png" alt="Nomore monster">
-            </div>
-        </div>
-    </div>
-
-
-
-    <div id="game-over-page" class="overlay col">
-        <button id="restart-button">
-            <i class="material-icons" style="font-size:48px;color:white; font-weight: 1000">replay</i>            </div>
-        </button>
-
-    </div>
 
     <script src="/socket.io/socket.io.min.js"></script>
     <script src="scripts/socket.js"></script>
