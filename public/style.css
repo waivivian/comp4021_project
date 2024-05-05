@@ -515,3 +515,19 @@ canvas {
         stroke-width: 1px;
 		
 	}
+
+    #green-button {
+        display: inline-block;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: #4CAF50;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+  
+
+
+
+
+ 

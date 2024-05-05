@@ -22,6 +22,10 @@ const Timer = (function() {
 		
     };
 	
+	const reset = function() {
+		timeRemaining = 180;
+    };
+
 	const getTimeUsed = function(){
 		
 		
@@ -40,6 +44,7 @@ const Timer = (function() {
     // The methods are returned as an object here.
     return {
         countDown: countDown,
+		reset: reset,
 		getTimeUsed: getTimeUsed,
 		stop:stop
     };

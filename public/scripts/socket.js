@@ -20,9 +20,8 @@ const Socket = (function() {
         socket.on("connect", () => {
             // Get the online user list
             socket.emit("get users");
-
             // Get the chatroom messages
-            socket.emit("get messages");
+            //socket.emit("get messages");
         });
 
         // Set up the users event
@@ -62,8 +61,9 @@ const Socket = (function() {
         socket.on("own information", (own_user) => {
             // Get the online user list
             //socket.emit("get users");
-            ({own_username,own_name} = JSON.parse(own_user));
-
+            const {username, name} = JSON.parse(own_user);
+            own_username = username;
+            own_name = name;
             // Get the chatroom messages
             //socket.emit("get messages");
         });
@@ -115,6 +115,13 @@ const Socket = (function() {
             Food.update(food_type_generated);
             console.log("new food");
         });
+
+        socket.on("added to available list", () => {
+            // Get the online user list
+            socket.emit("get users");
+            // Get the chatroom messages
+            //socket.emit("get messages");
+        });
     };
 
 
@@ -141,7 +148,7 @@ const Socket = (function() {
                 selected_character_id: selected_character_id
             }));
             GamePanel.update(own_character_id,oppo_character_id, own_name, oppo_user["name"]);
-
+            CharacterSelectionPanel.hide();
             //////go to game panel!!!!!!!!
             ////
             ////
@@ -179,6 +186,19 @@ const Socket = (function() {
     const disconnect = function() {
         socket.disconnect();
         socket = null;
+        own_character_id = null;
+        own_username = null;
+        own_name = null;
+        oppo_user = null;
+        oppo_character_id = null;
+    };
+
+    // This function notify server that this user is availbale to match with another user
+    const restart_game = function() {
+        //forget about previous player
+        oppo_user = null;
+        oppo_character_id = null;
+        socket.emit("available to match with another user", own_username);
     };
 
     // This function sends a post message event to the server
@@ -194,5 +214,5 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };*/
-    return { getSocket, connect, helpChangeOppoImage, ready, update_oppo_own_move, generatefoodtype, generate_timeout_foodtype, disconnect };
+    return { getSocket, connect, helpChangeOppoImage, ready, update_oppo_own_move, generatefoodtype, generate_timeout_foodtype, disconnect, restart_game};
 })();

@@ -214,7 +214,6 @@ io.on("connection", (socket) => {   //this socket is browser
         user = socket.request.session.user;
         const { username, name } = user;   
         sockets[username]=socket;
-        //console.log("sockets",sockets);
         // add the usr into the list of online user
         onlineUserList[username] = user;
         //console.log("onlineUserList",onlineUserList);
@@ -240,9 +239,9 @@ io.on("connection", (socket) => {   //this socket is browser
         }
     });
 
-    if(Object.keys(availableUserList).length >  1){ // there are other user in this list
-        // allow newly sign in user to know the existing user
-        socket.on("get users", () => { // send to browser(socket)
+    // allow newly sign in user to know the existing user
+    socket.on("get users", () => { // send to browser(socket)
+        if(Object.keys(availableUserList).length >  1){ // there are other user in this list
             user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
             // Send the first available users to the browser
             sockets[user["username"]].emit("users", JSON.stringify(availableUserList[Object.keys(availableUserList)[0]]));
@@ -253,9 +252,10 @@ io.on("connection", (socket) => {   //this socket is browser
  
             delete availableUserList[user['username']]; // delete this user from availableUserList as he/she can find someone to match with
             delete availableUserList[Object.keys(availableUserList)[0]]; // delete this user from availableUserList as he/she can find someone to match with
-            //console.log("bye",availableUserList);        
-        });
-    }
+            //console.log("bye",availableUserList);
+            }        
+    });
+    
 
     socket.on("change oppo image",(data)=>{
         const {to, image} = JSON.parse(data);
@@ -285,11 +285,11 @@ io.on("connection", (socket) => {   //this socket is browser
     });
 
     
-    socket.on("get messages", () => {
+    /*socket.on("get messages", () => {
         // Send the chatroom messages to the browser
         const chatroom  = JSON.parse(fs.readFileSync("./data/chatroom.json"));
         socket.emit("messages", JSON.stringify(chatroom ));
-    });
+    });*/
 
     socket.on("post message", (content) => {
         //if (content && socket.request.session.user) {
@@ -341,6 +341,7 @@ io.on("connection", (socket) => {   //this socket is browser
             const randomFoodtypeKey = foodtypeKey[random];
             const randomFoodtype = foodtype[randomFoodtypeKey];
             io.emit("food type generated", randomFoodtype);
+            console.log("food type generated", randomFoodtype);
         }
         else{ // another player already notify the server about the timeout and to update the food
 
@@ -348,7 +349,17 @@ io.on("connection", (socket) => {   //this socket is browser
         }
     });
 
-
+    socket.on("available to match with another user", (user_name) => {
+        if(sockets[user_name]){ // this user exists in socket list (in general should be true)
+            if(onlineUserList[user_name]){ // this user exists in onlineUser list (in general should be true)
+                user = socket.request.session.user;
+                // add the user to avialble list as it is availabe again
+                availableUserList[user_name] = user;    
+                socket.emit("added to available list"); 
+                console.log("added to available list",availableUserList,user_name)   
+            } 
+        }
+    });
 
 });
 

@@ -79,6 +79,9 @@ const SignInForm = (function() {
 })();
 
 const WaitingOpponentPanel = (function() {
+    const sounds = {
+        waiting: new Audio("./sound/waiting.mp3"),        
+    };
     // This function initializes the UI
     const initialize = function() {
         // Hide it
@@ -89,12 +92,15 @@ const WaitingOpponentPanel = (function() {
     // This function shows the form with the user
     const show = function() {
         $("#waiting-opponent").show();
-        
+        sounds.waiting.loop = true;
+        sounds.waiting.play();
     };
 
     // This function hides the form
     const hide = function() {
         $("#waiting-opponent").hide();
+        sounds.waiting.pause();
+
     };
 
     return { initialize, show, hide };
@@ -149,6 +155,7 @@ const CharacterSelectionPanel = (function() {
     // This function shows the form with the user
     const show = function() {
         $("#character-selection").show();
+        sounds.background.loop = true;
         sounds.background.play();
     };
 
@@ -156,6 +163,9 @@ const CharacterSelectionPanel = (function() {
     const hide = function() {
         $("#character-selection").hide();
         sounds.background.pause();
+        sounds.background.currentTime = 0; // Reset the playback position to the beginning
+
+        
     };
 
     // This function updates the user panel
@@ -180,6 +190,11 @@ const UserPanel = (function() {
                     Socket.disconnect();
                     hide();
                     SignInForm.show();
+                    WaitingOpponentPanel.hide();
+                    CharacterSelectionPanel.hide(); 
+                    GamePanel.hide();
+                    GameOverPanel.hide();
+                    
                 }
             );
         });
@@ -258,19 +273,58 @@ const GamePanel = (function() {
 
     const showWinner = function(playerno) {
         //$("#result").text(playerno);
+        sounds.background.pause();
+        sounds.background.currentTime = 0; // Reset the playback position to the beginning
+        $(document).off("keydown");
         if (playerno === 1){
             $("#gameover").html("You Win");
-            sounds.background.pause()
             sounds.win.play();
+            // when the song finished show the game over page
+            sounds.win.addEventListener('ended', function() {
+                // ensure players are at origianl position
+                own_player.back();
+                end_game();
+                GameOverPanel.show();
+                Cover.close();
+
+                $("#gameover-container").hide(); 
+                $("#own-chosen-character-image").attr("src","./image/unknown.png");
+                $("#enemy-chosen-character-image").attr("src","./image/unknown.png");
+            });
         }
         else{
             $("#gameover").html("You Lose");
-            sounds.background.pause()
             sounds.lose.play();
+            // when the song finished show the game over page
+            sounds.lose.addEventListener('ended', function() {
+                // ensure players are at origianl position
+                oppo_player.back();
+                end_game();
+            });        
         }
         $("#gameover-container").show(); 
     }
-
+    const end_game= function(){
+        GameOverPanel.show();
+        Cover.close();
+        Timer.reset();
+        $("#gameover-container").hide();
+        $("#own-chosen-character-image").attr("src","./image/unknown.png");
+        $("#enemy-chosen-character-image").attr("src","./image/unknown.png"); 
+        // Change all heart to gray
+        // Perform jQuery operation on all elements with a heart class
+        $('.heart').each(function() {
+            // Change all fill attribute of the first path element
+            const firstPath = $(this).find('path:eq(0)');
+            firstPath.attr("fill","#CCCCCC");
+            // Change the fill attribute of the second path element
+            const secondPath = $(this).find('path:eq(1)');
+            secondPath.attr("fill","#808080");
+            // Change the fill attribute of the third path element
+            const thirdPath = $(this).find('path:eq(2)');
+            thirdPath.attr("fill","#FFFFFF");
+        });
+    }
     let endtimeout;
     const start = function(){
         //Food.update();
@@ -292,6 +346,8 @@ const GamePanel = (function() {
         $(document).on("keydown", function(e){ 
             if (e.keyCode == 32){ // player 1 move using sapce bar
                 own_player.move();
+                console.log("move",$("#player1").attr("x"));
+
                 Socket.update_oppo_own_move(); // update oppo about own move
                 clearTimeout(endtimeout);
                 let resttimeout = rest(4000); // start after 4 seconds
@@ -331,6 +387,7 @@ const GamePanel = (function() {
         return timeout;
     };
 
+
     // This function updates the user panel
     const update_oppo = function() {
         oppo_player.move();
@@ -353,6 +410,46 @@ const GamePanel = (function() {
     return { initialize, show, hide, update, update_oppo };
 })();
 
+
+const GameOverPanel = (function() {
+    const sounds = {
+        //background: new Audio("./sound/character_select_background.mp3"),        
+        //select: new Audio("./sound/select.mp3"),        
+        //versus: new Audio("./sound/versus.mp3")
+    };
+    // This function initializes the UI
+    const initialize = function() {
+        // Hide it
+        $("#game-over-page").hide();
+        // Convert HTMLCollection to an array-like object
+        // Click event for the restart game button
+        $("#restart-button").on("click", () => {
+            hide();
+            WaitingOpponentPanel.show();
+            UserPanel.show();
+            Socket.restart_game();
+        });
+    };
+
+    // This function shows the form with the user
+    const show = function() {
+        $("#game-over-page").show();
+
+    };
+
+    // This function hides the form
+    const hide = function() {
+        $("#game-over-page").hide();
+        //sounds.background.pause();
+    };
+
+    // This function updates the user panel
+    const update = function(selected_image_src) {
+        $("#enemy-chosen-character-image").attr("src",selected_image_src);
+    };
+
+    return { initialize, show, hide, update };
+})();
 const UI = (function() {
     // This function gets the user display
     const getUserDisplay = function(user) {
@@ -363,7 +460,7 @@ const UI = (function() {
     };
 
     // The components of the UI are put here
-    const components = [SignInForm, WaitingOpponentPanel, CharacterSelectionPanel, GamePanel, UserPanel];
+    const components = [SignInForm, WaitingOpponentPanel, CharacterSelectionPanel, GamePanel, GameOverPanel, UserPanel];
 
     // This function initializes the UI
     const initialize = function() {
