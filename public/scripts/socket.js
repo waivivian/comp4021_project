@@ -113,6 +113,7 @@ const Socket = (function() {
 
         socket.on("food type generated",(food_type_generated) => {
             Food.update(food_type_generated);
+            console.log("new food");
         });
     };
 
@@ -160,19 +161,20 @@ const Socket = (function() {
     };
     
     // This function will notify server to tell opposite browser about my move and my updated score
-    const update_oppo_own_move = function(own_score) {
+    const update_oppo_own_move = function() {
         if (oppo_user != null){
-            socket.emit("update oppo about my move", JSON.stringify({
-                to: oppo_user["username"],
-                score: selected_image_src
-            }));
+            socket.emit("update oppo about my move", oppo_user["username"],);
         }
     };
     
     const generatefoodtype = function() {
         socket.emit("generate food type");
     };
-    
+
+    const generate_timeout_foodtype = function() {
+        socket.emit("generate food type due to timeout");
+    };    
+
     // This function disconnects the socket from the server
     const disconnect = function() {
         socket.disconnect();
@@ -192,5 +194,5 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };*/
-    return { getSocket, connect, helpChangeOppoImage, ready, update_oppo_own_move, generatefoodtype, disconnect };
+    return { getSocket, connect, helpChangeOppoImage, ready, update_oppo_own_move, generatefoodtype, generate_timeout_foodtype, disconnect };
 })();

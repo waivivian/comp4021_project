@@ -21,9 +21,10 @@ const Cover = (function() {
     };
 	
 	const close = function() {
-
-        element.css("animation-name", "close");
-		
+        return new Promise((resolve, reject) => {
+            element.css("animation-name", "close");
+            setTimeout(resolve,1000);
+          });
     };
 
     // The methods are returned as an object here.

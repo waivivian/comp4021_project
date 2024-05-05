@@ -38,6 +38,7 @@ const Food = (function() {
     
 	const eaten = function() {
         element.hide();
+		console.log("food should hide!!!");
 	};
 		
     const update = function(foodtype) {

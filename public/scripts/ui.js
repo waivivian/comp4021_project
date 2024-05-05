@@ -233,6 +233,7 @@ const GamePanel = (function() {
         // generate player objects for 2 player 
         own_player = Player(own_name ,  1, own_character_id);
         oppo_player = Player(oppo_name , 2 , oppo_character_id);
+        Socket.generate_timeout_foodtype(); // generate food for the first round
         //initialize
         rest(3000);
         setTimeout(Timer.countDown, 1000); //start the timer ????
@@ -245,34 +246,51 @@ const GamePanel = (function() {
 
     let endtimeout;
     const start = function(){
-        Socket.generatefoodtype();
         //Food.update();
+        console.log("cover open");
         Cover.open();	
-        endtimeout = setTimeout(() =>{
-            Cover.close();
-            setTimeout(Food.eaten,1000); // why need set time out here?
+        endtimeout = setTimeout(() =>{ // if after certain time the food is not eaten by any player
+            Cover.close().then(() => {
+                // the new food should be generated after the animaion thatcover is closed
+                console.log("timeout then generated");
+                Food.eaten();
+                Socket.generate_timeout_foodtype();
+            });                    
+            //setTimeout(Food.eaten,1000); // why need set time out here? because cover close require 1 second
+            //setTimeout(Food.eaten,Socket.generate_timeout_foodtype());           
+             // why need set time out here? because cover close require 1 second
             rest(3000);
             } ,4000	
         );
         $(document).on("keydown", function(e){ 
             if (e.keyCode == 32){ // player 1 move using sapce bar
                 own_player.move();
+                Socket.update_oppo_own_move(); // update oppo about own move
                 clearTimeout(endtimeout);
                 let resttimeout = rest(4000); // start after 4 seconds
                 setTimeout(()=>{
-                    Food.eaten();
+                    Food.eaten(); //hide the food when the player reach the food and the player movement require one second
+                    console.log("eaten",Food.getFoodtype());
                     own_player.update(Food.getFoodtype().effect);
-                    Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
                     if (own_player.getScore() >= 5){
                         clearTimeout(resttimeout); // stop the start 
                         Timer.stop();
                         showWinner(1); // show winning message of player 1
                         return false;
-                    
                     }
-                    Cover.close();
+                    //Cover.close(() => {
+                    //    // the new food should be generated after the animaion thatcover is closed
+                    //    console.log("eaten then generated");
+                    //    Socket.generatefoodtype();
+                    //}); 
+                    Cover.close().then(() => {
+                        // the new food should be generated after the animaion thatcover is closed
+                        console.log("eaten then generated");
+                        Socket.generatefoodtype();
+                    });                        
                     own_player.back();
-                },1000); // do the above after move which use 1 second 
+                },1000); // do the above after move which use 1 second                     
+
             }
         });
     };        

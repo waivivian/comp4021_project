@@ -202,7 +202,7 @@ const io = new Server(httpServer);
 const onlineUserList = {};
 const availableUserList = {};
 const sockets = {}; //maintain a list of sockets
-
+let food_already_generated = false;
 io.use((socket, next) => { //for socket server it doesn't use session if you don't ask for it, we need to explictly ask for the session
     chatSession(socket.request, {}, next);
 });
@@ -278,10 +278,9 @@ io.on("connection", (socket) => {   //this socket is browser
         }
     });
 
-    socket.on("update oppo about my move",(data)=>{
-        const {to, score} = JSON.parse(data);
-        if (sockets[to]){ // if targeted socket exists
-            sockets[to].emit("update oppo move and score",score);
+    socket.on("update oppo about my move",(oppo_user_name)=>{
+        if (sockets[oppo_user_name]){ // if targeted socket exists
+            sockets[oppo_user_name].emit("update oppo move and score");
         }
     });
 
@@ -325,7 +324,28 @@ io.on("connection", (socket) => {   //this socket is browser
 
     });
     
+    //  This is to generate a food type due to timeout but not eaten by player and broadcast to all user food is generated at server such that both users can see the same food
+    socket.on("generate food type due to timeout", () => { 
+        if (!food_already_generated){ // no one have notify the server about the timeout yet
+            
+            //  Broadcast the type of food being generated to all playes 
+            food_already_generated = true;
+            const foodtype = {
+                cake:{ name:"cake" , effect:1 },
+                fruit:{ name:"fruit" , effect:1 },
+                battery : { name:"battery" , effect:-1 }
+            };
+            const foodtypeKey = Object.keys(foodtype)
+            const random = Math.floor(Math.random() * foodtypeKey.length);
+            const randomFoodtypeKey = foodtypeKey[random];
+            const randomFoodtype = foodtype[randomFoodtypeKey];
+            io.emit("food type generated", randomFoodtype);
+        }
+        else{ // another player already notify the server about the timeout and to update the food
 
+            food_already_generated = false;
+        }
+    });
 
 
 
