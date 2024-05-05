@@ -102,6 +102,11 @@ const WaitingOpponentPanel = (function() {
 
 
 const CharacterSelectionPanel = (function() {
+    const sounds = {
+        background: new Audio("./sound/character_select_background.mp3"),        
+        select: new Audio("./sound/select.mp3"),        
+        versus: new Audio("./sound/versus.mp3")
+    };
     // This function initializes the UI
     const initialize = function() {
         // Hide it
@@ -118,6 +123,7 @@ const CharacterSelectionPanel = (function() {
         // Use forEach on the array-like object
         charactersArray.forEach(character => {
             character.addEventListener('click', () => {
+                sounds.select.play();
                 characterId = character.id;
                 console.log(characterId);
                 // change the chosen-character image to the  selected character's image
@@ -129,6 +135,7 @@ const CharacterSelectionPanel = (function() {
         });
         // Click event for the start game button
         $("#versus-button").on("click", () => {
+            sounds.versus.play();
             if (characterId){ //ensure the user have chosen a character before clicking versus
                 Socket.ready(characterId);
                 hide();
@@ -136,19 +143,19 @@ const CharacterSelectionPanel = (function() {
             else{
                 alert("Choose a character first!!!");
             }
-
-
         });
     };
 
     // This function shows the form with the user
     const show = function() {
         $("#character-selection").show();
+        sounds.background.play();
     };
 
     // This function hides the form
     const hide = function() {
         $("#character-selection").hide();
+        sounds.background.pause();
     };
 
     // This function updates the user panel
@@ -205,6 +212,13 @@ const UserPanel = (function() {
 
 
 const GamePanel = (function() {
+    /* Create the sounds */
+    const sounds = {
+            background: new Audio("./sound/game_background.mp3"),
+            win: new Audio("./sound/win_sound.wav"),
+            lose: new Audio("./sound/lose_sound.wav"),
+            eat: new Audio("./sound/eating_sound.wav"),
+    };
     // This function initializes the UI
     const initialize = function() {
         // Hide it
@@ -219,8 +233,9 @@ const GamePanel = (function() {
     };
 
     // This function shows the form with the user
-    const show = function(user) {
+    const show = function() {
         $("#game-panel").show();
+
     };
 
     // This function hides the form
@@ -231,6 +246,8 @@ const GamePanel = (function() {
     // This function updates the user panel
     const update = function(own_character_id, oppo_character_id, own_name, oppo_name) {
         // generate player objects for 2 player 
+        sounds.background.loop = true;
+        sounds.background.play()
         own_player = Player(own_name ,  1, own_character_id);
         oppo_player = Player(oppo_name , 2 , oppo_character_id);
         Socket.generate_timeout_foodtype(); // generate food for the first round
@@ -240,7 +257,17 @@ const GamePanel = (function() {
     };
 
     const showWinner = function(playerno) {
-        $("#result").text(playerno);
+        //$("#result").text(playerno);
+        if (playerno === 1){
+            $("#gameover").html("You Win");
+            sounds.background.pause()
+            sounds.win.play();
+        }
+        else{
+            $("#gameover").html("You Lose");
+            sounds.background.pause()
+            sounds.lose.play();
+        }
         $("#gameover-container").show(); 
     }
 
@@ -269,6 +296,7 @@ const GamePanel = (function() {
                 clearTimeout(endtimeout);
                 let resttimeout = rest(4000); // start after 4 seconds
                 setTimeout(()=>{
+                    sounds.eat.play();
                     Food.eaten(); //hide the food when the player reach the food and the player movement require one second
                     console.log("eaten",Food.getFoodtype());
                     own_player.update(Food.getFoodtype().effect);
@@ -309,6 +337,7 @@ const GamePanel = (function() {
         clearTimeout(endtimeout);
         let resttimeout = rest(4000); // start after 4 seconds
         setTimeout(()=>{
+            sounds.eat.play();
             Food.eaten();
             oppo_player.update(Food.getFoodtype().effect);	
             if (oppo_player.getScore() >= 5){

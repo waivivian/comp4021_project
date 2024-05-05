@@ -325,7 +325,8 @@ io.on("connection", (socket) => {   //this socket is browser
     });
     
     //  This is to generate a food type due to timeout but not eaten by player and broadcast to all user food is generated at server such that both users can see the same food
-    socket.on("generate food type due to timeout", () => { 
+    socket.on("generate food type due to timeout", () => {
+        console.log(food_already_generated); 
         if (!food_already_generated){ // no one have notify the server about the timeout yet
             
             //  Broadcast the type of food being generated to all playes 
