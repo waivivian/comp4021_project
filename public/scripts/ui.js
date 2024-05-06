@@ -233,9 +233,11 @@ const GamePanel = (function() {
             lose: new Audio("./sound/lose_sound.wav"),
             eat: new Audio("./sound/eating_sound.wav"),
     };
+	/*
     let resttimeout = null;
     let endtimeout = null;
     let timeout = null;
+	*/
     // This function initializes the UI
     const initialize = function() {
         // Hide it
@@ -260,20 +262,36 @@ const GamePanel = (function() {
         $("#game-panel").hide();
     };
 
+
+
+/*
+
+    const showWinner = function(playerno) {
+        $("#result").text(playerno);
+        $("#gameover-container").show(); 
+    }
+
+*/
+
+
+
     // This function updates the user panel
+	//done
     const update = function(own_character_id, oppo_character_id, own_name, oppo_name) {
+		console.log("update");
         // generate player objects for 2 player 
         sounds.background.loop = true;
         sounds.background.play()
         own_player = Player(own_name ,  1, own_character_id);
         oppo_player = Player(oppo_name , 2 , oppo_character_id);
-        Socket.generate_timeout_foodtype(); // generate food for the first round
+        //Socket.generate_timeout_foodtype(); // generate food for the first round
         //initialize
-        rest(3000);
+        //rest(3000);
         setTimeout(Timer.countDown, 1000); //start the timer ????
     };
 
     const showWinner = function(playerno) {
+		console.log("showWinner");
         //$("#result").text(playerno);
         sounds.background.pause();
         sounds.background.currentTime = 0; // Reset the playback position to the beginning
@@ -304,13 +322,16 @@ const GamePanel = (function() {
         }
         $("#gameover-container").show(); 
     }
+	
     const end_game= function(){
+		console.log("end_game");
         sounds.background.pause();
         sounds.background.currentTime = 0; // Reset the playback position to the beginning
         Cover.close();
         Timer.reset();
         Timer.stop();
         // stop the game if signout is pressed when the cover is closed due to the food being eaten
+		/*
         if (resttimeout){
             clearTimeout(resttimeout); // stop the start 
         }
@@ -322,6 +343,7 @@ const GamePanel = (function() {
         if (timeout){
             clearTimeout(timeout); // stop the start 
         }
+		*/
         $("#gameover-container").hide();
         $("#own-chosen-character-image").attr("src","./image/unknown.png");
         $("#enemy-chosen-character-image").attr("src","./image/unknown.png"); 
@@ -342,9 +364,28 @@ const GamePanel = (function() {
             thirdPath.attr("fill","#FFFFFF");
         });
     }
-    const start = function(){
+	
+   const start = function(){
+        //Socket.generatefoodtype();//	this maybe wrong
+		//Socket.startgamesignal(); //  this is wrong
         //Food.update();
-        console.log("cover open");
+		console.log("start");
+        Cover.open();	
+
+        $(document).on("keydown", function(e){ 
+            if (e.keyCode == 32){ // player 1 move using sapce bar
+
+				Socket.signal(own_player.getUsername());
+
+            }
+        });
+    };        
+	
+	
+/*
+	
+    const start = function(){
+
         Cover.open();	
         endtimeout = setTimeout(() =>{ // if after certain time the food is not eaten by any player
             Cover.close().then(() => {
@@ -393,36 +434,81 @@ const GamePanel = (function() {
             }
         });
     };        
+*/	
+	const ownScored = function(){
+		console.log("ownScored");
+		own_player.move();
+
+		setTimeout(()=>{
+			sounds.eat.play();
+			Food.eaten();
+            own_player.update(Food.getFoodtype().effect);
+            //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
+            if (own_player.getScore() >= 5){
+				Timer.stop();
+				showWinner(1); // show winning message of player 1
+				restforever();
+				///////////////////////////
+				return false;
+                    
+			}
+            Cover.close();
+            own_player.back();
+		},1000); // do the above after move which use 1 second 
+		
+
+	}
 
 
-    const rest = function(time){   
+	
+	const oppoScored = function(){
+		console.log("oppoScored");
+		oppo_player.move();
+
+		setTimeout(()=>{
+			sounds.eat.play();
+			Food.eaten();
+            oppo_player.update(Food.getFoodtype().effect);
+            //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
+            if (oppo_player.getScore() >= 5){
+				Timer.stop();
+				showWinner(2); // show winning message of player 1
+				return false;
+                    
+			}
+            Cover.close();
+            oppo_player.back();
+		},1000); // do the above after move which use 1 second 
+		
+
+	} 
+	
+	const restforever = function(){
+		console.log("restforever");
+		Socket.restforever();
+	
+		
+	}
+	
+	const noOneEat = function(){
+		console.log("noOneEat");
+		Cover.close();
+        setTimeout(Food.eaten,1000); // why need set time out here?
+        //rest(3000);
+		
+	}
+
+    const rest = function(time){ 
+		console.log("rest");
         $(document).off("keydown");
         // start the game
-        timeout = setTimeout(start,time);
-        return timeout;
+        //let timeout = setTimeout(start,time);
+		return null;
     };
+	
 
 
-    // This function updates the user panel
-    const update_oppo = function() {
-        oppo_player.move();
-        clearTimeout(endtimeout);
-        resttimeout = rest(4000); // start after 4 seconds
-        setTimeout(()=>{
-            sounds.eat.play();
-            Food.eaten();
-            oppo_player.update(Food.getFoodtype().effect);	
-            if (oppo_player.getScore() >= 5){
-                clearTimeout(resttimeout);  // stop the start 
-                Timer.stop();
-                showWinner(2); // show winning message of player 2
-                return false;
-            }
-            Cover.close();	
-            oppo_player.back();					
-            },1000); // do the above after move which use 1 second           
-    };
-    return { initialize, show, hide, update, update_oppo, end_game };
+    return { initialize, show, hide, update, end_game , noOneEat , rest , restforever,start , ownScored,oppoScored };
 })();
 
 
@@ -451,6 +537,8 @@ const GameOverPanel = (function() {
         $("#game-over-page").show();
 
     };
+	
+	
 
     // This function hides the form
     const hide = function() {
@@ -478,6 +566,12 @@ const GameOverPanel = (function() {
         }
         rank_table_body.html(table_content);
     };
+	
+	
+
+	
+	
+	
 
     return { initialize, show, hide, update };
 })();
