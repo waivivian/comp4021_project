@@ -309,7 +309,6 @@ const GamePanel = (function() {
         Cover.close();
         Timer.reset();
         Timer.stop();
-        console.log("ppppppppppppppp",resttimeout,endtimeout);
         // stop the game if signout is pressed when the cover is closed due to the food being eaten
         if (resttimeout){
             clearTimeout(resttimeout); // stop the start 
