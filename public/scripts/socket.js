@@ -111,9 +111,12 @@ const Socket = (function() {
             CharacterSelectionPanel.update(image);
         });
 
+
+
+	
         socket.on("food type generated",(food_type_generated) => {
             Food.update(food_type_generated);
-            console.log("new food");
+            //console.log("new food");
         });
 
         socket.on("added to available list", () => {
@@ -128,6 +131,51 @@ const Socket = (function() {
             GameOverPanel.update(game_rank);
             console.log("rank hiiii");
         });
+		
+		
+		socket.on("no one eat", ()=>{
+		
+			GamePanel.noOneEat();
+			
+
+		});
+		
+		socket.on("rest", ()=>{
+		
+			GamePanel.rest(3000);
+			
+
+		});
+		
+		socket.on("start", ()=>{
+		
+			GamePanel.start();
+			
+
+		});
+//////////////////////////////////		
+		socket.on("update", (username)=>{
+			/*
+			console.log(username === own_name);
+			console.log(username);
+			console.log(own_name);
+			console.log(oppo_character_id);
+			console.log(oppo_user);
+			*/
+
+			if(username === own_name){
+				
+				GamePanel.ownScored();
+				
+			}
+			
+			else{
+				
+				GamePanel.oppoScored();	
+				
+			}
+		});
+
     };
 
 
@@ -174,6 +222,8 @@ const Socket = (function() {
     };
     
     // This function will notify server to tell opposite browser about my move and my updated score
+	
+	/*
     const update_oppo_own_move = function() {
         if (oppo_user != null){
             socket.emit("update oppo about my move", oppo_user["username"],);
@@ -191,7 +241,22 @@ const Socket = (function() {
             socket.emit("generate food type due to timeout");
         }
     };    
-
+	
+*/
+///////////////////////////////////////////////////////	
+	const signal = function(username){
+		if (socket){
+			socket.emit("signal",username);
+	
+		}
+	};
+	
+	const restforever = function(){
+		if (socket){
+		socket.emit("restforever");
+		
+		}
+	};
     // This function disconnects the socket from the server
     const disconnect = function() {
         socket.disconnect();
@@ -230,5 +295,6 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };*/
-    return { getSocket, connect, helpChangeOppoImage, ready, update_oppo_own_move, generatefoodtype, generate_timeout_foodtype, disconnect, cal_rank, restart_game};
+    return { getSocket, connect, helpChangeOppoImage, ready,  disconnect, cal_rank, restart_game,signal,restforever};
+	
 })();
