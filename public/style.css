@@ -530,4 +530,8 @@ canvas {
 
 
 
- 
+      .character-head-image {
+        border: 1.5vmin solid green;
+        border-radius: 4vmin;
+        overflow: hidden;
+    }
