@@ -371,7 +371,7 @@ const GamePanel = (function() {
                     Food.eaten(); //hide the food when the player reach the food and the player movement require one second
                     console.log("eaten",Food.getFoodtype());
                     own_player.update(Food.getFoodtype().effect);
-                    if (own_player.getScore() >= 5){
+                    if (own_player.getScore() >= 1){
                         clearTimeout(resttimeout); // stop the start 
                         Timer.stop();
                         showWinner(1); // show winning message of player 1
@@ -412,7 +412,7 @@ const GamePanel = (function() {
             sounds.eat.play();
             Food.eaten();
             oppo_player.update(Food.getFoodtype().effect);	
-            if (oppo_player.getScore() >= 5){
+            if (oppo_player.getScore() >= 1){
                 clearTimeout(resttimeout);  // stop the start 
                 Timer.stop();
                 showWinner(2); // show winning message of player 2
@@ -459,8 +459,24 @@ const GameOverPanel = (function() {
     };
 
     // This function updates the user panel
-    const update = function(selected_image_src) {
-        $("#enemy-chosen-character-image").attr("src",selected_image_src);
+    const update = function(game_rank) {
+        let rank_table_body = $("#rank-table-body");
+                //let rank_table_body = $("#rank-table-body");
+
+        let game_rank_result = JSON.parse(game_rank);
+        console.log(game_rank_result);
+        var rank = 0;
+        let table_content="";
+        for (var key in game_rank_result) {
+            console.log(rank);
+            rank++;
+            table_content+="<tr><td>"+String(rank)
+            +"</td><td>"+key
+            +"</td><td>"+String(Math.round(game_rank_result[key]["percentage_winning"]))
+            +"</td><td>"+String(Math.round(game_rank_result[key]["average_winning_time"]))
+            +"</td><tr>";
+        }
+        rank_table_body.html(table_content);
     };
 
     return { initialize, show, hide, update };

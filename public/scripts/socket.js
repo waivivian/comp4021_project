@@ -122,6 +122,12 @@ const Socket = (function() {
             // Get the chatroom messages
             //socket.emit("get messages");
         });
+
+        
+        socket.on("ranking result", (game_rank) => {
+            GameOverPanel.update(game_rank);
+            console.log("rank hiiii");
+        });
     };
 
 

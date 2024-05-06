@@ -302,7 +302,7 @@ io.on("connection", (socket) => {   //this socket is browser
                 else{// this player haven't won before
                     average_winning_time = time_used;
                 }   
-                percentage_winning = number_of_win/(number_of_win+number_of_lose);               
+                percentage_winning = number_of_win/(number_of_win+number_of_lose)*100;               
         }
         else{ // create a new ranking for this user who have not had a rank yet
             number_of_win = 1;
@@ -315,7 +315,7 @@ io.on("connection", (socket) => {   //this socket is browser
             number_of_win = game_rank[lose_username]["number_of_win"];
             number_of_lose = game_rank[lose_username]["number_of_lose"]+1;  
             average_winning_time = game_rank[lose_username]["average_winning_time"]; 
-            percentage_winning = number_of_win/(number_of_win+number_of_lose);               
+            percentage_winning = number_of_win/(number_of_win+number_of_lose)*100;               
         }
         else{ // create a new ranking for this user who have not had a rank yet
          
@@ -361,7 +361,8 @@ io.on("connection", (socket) => {   //this socket is browser
         console.log(sorted_game_rank,game_rank_list);
         // Update the ranking to the rank.json
         fs.writeFileSync("./data/rank.json",JSON.stringify(sorted_game_rank, null, " "));
-        //io.emit("add message", JSON.stringify(message)); //JSON.stringify(message) return an object while JSON.stringify(chatroom) return a list
+        // broadcast the ranking results to the two users
+        io.emit("ranking result", JSON.stringify(sorted_game_rank)); //JSON.stringify(message) return an object while JSON.stringify(chatroom) return a list
     });
     
     //  This is to generate a food type and broadcast to all user food is generated at server such that both users can see the same food
