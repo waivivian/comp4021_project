@@ -206,7 +206,7 @@ const Socket = (function() {
 
     // only winner should call this function -This function notify server to calculate ranking
     const cal_rank = function(time_used) {
-        socket.emit("get ranking", own_username, oppo_user["username"], time_used);
+        socket.emit("get ranking", own_username, oppo_user["username"], own_name, oppo_user['name'], time_used);
     };
 
     // This function notify server that this user is availbale to match with another user

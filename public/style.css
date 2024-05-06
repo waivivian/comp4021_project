@@ -135,6 +135,11 @@ button.icon:active {
     margin: 2px -2px -2px 2px;
 }
 
+#restart-button{
+    width: 40px ;
+    height: 40px 
+}
+
 /* Data field caption and content */
 .field-content {
     border-radius: 50px;

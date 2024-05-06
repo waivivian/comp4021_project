@@ -471,7 +471,7 @@ const GameOverPanel = (function() {
             console.log(rank);
             rank++;
             table_content+="<tr><td>"+String(rank)
-            +"</td><td>"+key
+            +"</td><td>"+game_rank_result[key]["name"]
             +"</td><td>"+String(Math.round(game_rank_result[key]["percentage_winning"]))
             +"</td><td>"+String(Math.round(game_rank_result[key]["average_winning_time"]))
             +"</td><tr>";

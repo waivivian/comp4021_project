@@ -290,7 +290,7 @@ io.on("connection", (socket) => {   //this socket is browser
         socket.emit("messages", JSON.stringify(chatroom ));
     });*/
 
-    socket.on("get ranking", (win_username, lose_username, time_used) => {
+    socket.on("get ranking", (win_username, lose_username, win_name, lose_name, time_used) => {
         // read the game rank records
         const game_rank = JSON.parse(fs.readFileSync("./data/rank.json"));
         if (win_username in game_rank){ // if the player already have ranking record
@@ -310,7 +310,7 @@ io.on("connection", (socket) => {   //this socket is browser
             average_winning_time = time_used;
             percentage_winning = 100;               
         }
-        game_rank[win_username]= {number_of_win, number_of_lose, average_winning_time, percentage_winning};  
+        game_rank[win_username]= {name: win_name, number_of_win, number_of_lose, average_winning_time, percentage_winning};  
         if (lose_username in game_rank){ // if the player already have ranking record
             number_of_win = game_rank[lose_username]["number_of_win"];
             number_of_lose = game_rank[lose_username]["number_of_lose"]+1;  
@@ -324,7 +324,7 @@ io.on("connection", (socket) => {   //this socket is browser
                 percentage_winning = 0;               
         }
         // Add or update these users in game_rank
-        game_rank[lose_username]= {number_of_win, number_of_lose, average_winning_time, percentage_winning};  
+        game_rank[lose_username]= {name: lose_name, number_of_win, number_of_lose, average_winning_time, percentage_winning};  
         //Object.entries() is used for listing properties related to an object, listing all the [key, value] pairs of an object
         // E.g. const obj = { 10: 'adam', 200: 'billy', 35: 'chris' }; console.log(Object.entries(obj)); => [ [ '10', 'adam' ], [ '35', 'chris' ], [ '200', 'billy' ] ]
         let game_rank_list = Object.entries(game_rank);
