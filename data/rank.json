@@ -1,0 +1,14 @@
+{
+ "you": {
+  "number_of_win": 2,
+  "number_of_lose": 2,
+  "average_winning_time": 39,
+  "percentage_winning": 0.5
+ },
+ "youu": {
+  "number_of_win": 2,
+  "number_of_lose": 2,
+  "average_winning_time": 69,
+  "percentage_winning": 0.5
+ }
+}

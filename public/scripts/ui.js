@@ -279,6 +279,7 @@ const GamePanel = (function() {
         sounds.background.currentTime = 0; // Reset the playback position to the beginning
         $(document).off("keydown");
         if (playerno === 1){
+            Socket.cal_rank(Timer.getTimeUsed());
             $("#gameover").html("You Win");
             sounds.win.play();
             // when the song finished show the game over page

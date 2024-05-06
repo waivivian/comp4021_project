@@ -246,9 +246,7 @@ io.on("connection", (socket) => {   //this socket is browser
             // Send the first available users to the browser
             sockets[user["username"]].emit("users", JSON.stringify(availableUserList[Object.keys(availableUserList)[0]]));
             // Send the current user to the first available users browser
-            console.log("hhhhh",Object.keys(availableUserList)[0]);
-            if(sockets[Object.keys(availableUserList)[0]],JSON.stringify(user)){
-                console.log(Object.keys(availableUserList)[0]);
+            if(sockets[Object.keys(availableUserList)[0]]){
                 sockets[Object.keys(availableUserList)[0]].emit("users",JSON.stringify(user));
             }
  
@@ -286,30 +284,86 @@ io.on("connection", (socket) => {   //this socket is browser
         }
     });
 
-    
     /*socket.on("get messages", () => {
         // Send the chatroom messages to the browser
         const chatroom  = JSON.parse(fs.readFileSync("./data/chatroom.json"));
         socket.emit("messages", JSON.stringify(chatroom ));
     });*/
 
-    socket.on("post message", (content) => {
-        //if (content && socket.request.session.user) {
-
-        const message = {
-            user: socket.request.session.user   /* { username, avatar, name } */,
-            datetime: new Date()/* date and time when the message is posted */,
-            content: content /* content of the message */
+    socket.on("get ranking", (win_username, lose_username, time_used) => {
+        // read the game rank records
+        const game_rank = JSON.parse(fs.readFileSync("./data/rank.json"));
+        if (win_username in game_rank){ // if the player already have ranking record
+                number_of_win = game_rank[win_username]["number_of_win"]+1;
+                number_of_lose = game_rank[win_username]["number_of_lose"]; 
+                if(game_rank[win_username]["average_winning_time"]){ // if it is not null, means this user have won before
+                    average_winning_time = ((game_rank[win_username]["average_winning_time"])*(game_rank[win_username]["number_of_win"])+time_used)/number_of_win;
+                }
+                else{// this player haven't won before
+                    average_winning_time = time_used;
+                }   
+                percentage_winning = number_of_win/(number_of_win+number_of_lose);               
+        }
+        else{ // create a new ranking for this user who have not had a rank yet
+            number_of_win = 1;
+            number_of_lose = 0;    
+            average_winning_time = time_used;
+            percentage_winning = 100;               
+        }
+        game_rank[win_username]= {number_of_win, number_of_lose, average_winning_time, percentage_winning};  
+        if (lose_username in game_rank){ // if the player already have ranking record
+            number_of_win = game_rank[lose_username]["number_of_win"];
+            number_of_lose = game_rank[lose_username]["number_of_lose"]+1;  
+            average_winning_time = game_rank[lose_username]["average_winning_time"]; 
+            percentage_winning = number_of_win/(number_of_win+number_of_lose);               
+        }
+        else{ // create a new ranking for this user who have not had a rank yet
+         
+                       number_of_win = 0;number_of_lose = 1;  
+                average_winning_time = null; // the user never win
+                percentage_winning = 0;               
+        }
+        // Add or update these users in game_rank
+        game_rank[lose_username]= {number_of_win, number_of_lose, average_winning_time, percentage_winning};  
+        //Object.entries() is used for listing properties related to an object, listing all the [key, value] pairs of an object
+        // E.g. const obj = { 10: 'adam', 200: 'billy', 35: 'chris' }; console.log(Object.entries(obj)); => [ [ '10', 'adam' ], [ '35', 'chris' ], [ '200', 'billy' ] ]
+        let game_rank_list = Object.entries(game_rank);
+        // Define the ranking criteria
+        function comparePlayers(a_value, b_value) {
+            let a = a_value[1]; //the dict of values where 0 is key
+            let b = b_value[1]; //the dict of values where 0 is key
+            // Compare by percentage winning in descending order
+            if (a.percentage_winning > b.percentage_winning) {
+              return -1;
+            } else if (a.percentage_winning < b.percentage_winning) {
+              return 1;
+            }
+            // If percentage of winning is the same
+            // if not both of their percentage of winning = zero, compare by average_winning_time in ascending order
+            if (a.average_winning_time != null){
+                if (a.average_winning_time < b.average_winning_time) {
+                    return -1;
+                } else if (a.average_winning_time > b.average_winning_time) {
+                    return 1;
+                }
+            }   
+            // If both of their percentage of winning = zero or both have equal percentage of winning as well as average_winning_time, return 0 (equal ranking)
+            return 0; //equal ranking
         };
-        const chatroom  = JSON.parse(fs.readFileSync("./data/chatroom.json"));
-        chatroom.push(message);
-        // Add the message to the chatroom
-        fs.writeFileSync("./data/chatroom.json",JSON.stringify(chatroom, null, " "));
-        io.emit("add message", JSON.stringify(message)); //JSON.stringify(message) return an object while JSON.stringify(chatroom) return a list
-    
-        
-    //}
+        // Sort the JSON elements based on the ranking criteria
+        game_rank_list.sort(comparePlayers);
+        // turn the list of key-value pairs back to dictionary
+        let sorted_game_rank = Object.fromEntries(game_rank_list);
+        // Print the ranked elements
+        for (var key in sorted_game_rank) {
+            console.log(sorted_game_rank[key]);
+        }
+        console.log(sorted_game_rank,game_rank_list);
+        // Update the ranking to the rank.json
+        fs.writeFileSync("./data/rank.json",JSON.stringify(sorted_game_rank, null, " "));
+        //io.emit("add message", JSON.stringify(message)); //JSON.stringify(message) return an object while JSON.stringify(chatroom) return a list
     });
+    
     //  This is to generate a food type and broadcast to all user food is generated at server such that both users can see the same food
     socket.on("generate food type", () => { 
         //  Broadcast the type of food being generated to all playes 
@@ -346,7 +400,6 @@ io.on("connection", (socket) => {   //this socket is browser
             console.log("food type generated", randomFoodtype);
         }
         else{ // another player already notify the server about the timeout and to update the food
-
             food_already_generated = false;
         }
     });

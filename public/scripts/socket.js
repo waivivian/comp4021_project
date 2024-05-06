@@ -198,6 +198,11 @@ const Socket = (function() {
         GamePanel.end_game();
     };
 
+    // only winner should call this function -This function notify server to calculate ranking
+    const cal_rank = function(time_used) {
+        socket.emit("get ranking", own_username, oppo_user["username"], time_used);
+    };
+
     // This function notify server that this user is availbale to match with another user
     const restart_game = function() {
         //forget about previous player
@@ -219,5 +224,5 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };*/
-    return { getSocket, connect, helpChangeOppoImage, ready, update_oppo_own_move, generatefoodtype, generate_timeout_foodtype, disconnect, restart_game};
+    return { getSocket, connect, helpChangeOppoImage, ready, update_oppo_own_move, generatefoodtype, generate_timeout_foodtype, disconnect, cal_rank, restart_game};
 })();
