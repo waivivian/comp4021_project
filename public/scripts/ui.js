@@ -371,7 +371,7 @@ const GamePanel = (function() {
                     Food.eaten(); //hide the food when the player reach the food and the player movement require one second
                     console.log("eaten",Food.getFoodtype());
                     own_player.update(Food.getFoodtype().effect);
-                    if (own_player.getScore() >= 1){
+                    if (own_player.getScore() >= 5){
                         clearTimeout(resttimeout); // stop the start 
                         Timer.stop();
                         showWinner(1); // show winning message of player 1
@@ -412,7 +412,7 @@ const GamePanel = (function() {
             sounds.eat.play();
             Food.eaten();
             oppo_player.update(Food.getFoodtype().effect);	
-            if (oppo_player.getScore() >= 1){
+            if (oppo_player.getScore() >= 5){
                 clearTimeout(resttimeout);  // stop the start 
                 Timer.stop();
                 showWinner(2); // show winning message of player 2
