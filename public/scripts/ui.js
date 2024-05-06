@@ -233,6 +233,9 @@ const GamePanel = (function() {
             lose: new Audio("./sound/lose_sound.wav"),
             eat: new Audio("./sound/eating_sound.wav"),
     };
+    let resttimeout = null;
+    let endtimeout = null;
+    let timeout = null;
     // This function initializes the UI
     const initialize = function() {
         // Hide it
@@ -301,11 +304,30 @@ const GamePanel = (function() {
         $("#gameover-container").show(); 
     }
     const end_game= function(){
+        sounds.background.pause();
+        sounds.background.currentTime = 0; // Reset the playback position to the beginning
         Cover.close();
         Timer.reset();
+        Timer.stop();
+        console.log("ppppppppppppppp",resttimeout,endtimeout);
+        // stop the game if signout is pressed when the cover is closed due to the food being eaten
+        if (resttimeout){
+            clearTimeout(resttimeout); // stop the start 
+        }
+        // stop the game if signout is pressed when the cover is closed due to timeout
+        if (endtimeout){
+            clearTimeout(endtimeout); // stop the start 
+        }
+        // stop the game if signout is pressed when the cover is opened
+        if (timeout){
+            clearTimeout(timeout); // stop the start 
+        }
         $("#gameover-container").hide();
         $("#own-chosen-character-image").attr("src","./image/unknown.png");
         $("#enemy-chosen-character-image").attr("src","./image/unknown.png"); 
+        // unset full body character image
+        own_player.cancel_character_image();
+        oppo_player.cancel_character_image();
         // Change all heart to gray
         // Perform jQuery operation on all elements with a heart class
         $('.heart').each(function() {
@@ -320,7 +342,6 @@ const GamePanel = (function() {
             thirdPath.attr("fill","#FFFFFF");
         });
     }
-    let endtimeout;
     const start = function(){
         //Food.update();
         console.log("cover open");
@@ -333,7 +354,6 @@ const GamePanel = (function() {
                 Socket.generate_timeout_foodtype();
             });                    
             //setTimeout(Food.eaten,1000); // why need set time out here? because cover close require 1 second
-            //setTimeout(Food.eaten,Socket.generate_timeout_foodtype());           
              // why need set time out here? because cover close require 1 second
             rest(3000);
             } ,4000	
@@ -345,7 +365,7 @@ const GamePanel = (function() {
 
                 Socket.update_oppo_own_move(); // update oppo about own move
                 clearTimeout(endtimeout);
-                let resttimeout = rest(4000); // start after 4 seconds
+                resttimeout = rest(4000); // start after 4 seconds
                 setTimeout(()=>{
                     sounds.eat.play();
                     Food.eaten(); //hide the food when the player reach the food and the player movement require one second
@@ -378,7 +398,7 @@ const GamePanel = (function() {
     const rest = function(time){   
         $(document).off("keydown");
         // start the game
-        let timeout = setTimeout(start,time);
+        timeout = setTimeout(start,time);
         return timeout;
     };
 
@@ -387,7 +407,7 @@ const GamePanel = (function() {
     const update_oppo = function() {
         oppo_player.move();
         clearTimeout(endtimeout);
-        let resttimeout = rest(4000); // start after 4 seconds
+        resttimeout = rest(4000); // start after 4 seconds
         setTimeout(()=>{
             sounds.eat.play();
             Food.eaten();

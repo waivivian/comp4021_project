@@ -15,7 +15,7 @@ const Socket = (function() {
     // This function connects the server and initializes the socket
     const connect = function() {
         socket = io();
-
+        console.log("socket.....",socket);
         // Wait for the socket to connect successfully
         socket.on("connect", () => {
             // Get the online user list
@@ -175,11 +175,15 @@ const Socket = (function() {
     };
     
     const generatefoodtype = function() {
-        socket.emit("generate food type");
+        if (socket){
+            socket.emit("generate food type");
+        }
     };
 
     const generate_timeout_foodtype = function() {
-        socket.emit("generate food type due to timeout");
+        if (socket){
+            socket.emit("generate food type due to timeout");
+        }
     };    
 
     // This function disconnects the socket from the server

@@ -246,7 +246,9 @@ io.on("connection", (socket) => {   //this socket is browser
             // Send the first available users to the browser
             sockets[user["username"]].emit("users", JSON.stringify(availableUserList[Object.keys(availableUserList)[0]]));
             // Send the current user to the first available users browser
-            if(sockets[Object.keys(availableUserList)[0]]){
+            console.log("hhhhh",Object.keys(availableUserList)[0]);
+            if(sockets[Object.keys(availableUserList)[0]],JSON.stringify(user)){
+                console.log(Object.keys(availableUserList)[0]);
                 sockets[Object.keys(availableUserList)[0]].emit("users",JSON.stringify(user));
             }
  

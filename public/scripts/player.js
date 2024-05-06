@@ -14,25 +14,25 @@ const Player = function( userName, playerNo, character_id ) {
 			character_image_file = "./image/dog1t.png";
 			break;
 		case "char 2":
-			character_image_file = "./image/dog1t.png";
-			break;
-		case "char 3":
 			character_image_file = "./image/dog2t.png";
 			break;
-		case "char 4":
+		case "char 3":
 			character_image_file = "./image/dog3t.png";
+			break;
+		case "char 4":
+			character_image_file = "./image/dog4t.png";
 			break;
 		case "char 5":
 			character_image_file = "./image/cat1t.png";
 			break;
 		case "char 6":
-			character_image_file = "./image/cat1t.png";
+			character_image_file = "./image/cat2t.png";
 			break;
 		case "char 7":
-			character_image_file = "./image/cat2.png";
+			character_image_file = "./image/cat3t.png";
 			break;
 		case "char 8":
-			character_image_file = "./image/cat2.png";
+			character_image_file = "./image/cat4t.png";
 			break;                
 	}
 
@@ -40,7 +40,12 @@ const Player = function( userName, playerNo, character_id ) {
 	const element = $("#player"+ playerno );
 	element.attr("href", character_image_file);
 	
-	
+	const cancel_character_image = function(){
+		character_image_file= null;
+		const element = $("#player"+ playerno );
+		element.attr("href", character_image_file);
+	};
+
 	const move = function(){
 		element.css("animation-name", "move"+ playerno );
 	};
@@ -71,6 +76,7 @@ const Player = function( userName, playerNo, character_id ) {
     
     // The methods are returned as an object here.
     return {
+		cancel_character_image: cancel_character_image,
         move: move,
 		back: back,
 		update: playerscore.update,
