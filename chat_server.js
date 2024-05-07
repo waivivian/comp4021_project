@@ -28,6 +28,57 @@ function containWordCharsOnly(text) {
     return /^\w+$/.test(text);
 }
 
+function generate_food_type() {
+    const foodtype = {
+            cake:{ name:"cake" , effect:1 },
+            fruit:{ name:"fruit" , effect:1 },
+            battery : { name:"battery" , effect:-1 }
+        };
+        const foodtypeKey = Object.keys(foodtype)
+        const random = Math.floor(Math.random() * foodtypeKey.length);
+        const randomFoodtypeKey = foodtypeKey[random];
+        const randomFoodtype = foodtype[randomFoodtypeKey];
+        io.emit("food type generated", randomFoodtype);
+
+
+};
+
+function start(){
+	
+	allow_to_eat = true;
+	io.emit("start");
+	end_timeout = setTimeout( ()=>{
+		io.emit("no one eat");
+		rest(3000);
+		},4000);
+		
+	
+};
+
+function rest(time){
+	
+	io.emit("rest");
+	const timeout = setTimeout(start,time);
+	const foodtimeout = setTimeout(generate_food_type,time-1000);
+	return {timeout , foodtimeout} ; 
+				
+	
+};
+
+function restforever(){
+	
+	clearTimeout(start_timeout);
+	clearTimeout(generate_food_timeout);
+
+};
+
+
+
+
+
+
+
+
 // Handle the /register endpoint
 app.post("/register", (req, res) => {
     // Get the JSON data from the body (read from user input)
@@ -203,6 +254,10 @@ const onlineUserList = {};
 const availableUserList = {};
 const sockets = {}; //maintain a list of sockets
 let food_already_generated = false;
+let allow_to_eat = false;
+let end_timeout;
+let start_timeout;
+let generate_food_timeout;
 io.use((socket, next) => { //for socket server it doesn't use session if you don't ask for it, we need to explictly ask for the session
     chatSession(socket.request, {}, next);
 });
@@ -275,8 +330,31 @@ io.on("connection", (socket) => {   //this socket is browser
         const {to, selected_character_id} = JSON.parse(data);
         if (sockets[to]){ // if targeted socket exists
             sockets[to].emit("start game",selected_character_id);
+			rest(3000);
         }
     });
+
+
+	socket.on("signal",(username) =>{
+		console.log(username);
+		if(allow_to_eat){
+			allow_to_eat=false;
+			clearTimeout(end_timeout);
+			io.emit( "update", username);
+			rest_timeout = rest(4000);
+			start_timeout = rest_timeout.timeout;
+			generate_food_timeout = rest_timeout.foodtimeout;
+
+		}
+		
+	});	
+	
+	socket.on("restforever",() =>{
+		restforever();
+		
+	});
+
+
 
     socket.on("update oppo about my move",(oppo_user_name)=>{
         if (sockets[oppo_user_name]){ // if targeted socket exists
@@ -366,6 +444,8 @@ io.on("connection", (socket) => {   //this socket is browser
     });
     
     //  This is to generate a food type and broadcast to all user food is generated at server such that both users can see the same food
+	
+/*
     socket.on("generate food type", () => { 
         //  Broadcast the type of food being generated to all playes 
         const foodtype = {
@@ -380,7 +460,7 @@ io.on("connection", (socket) => {   //this socket is browser
         io.emit("food type generated", randomFoodtype);
 
     });
-    
+   
     //  This is to generate a food type due to timeout but not eaten by player and broadcast to all user food is generated at server such that both users can see the same food
     socket.on("generate food type due to timeout", () => {
         console.log(food_already_generated); 
@@ -404,7 +484,7 @@ io.on("connection", (socket) => {   //this socket is browser
             food_already_generated = false;
         }
     });
-
+*/
     socket.on("available to match with another user", (user_name) => {
         if(sockets[user_name]){ // this user exists in socket list (in general should be true)
             if(onlineUserList[user_name]){ // this user exists in onlineUser list (in general should be true)

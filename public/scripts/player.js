@@ -68,6 +68,10 @@ const Player = function( userName, playerNo, character_id ) {
 		element.css("animation-name", "back"+ playerno );
 	};
 	
+	const getUsername = function(){
+		return username;
+	};
+	
 	/*
 	$(function (){
 		element.on("animationend", function() {
@@ -94,7 +98,8 @@ const Player = function( userName, playerNo, character_id ) {
         move: move,
 		back: back,
 		update: playerscore.update,
-		getScore : playerscore.getScore
+		getScore : playerscore.getScore,
+		getUsername : getUsername
 		
     };
 };
