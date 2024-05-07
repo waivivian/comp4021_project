@@ -194,8 +194,10 @@ button.icon:active {
     position: fixed;
     top: 50%;
     left: 50%;
+    overflow-y: auto; /* Enable vertical scrolling */
     transform: translate(-50%, -50%);
-    width: 300px;
+    width: 50vw;
+    max-height: 80vh; /* Set a maximum height for the box */
     padding: 20px;
     background: #ffffff;
     border: 1px solid #000000;
@@ -231,16 +233,7 @@ button.icon:active {
     height: calc(100% - 80px);
     background: var(--game-panel-background);
 }
-canvas {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-}
-canvas{
-    height: calc(100% - 80px);
-    margin-top: 80px;
-    width: 100%;
-}
+
 canvas {
     background: url(/image/background.jpg);
     background-size: cover;
@@ -432,7 +425,7 @@ canvas {
   font-family: "Comic Sans MS", cursive; 
 }
 
-#versus-button {
+.versus {
     float: left;
     width: 24vmin;
     height:24vmin;
@@ -450,7 +443,7 @@ canvas {
 }
 
 /* - Set the style of the monster image */
-#versus-image {
+.versus-image {
     width: 100%;
     height: 100%;
     border-radius: 50%;

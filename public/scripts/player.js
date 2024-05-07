@@ -26,22 +26,30 @@ const Player = function( userName, playerNo, character_id ) {
 		case "char 4":
 			character_image_file = "./image/dog4t.png";
 			character_head_image_file = "./image/dog4head.png";
-			break;
+			break;		
 		case "char 5":
+			character_image_file = "./image/dog5t.png";
+			character_head_image_file = "./image/dog5head.png";
+			break;
+		case "char 6":
 			character_image_file = "./image/cat1t.png";
 			character_head_image_file = "./image/cat1head.png";
 			break;
-		case "char 6":
+		case "char 7":
 			character_image_file = "./image/cat2t.png";
 			character_head_image_file = "./image/cat2head.png";
 			break;
-		case "char 7":
+		case "char 8":
 			character_image_file = "./image/cat3t.png";			
 			character_head_image_file = "./image/cat3head.png";
 			break;
-		case "char 8":
+		case "char 9":
 			character_image_file = "./image/cat4t.png";
 			character_head_image_file = "./image/cat4head.png";
+			break;		
+		case "char 10":
+			character_image_file = "./image/cat5t.png";
+			character_head_image_file = "./image/cat5head.png";
 			break;                
 	}
 

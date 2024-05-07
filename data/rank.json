@@ -6,18 +6,18 @@
   "average_winning_time": 75,
   "percentage_winning": 100
  },
+ "you": {
+  "name": "hi",
+  "number_of_win": 7,
+  "number_of_lose": 6,
+  "average_winning_time": 58,
+  "percentage_winning": 53.84615384615385
+ },
  "youu": {
   "name": "12",
   "number_of_win": 5,
-  "number_of_lose": 5,
+  "number_of_lose": 7,
   "average_winning_time": 26.2,
-  "percentage_winning": 50
- },
- "you": {
-  "name": "hi",
-  "number_of_win": 5,
-  "number_of_lose": 6,
-  "average_winning_time": 28.6,
-  "percentage_winning": 45.45454545454545
+  "percentage_winning": 41.66666666666667
  }
 }
