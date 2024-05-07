@@ -39,75 +39,35 @@ function generate_food_type() {
         const randomFoodtypeKey = foodtypeKey[random];
         const randomFoodtype = foodtype[randomFoodtypeKey];
         io.emit("food type generated", randomFoodtype);
-<<<<<<< HEAD
 };
 
 function start(){
-=======
-
-
-};
-
-function start(){
-	
->>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 	allow_to_eat = true;
 	io.emit("start");
 	end_timeout = setTimeout( ()=>{
 		io.emit("no one eat");
 		rest(3000);
 		},4000);
-<<<<<<< HEAD
 };
 
 function rest(time){
-=======
-		
-	
-};
-
-function rest(time){
-	
->>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 	io.emit("rest");
 	const timeout = setTimeout(start,time);
 	const foodtimeout = setTimeout(generate_food_type,time-1000);
 	return {timeout , foodtimeout} ; 
-<<<<<<< HEAD
 };
 
 function restforever(){
-=======
-				
-	
-};
-
-function restforever(){
-	
->>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 	clearTimeout(start_timeout);
 	clearTimeout(generate_food_timeout);
 
 };
 
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
->>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 // Handle the /register endpoint
 app.post("/register", (req, res) => {
     // Get the JSON data from the body (read from user input)
     let { username, name, password } = req.body;
-<<<<<<< HEAD
-=======
-
->>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
     //
     // D. Reading the users.json file (read from backend (our database))
     //
@@ -306,18 +266,12 @@ io.on("connection", (socket) => {   //this socket is browser
 
     //when user sign out, disconnect but still in this connection event as we still need to use this socket variable from the connection event  
     socket.on("disconnect",()=>{
-<<<<<<< HEAD
         console.log("is disconnected!!!!");
         if (socket.request.session.user) { // if this information exist get the use's information
             user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
             const { username, name } = user; 
             console.log(username+"is disconnected!!!!");
 
-=======
-        if (socket.request.session.user) { // if this information exist get the use's information
-            user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
-            const { username, name } = user; 
->>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
             if (onlineUserList[username]){ // if the user is in the current online user list
                 delete onlineUserList[username];
                 // help everyone to update even for those who already connected to servr
@@ -384,10 +338,6 @@ io.on("connection", (socket) => {   //this socket is browser
 	
 	socket.on("restforever",() =>{
 		restforever();
-<<<<<<< HEAD
-=======
-		
->>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 	});
 
 

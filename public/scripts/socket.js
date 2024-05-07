@@ -141,25 +141,11 @@ const Socket = (function() {
 		});
 		
 		socket.on("rest", ()=>{
-<<<<<<< HEAD
 			GamePanel.rest(3000);
 		});
 		
 		socket.on("start", ()=>{
 			GamePanel.start();
-=======
-		
-			GamePanel.rest(3000);
-			
-
-		});
-		
-		socket.on("start", ()=>{
-		
-			GamePanel.start();
-			
-
->>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 		});
 //////////////////////////////////		
 		socket.on("update", (username)=>{
@@ -267,10 +253,7 @@ const Socket = (function() {
 	};
     // This function disconnects the socket from the server
     const disconnect = function() {
-<<<<<<< HEAD
         console.log(own_username+"disconnected");
-=======
->>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
         socket.disconnect();
         socket = null;
         own_character_id = null;
