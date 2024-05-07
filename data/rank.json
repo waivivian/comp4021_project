@@ -1,0 +1,23 @@
+{
+ "tony": {
+  "name": "Tony Lee",
+  "number_of_win": 1,
+  "number_of_lose": 0,
+  "average_winning_time": 75,
+  "percentage_winning": 100
+ },
+ "youu": {
+  "name": "12",
+  "number_of_win": 5,
+  "number_of_lose": 5,
+  "average_winning_time": 26.2,
+  "percentage_winning": 50
+ },
+ "you": {
+  "name": "hi",
+  "number_of_win": 5,
+  "number_of_lose": 6,
+  "average_winning_time": 28.6,
+  "percentage_winning": 45.45454545454545
+ }
+}
