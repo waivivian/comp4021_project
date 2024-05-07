@@ -189,6 +189,7 @@ button.icon:active {
 #signin-user {
     cursor: pointer;
 }
+<<<<<<< HEAD
 #instructions-box {
     display: none;
     position: fixed;
@@ -232,12 +233,28 @@ button.icon:active {
 .instructions-close-button:active .front {
     transform: translateY(-2px)
 }
+=======
+
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 /* Main panel */
 #game-panel {
     height: calc(100% - 80px);
     background: var(--game-panel-background);
 }
+<<<<<<< HEAD
 
+=======
+canvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+canvas{
+    height: calc(100% - 80px);
+    margin-top: 80px;
+    width: 100%;
+}
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 canvas {
     background: url(/image/background.jpg);
     background-size: cover;
@@ -429,7 +446,11 @@ canvas {
   font-family: "Comic Sans MS", cursive; 
 }
 
+<<<<<<< HEAD
 .versus {
+=======
+#versus-button {
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
     float: left;
     width: 24vmin;
     height:24vmin;
@@ -447,7 +468,11 @@ canvas {
 }
 
 /* - Set the style of the monster image */
+<<<<<<< HEAD
 .versus-image {
+=======
+#versus-image {
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
     width: 100%;
     height: 100%;
     border-radius: 50%;

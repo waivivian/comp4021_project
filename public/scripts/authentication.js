@@ -132,6 +132,10 @@ const Authentication = (function() {
                 if (onSuccess){                 
                     user = null;
                     onSuccess();
+<<<<<<< HEAD
+=======
+
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
                 }
             }
 

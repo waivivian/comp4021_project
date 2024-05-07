@@ -107,7 +107,10 @@ const WaitingOpponentPanel = (function() {
 
 
 const CharacterSelectionPanel = (function() {
+<<<<<<< HEAD
     let characterId = null;
+=======
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
     const sounds = {
         background: new Audio("./sound/character_select_background.mp3"),        
         select: new Audio("./sound/select.mp3"),        
@@ -164,7 +167,12 @@ const CharacterSelectionPanel = (function() {
         $("#character-selection").hide();
         sounds.background.pause();
         sounds.background.currentTime = 0; // Reset the playback position to the beginning
+<<<<<<< HEAD
         characterId = null;
+=======
+
+        
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
     };
 
     // This function updates the user panel
@@ -189,15 +197,24 @@ const UserPanel = (function() {
                     Socket.disconnect();
                     hide();
                     SignInForm.show();
+<<<<<<< HEAD
                     WaitingOpponentPanel.hide();
                     CharacterSelectionPanel.hide(); 
                     //GamePanel.hide();
                     GameOverPanel.hide();
+=======
+                    //WaitingOpponentPanel.hide();
+                    //CharacterSelectionPanel.hide(); 
+                    //GamePanel.hide();
+                    //GameOverPanel.hide();
+                    
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
                 }
             );
         });
     };
 
+<<<<<<< HEAD
     function openInstructionBox() {
         var requirementBox = document.getElementById("instructions-box");
         requirementBox.style.display = "block";
@@ -208,6 +225,8 @@ const UserPanel = (function() {
         requirementBox.style.display = "none";
     }
 
+=======
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
     // This function shows the form with the user
     const show = function(user) {
         $("#user-panel").show();
@@ -230,7 +249,11 @@ const UserPanel = (function() {
         }
     };
 
+<<<<<<< HEAD
     return { initialize, show, hide, update, openInstructionBox, closeInstructionBox};
+=======
+    return { initialize, show, hide, update };
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 })();
 
 
@@ -272,6 +295,10 @@ const GamePanel = (function() {
     };
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 /*
 
     const showWinner = function(playerno) {
@@ -282,6 +309,10 @@ const GamePanel = (function() {
 */
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
     // This function updates the user panel
 	//done
     const update = function(own_character_id, oppo_character_id, own_name, oppo_name) {
@@ -292,6 +323,11 @@ const GamePanel = (function() {
         own_player = Player(own_name ,  1, own_character_id);
         oppo_player = Player(oppo_name , 2 , oppo_character_id);
         //Socket.generate_timeout_foodtype(); // generate food for the first round
+<<<<<<< HEAD
+=======
+        //initialize
+        //rest(3000);
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
         setTimeout(Timer.countDown, 1000); //start the timer ????
     };
 
@@ -311,6 +347,10 @@ const GamePanel = (function() {
                 own_player.back();
                 GameOverPanel.show();
                 end_game(); // cannot be put in end_game() as it will be called by sign_ou
+<<<<<<< HEAD
+=======
+
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
             });
         }
         else{
@@ -335,16 +375,37 @@ const GamePanel = (function() {
         Timer.reset();
         Timer.stop();
         // stop the game if signout is pressed when the cover is closed due to the food being eaten
+<<<<<<< HEAD
+=======
+		/*
+        if (resttimeout){
+            clearTimeout(resttimeout); // stop the start 
+        }
+        // stop the game if signout is pressed when the cover is closed due to timeout
+        if (endtimeout){
+            clearTimeout(endtimeout); // stop the start 
+        }
+        // stop the game if signout is pressed when the cover is opened
+        if (timeout){
+            clearTimeout(timeout); // stop the start 
+        }
+		*/
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
         $("#gameover-container").hide();
         $("#own-chosen-character-image").attr("src","./image/unknown.png");
         $("#enemy-chosen-character-image").attr("src","./image/unknown.png"); 
         // unset full body character image
+<<<<<<< HEAD
         if (typeof own_player !== 'undefined'){  // own_player may be null sometimes when end_game is called for example when sign-out button is clicked in waiting page or character-selection page
             own_player.cancel_character_image();
         }
         if (typeof oppo_player !== 'undefined'){  // own_player may be null sometimes when end_game is called for example when sign-out button is clicked in waiting page or character-selection page
             oppo_player.cancel_character_image();
         }
+=======
+        own_player.cancel_character_image();
+        oppo_player.cancel_character_image();
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
         // Change all heart to gray
         // Perform jQuery operation on all elements with a heart class
         $('.heart').each(function() {
@@ -362,20 +423,93 @@ const GamePanel = (function() {
 	
    const start = function(){
         //Socket.generatefoodtype();//	this maybe wrong
+<<<<<<< HEAD
         //Food.update();
 		console.log("start");
         Cover.open();	
         $(document).on("keydown", function(e){ 
             if (e.keyCode == 32){ // player 1 move using sapce bar
 				Socket.signal(own_player.getUsername());
+=======
+		//Socket.startgamesignal(); //  this is wrong
+        //Food.update();
+		console.log("start");
+        Cover.open();	
+
+        $(document).on("keydown", function(e){ 
+            if (e.keyCode == 32){ // player 1 move using sapce bar
+
+				Socket.signal(own_player.getUsername());
+
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
             }
         });
     };        
 	
 	
+<<<<<<< HEAD
 	const ownScored = function(){
 		console.log("ownScored");
 		own_player.move();
+=======
+/*
+	
+    const start = function(){
+
+        Cover.open();	
+        endtimeout = setTimeout(() =>{ // if after certain time the food is not eaten by any player
+            Cover.close().then(() => {
+                // the new food should be generated after the animaion thatcover is closed
+                console.log("timeout then generated");
+                Food.eaten();
+                Socket.generate_timeout_foodtype();
+            });                    
+            //setTimeout(Food.eaten,1000); // why need set time out here? because cover close require 1 second
+             // why need set time out here? because cover close require 1 second
+            rest(3000);
+            } ,4000	
+        );
+        $(document).on("keydown", function(e){ 
+            if (e.keyCode == 32){ // player 1 move using sapce bar
+                own_player.move();
+                console.log("move",$("#player1").attr("x"));
+
+                Socket.update_oppo_own_move(); // update oppo about own move
+                clearTimeout(endtimeout);
+                resttimeout = rest(4000); // start after 4 seconds
+                setTimeout(()=>{
+                    sounds.eat.play();
+                    Food.eaten(); //hide the food when the player reach the food and the player movement require one second
+                    console.log("eaten",Food.getFoodtype());
+                    own_player.update(Food.getFoodtype().effect);
+                    if (own_player.getScore() >= 5){
+                        clearTimeout(resttimeout); // stop the start 
+                        Timer.stop();
+                        showWinner(1); // show winning message of player 1
+                        return false;
+                    }
+                    //Cover.close(() => {
+                    //    // the new food should be generated after the animaion thatcover is closed
+                    //    console.log("eaten then generated");
+                    //    Socket.generatefoodtype();
+                    //}); 
+                    Cover.close().then(() => {
+                        // the new food should be generated after the animaion thatcover is closed
+                        console.log("eaten then generated");
+                        Socket.generatefoodtype();
+                    });                        
+                    own_player.back();
+                },1000); // do the above after move which use 1 second                     
+
+            }
+        });
+    };        
+*/	
+	const ownScored = function(){
+		console.log("ownScored");
+		own_player.move();
+
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 		setTimeout(()=>{
 			sounds.eat.play();
 			Food.eaten();
@@ -386,11 +520,21 @@ const GamePanel = (function() {
 				showWinner(1); // show winning message of player 1
 				restforever();
 				///////////////////////////
+<<<<<<< HEAD
 				return false;   
+=======
+				return false;
+                    
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 			}
             Cover.close();
             own_player.back();
 		},1000); // do the above after move which use 1 second 
+<<<<<<< HEAD
+=======
+		
+
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 	}
 
 
@@ -398,6 +542,10 @@ const GamePanel = (function() {
 	const oppoScored = function(){
 		console.log("oppoScored");
 		oppo_player.move();
+<<<<<<< HEAD
+=======
+
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 		setTimeout(()=>{
 			sounds.eat.play();
 			Food.eaten();
@@ -406,11 +554,21 @@ const GamePanel = (function() {
             if (oppo_player.getScore() >= 5){
 				Timer.stop();
 				showWinner(2); // show winning message of player 1
+<<<<<<< HEAD
 				return false;              
+=======
+				return false;
+                    
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 			}
             Cover.close();
             oppo_player.back();
 		},1000); // do the above after move which use 1 second 
+<<<<<<< HEAD
+=======
+		
+
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 	} 
 	
 	const restforever = function(){

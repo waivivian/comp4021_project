@@ -17,6 +17,7 @@
 
             <div id="user-panel" class="row">
                 <div class="field-content row shadow">
+<<<<<<< HEAD
                     <span class="user-name">-</span>
                 </div>
                 <button id="signout-button" class="icon"><span class="material-icons">logout</span></button>
@@ -185,6 +186,147 @@
                 <g id="gameover-container">
                     <text id="gameover" x="0" y="0" fill="red" font-size="80px" text-anchor="middle"></text>
                 </g>
+=======
+                    <span class="user-avatar"></span>
+                    <span class="user-name">-</span>
+                </div>
+                <button id="signout-button" class="icon"><span class="material-icons">logout</span></button>
+            </div>
+        </div>
+
+        <div id="game-panel" class="row">
+            <!--            <canvas></canvas>
+
+            <div id="chat-area" class="col"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="50 50 100 100">
+                <path d="M10,80 Q50,95 90,80 Q50,65 10,80 Z" fill="#ffffff" />
+              </svg><div id="current-typing-area"></div>
+            </div>
+                -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400">
+                    <!-- The game over text -->
+                    <defs>
+                        <linearGradient y2="1" x2="0" id="sky">
+                                        <stop offset="0" stop-color="darkblue"></stop>
+                                        <stop offset="1" stop-color="skyblue"></stop>
+                        </linearGradient>
+                        <linearGradient y2="1" x2="0" id="floor">
+                                        <stop offset="0" stop-color="#39FF14"></stop>
+                                        <stop offset="1" stop-color="Forest green"></stop>
+                        </linearGradient>
+                        <radialGradient fx="50%" fy="0%" cx="50%" cy="30%" r="80%" id="holegradient">
+                                <stop offset="0" stop-color="white" />
+                                <stop offset="0.2" stop-color="#FFC03F" />
+                                <stop offset="0.9" stop-color="black" />					
+                        </radialGradient >
+                            
+                    </defs>
+                    <rect height="400" width="1000" y="0" x="0" stroke="none" fill="#d9bda5"/>
+                    <rect height="100" width="1000" y="300" x="0" stroke="none" fill="#f8f8ba"/>
+                    <text id="counter" x="450" y="25" >TIME: <tspan id="timeRemaining">180</tspan></text>
+                    <g>
+                        <defs>
+                            <clipPath class="character-head-image" id="round-border1">
+                              <rect x="10" y="10" width="50" height="50" rx="10" ry="10"/>
+                            </clipPath>
+                          </defs>
+                          <rect x="10" y="10" width="49" height="49" rx="10" ry="10" stroke="green" stroke-width="5" fill="none"/>                         
+                          <image id="playerhead1-image" x="10" y="10" height="50" width="50" clip-path="url(#round-border1)" />
+                    </g>
+                    <text x="10" y="75" >Name: <tspan id="playerhead1-name"></tspan></text>
+                    <g id = "heart-container1">
+                        <g id="heart11" class="heart" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 456.081">
+                            <g transform="translate(80, 10) matrix(0.08331853 0 0 0.08331853 4.170455 -0)">
+                                <path d="M253.648 83.482C 384.03998 -135.573 763.55597 148.975 253.135 456.081C -261.653 127.139984 151.26099 -142.61499 253.648 83.481995L253.648 83.481995L253.648 83.482z" stroke="none" fill="#CCCCCC" fill-rule="nonzero" />
+                                <path d="M344.488 10.579C 490.819 -28.499998 661.328 195.707 279.46802 439.713C 561.648 215.54802 470.393 36.150024 344.488 10.57901L344.488 10.57901L344.488 10.579zM121.413 0.646C 170.08 -4.199 221.438 18.567 250.749 77.575005C 252.008 81.285 253.189 85.146 254.286 89.161C 264.827 123.451004 254.37999 138.804 241.414 139.713C 223.278 140.984 221.199 124.863 216.448 112.07C 192.689 48.096 158.774 12.621 116.43 1.863C 118.083 1.428 119.744 1.0220001 121.413 0.646z" stroke="none" fill="#808080" fill-rule="nonzero" />
+                                <path d="M130.558 35.502C 87.9 31.255 42.906 59.4 31.385 101.568C 23.517 127.161 31.315 138.62 40.992 139.299C 54.529 140.248 56.08 128.215 59.626 118.66699C 77.359 70.91799 102.672 44.439995 134.27701 36.40999L134.27701 36.40999L130.558 35.502z" stroke="none" fill="#FFFFFF" fill-rule="nonzero" />
+                            </g>
+                        </g>
+                        <g id="heart12" class="heart" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 456.081">
+                            <g transform="translate(130, 10) matrix(0.08331853 0 0 0.08331853 4.170455 -0)">
+                                <path d="M253.648 83.482C 384.03998 -135.573 763.55597 148.975 253.135 456.081C -261.653 127.139984 151.26099 -142.61499 253.648 83.481995L253.648 83.481995L253.648 83.482z" stroke="none" fill="#CCCCCC" fill-rule="nonzero" />
+                                <path d="M344.488 10.579C 490.819 -28.499998 661.328 195.707 279.46802 439.713C 561.648 215.54802 470.393 36.150024 344.488 10.57901L344.488 10.57901L344.488 10.579zM121.413 0.646C 170.08 -4.199 221.438 18.567 250.749 77.575005C 252.008 81.285 253.189 85.146 254.286 89.161C 264.827 123.451004 254.37999 138.804 241.414 139.713C 223.278 140.984 221.199 124.863 216.448 112.07C 192.689 48.096 158.774 12.621 116.43 1.863C 118.083 1.428 119.744 1.0220001 121.413 0.646z" stroke="none" fill="#808080" fill-rule="nonzero" />
+                                <path d="M130.558 35.502C 87.9 31.255 42.906 59.4 31.385 101.568C 23.517 127.161 31.315 138.62 40.992 139.299C 54.529 140.248 56.08 128.215 59.626 118.66699C 77.359 70.91799 102.672 44.439995 134.27701 36.40999L134.27701 36.40999L130.558 35.502z" stroke="none" fill="#FFFFFF" fill-rule="nonzero" />
+                            </g>
+                        </g>
+                        <g id="heart13" class="heart" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 456.081">
+                            <g transform="translate(180, 10) matrix(0.08331853 0 0 0.08331853 4.170455 -0)">
+                                <path d="M253.648 83.482C 384.03998 -135.573 763.55597 148.975 253.135 456.081C -261.653 127.139984 151.26099 -142.61499 253.648 83.481995L253.648 83.481995L253.648 83.482z" stroke="none" fill="#CCCCCC" fill-rule="nonzero" />
+                                <path d="M344.488 10.579C 490.819 -28.499998 661.328 195.707 279.46802 439.713C 561.648 215.54802 470.393 36.150024 344.488 10.57901L344.488 10.57901L344.488 10.579zM121.413 0.646C 170.08 -4.199 221.438 18.567 250.749 77.575005C 252.008 81.285 253.189 85.146 254.286 89.161C 264.827 123.451004 254.37999 138.804 241.414 139.713C 223.278 140.984 221.199 124.863 216.448 112.07C 192.689 48.096 158.774 12.621 116.43 1.863C 118.083 1.428 119.744 1.0220001 121.413 0.646z" stroke="none" fill="#808080" fill-rule="nonzero" />
+                                <path d="M130.558 35.502C 87.9 31.255 42.906 59.4 31.385 101.568C 23.517 127.161 31.315 138.62 40.992 139.299C 54.529 140.248 56.08 128.215 59.626 118.66699C 77.359 70.91799 102.672 44.439995 134.27701 36.40999L134.27701 36.40999L130.558 35.502z" stroke="none" fill="#FFFFFF" fill-rule="nonzero" />
+                            </g>                        
+                        </g>
+                        <g id="heart14" class="heart" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 456.081">
+                            <g transform="translate(230, 10) matrix(0.08331853 0 0 0.08331853 4.170455 -0)">
+                                <path d="M253.648 83.482C 384.03998 -135.573 763.55597 148.975 253.135 456.081C -261.653 127.139984 151.26099 -142.61499 253.648 83.481995L253.648 83.481995L253.648 83.482z" stroke="none" fill="#CCCCCC" fill-rule="nonzero" />
+                                <path d="M344.488 10.579C 490.819 -28.499998 661.328 195.707 279.46802 439.713C 561.648 215.54802 470.393 36.150024 344.488 10.57901L344.488 10.57901L344.488 10.579zM121.413 0.646C 170.08 -4.199 221.438 18.567 250.749 77.575005C 252.008 81.285 253.189 85.146 254.286 89.161C 264.827 123.451004 254.37999 138.804 241.414 139.713C 223.278 140.984 221.199 124.863 216.448 112.07C 192.689 48.096 158.774 12.621 116.43 1.863C 118.083 1.428 119.744 1.0220001 121.413 0.646z" stroke="none" fill="#808080" fill-rule="nonzero" />
+                                <path d="M130.558 35.502C 87.9 31.255 42.906 59.4 31.385 101.568C 23.517 127.161 31.315 138.62 40.992 139.299C 54.529 140.248 56.08 128.215 59.626 118.66699C 77.359 70.91799 102.672 44.439995 134.27701 36.40999L134.27701 36.40999L130.558 35.502z" stroke="none" fill="#FFFFFF" fill-rule="nonzero" />
+                            </g>                       
+                        </g>
+                        <g id="heart15" class="heart" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 456.081">
+                            <g transform="translate(280, 10) matrix(0.08331853 0 0 0.08331853 4.170455 -0)">
+                                <path d="M253.648 83.482C 384.03998 -135.573 763.55597 148.975 253.135 456.081C -261.653 127.139984 151.26099 -142.61499 253.648 83.481995L253.648 83.481995L253.648 83.482z" stroke="none" fill="#CCCCCC" fill-rule="nonzero" />
+                                <path d="M344.488 10.579C 490.819 -28.499998 661.328 195.707 279.46802 439.713C 561.648 215.54802 470.393 36.150024 344.488 10.57901L344.488 10.57901L344.488 10.579zM121.413 0.646C 170.08 -4.199 221.438 18.567 250.749 77.575005C 252.008 81.285 253.189 85.146 254.286 89.161C 264.827 123.451004 254.37999 138.804 241.414 139.713C 223.278 140.984 221.199 124.863 216.448 112.07C 192.689 48.096 158.774 12.621 116.43 1.863C 118.083 1.428 119.744 1.0220001 121.413 0.646z" stroke="none" fill="#808080" fill-rule="nonzero" />
+                                <path d="M130.558 35.502C 87.9 31.255 42.906 59.4 31.385 101.568C 23.517 127.161 31.315 138.62 40.992 139.299C 54.529 140.248 56.08 128.215 59.626 118.66699C 77.359 70.91799 102.672 44.439995 134.27701 36.40999L134.27701 36.40999L130.558 35.502z" stroke="none" fill="#FFFFFF" fill-rule="nonzero" />
+                            </g>                      
+                        </g>
+                    </g>
+                    <g>
+                        <defs>
+                            <clipPath class="character-head-image" id="round-border2">
+                              <rect x="940" y="10" width="50" height="50" rx="10" ry="10"/>
+                            </clipPath>
+                          </defs>
+                          <rect x="940" y="10" width="49" height="49" rx="10" ry="10" stroke="green" stroke-width="5" fill="none"/>                         
+                          <image id="playerhead2-image" x="940" y="10" height="50" width="50" clip-path="url(#round-border2)" />
+                    </g>
+                    <text x="900" y="75" >Name: <tspan id="playerhead2-name"></tspan></text>
+                    <g id = "heart-container2">
+                        <g id="heart21" class="heart" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 456.081">
+                            <g transform="translate(870, 10) matrix(0.08331853 0 0 0.08331853 4.170455 -0)">
+                                <path d="M253.648 83.482C 384.03998 -135.573 763.55597 148.975 253.135 456.081C -261.653 127.139984 151.26099 -142.61499 253.648 83.481995L253.648 83.481995L253.648 83.482z" stroke="none" fill="#CCCCCC" fill-rule="nonzero" />
+                                <path d="M344.488 10.579C 490.819 -28.499998 661.328 195.707 279.46802 439.713C 561.648 215.54802 470.393 36.150024 344.488 10.57901L344.488 10.57901L344.488 10.579zM121.413 0.646C 170.08 -4.199 221.438 18.567 250.749 77.575005C 252.008 81.285 253.189 85.146 254.286 89.161C 264.827 123.451004 254.37999 138.804 241.414 139.713C 223.278 140.984 221.199 124.863 216.448 112.07C 192.689 48.096 158.774 12.621 116.43 1.863C 118.083 1.428 119.744 1.0220001 121.413 0.646z" stroke="none" fill="#808080" fill-rule="nonzero" />
+                                <path d="M130.558 35.502C 87.9 31.255 42.906 59.4 31.385 101.568C 23.517 127.161 31.315 138.62 40.992 139.299C 54.529 140.248 56.08 128.215 59.626 118.66699C 77.359 70.91799 102.672 44.439995 134.27701 36.40999L134.27701 36.40999L130.558 35.502z" stroke="none" fill="#FFFFFF" fill-rule="nonzero" />
+                            </g>
+                        </g>
+                        <g id="heart22" class="heart" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 456.081">
+                            <g transform="translate(820, 10) matrix(0.08331853 0 0 0.08331853 4.170455 -0)">
+                                <path d="M253.648 83.482C 384.03998 -135.573 763.55597 148.975 253.135 456.081C -261.653 127.139984 151.26099 -142.61499 253.648 83.481995L253.648 83.481995L253.648 83.482z" stroke="none" fill="#CCCCCC" fill-rule="nonzero" />
+                                <path d="M344.488 10.579C 490.819 -28.499998 661.328 195.707 279.46802 439.713C 561.648 215.54802 470.393 36.150024 344.488 10.57901L344.488 10.57901L344.488 10.579zM121.413 0.646C 170.08 -4.199 221.438 18.567 250.749 77.575005C 252.008 81.285 253.189 85.146 254.286 89.161C 264.827 123.451004 254.37999 138.804 241.414 139.713C 223.278 140.984 221.199 124.863 216.448 112.07C 192.689 48.096 158.774 12.621 116.43 1.863C 118.083 1.428 119.744 1.0220001 121.413 0.646z" stroke="none" fill="#808080" fill-rule="nonzero" />
+                                <path d="M130.558 35.502C 87.9 31.255 42.906 59.4 31.385 101.568C 23.517 127.161 31.315 138.62 40.992 139.299C 54.529 140.248 56.08 128.215 59.626 118.66699C 77.359 70.91799 102.672 44.439995 134.27701 36.40999L134.27701 36.40999L130.558 35.502z" stroke="none" fill="#FFFFFF" fill-rule="nonzero" />
+                            </g>
+                        </g>
+                        <g id="heart23" class="heart" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 456.081">
+                            <g transform="translate(770, 10) matrix(0.08331853 0 0 0.08331853 4.170455 -0)">
+                                <path d="M253.648 83.482C 384.03998 -135.573 763.55597 148.975 253.135 456.081C -261.653 127.139984 151.26099 -142.61499 253.648 83.481995L253.648 83.481995L253.648 83.482z" stroke="none" fill="#CCCCCC" fill-rule="nonzero" />
+                                <path d="M344.488 10.579C 490.819 -28.499998 661.328 195.707 279.46802 439.713C 561.648 215.54802 470.393 36.150024 344.488 10.57901L344.488 10.57901L344.488 10.579zM121.413 0.646C 170.08 -4.199 221.438 18.567 250.749 77.575005C 252.008 81.285 253.189 85.146 254.286 89.161C 264.827 123.451004 254.37999 138.804 241.414 139.713C 223.278 140.984 221.199 124.863 216.448 112.07C 192.689 48.096 158.774 12.621 116.43 1.863C 118.083 1.428 119.744 1.0220001 121.413 0.646z" stroke="none" fill="#808080" fill-rule="nonzero" />
+                                <path d="M130.558 35.502C 87.9 31.255 42.906 59.4 31.385 101.568C 23.517 127.161 31.315 138.62 40.992 139.299C 54.529 140.248 56.08 128.215 59.626 118.66699C 77.359 70.91799 102.672 44.439995 134.27701 36.40999L134.27701 36.40999L130.558 35.502z" stroke="none" fill="#FFFFFF" fill-rule="nonzero" />
+                            </g>                        
+                        </g>
+                        <g id="heart24" class="heart" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 456.081">
+                            <g transform="translate(720, 10) matrix(0.08331853 0 0 0.08331853 4.170455 -0)">
+                                <path d="M253.648 83.482C 384.03998 -135.573 763.55597 148.975 253.135 456.081C -261.653 127.139984 151.26099 -142.61499 253.648 83.481995L253.648 83.481995L253.648 83.482z" stroke="none" fill="#CCCCCC" fill-rule="nonzero" />
+                                <path d="M344.488 10.579C 490.819 -28.499998 661.328 195.707 279.46802 439.713C 561.648 215.54802 470.393 36.150024 344.488 10.57901L344.488 10.57901L344.488 10.579zM121.413 0.646C 170.08 -4.199 221.438 18.567 250.749 77.575005C 252.008 81.285 253.189 85.146 254.286 89.161C 264.827 123.451004 254.37999 138.804 241.414 139.713C 223.278 140.984 221.199 124.863 216.448 112.07C 192.689 48.096 158.774 12.621 116.43 1.863C 118.083 1.428 119.744 1.0220001 121.413 0.646z" stroke="none" fill="#808080" fill-rule="nonzero" />
+                                <path d="M130.558 35.502C 87.9 31.255 42.906 59.4 31.385 101.568C 23.517 127.161 31.315 138.62 40.992 139.299C 54.529 140.248 56.08 128.215 59.626 118.66699C 77.359 70.91799 102.672 44.439995 134.27701 36.40999L134.27701 36.40999L130.558 35.502z" stroke="none" fill="#FFFFFF" fill-rule="nonzero" />
+                            </g>                       
+                        </g>
+                        <g id="heart25" class="heart" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 456.081">
+                            <g transform="translate(670, 10) matrix(0.08331853 0 0 0.08331853 4.170455 -0)">
+                                <path d="M253.648 83.482C 384.03998 -135.573 763.55597 148.975 253.135 456.081C -261.653 127.139984 151.26099 -142.61499 253.648 83.481995L253.648 83.481995L253.648 83.482z" stroke="none" fill="#CCCCCC" fill-rule="nonzero" />
+                                <path d="M344.488 10.579C 490.819 -28.499998 661.328 195.707 279.46802 439.713C 561.648 215.54802 470.393 36.150024 344.488 10.57901L344.488 10.57901L344.488 10.579zM121.413 0.646C 170.08 -4.199 221.438 18.567 250.749 77.575005C 252.008 81.285 253.189 85.146 254.286 89.161C 264.827 123.451004 254.37999 138.804 241.414 139.713C 223.278 140.984 221.199 124.863 216.448 112.07C 192.689 48.096 158.774 12.621 116.43 1.863C 118.083 1.428 119.744 1.0220001 121.413 0.646z" stroke="none" fill="#808080" fill-rule="nonzero" />
+                                <path d="M130.558 35.502C 87.9 31.255 42.906 59.4 31.385 101.568C 23.517 127.161 31.315 138.62 40.992 139.299C 54.529 140.248 56.08 128.215 59.626 118.66699C 77.359 70.91799 102.672 44.439995 134.27701 36.40999L134.27701 36.40999L130.558 35.502z" stroke="none" fill="#FFFFFF" fill-rule="nonzero" />
+                            </g>                      
+                        </g>
+                    </g>
+                    <image id="food" href="image/cake.svg" x="450" y="225" height="100" width="100" />
+                    <image id="cover" href="image/cover.svg" x="400" y="160" height="200" width="200" />
+                    <image id="player1"  x="50" y="110" height="200" width="200" />
+                    <image id="player2"  x="750" y="110" height="200" width="200" />
+                    <g id="gameover-container">
+                        <text id="gameover" x="0" y="0" fill="red"
+                              font-size="80px" text-anchor="middle"></text>
+                    </g>
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
             </svg>
         </div>
 
@@ -197,6 +339,7 @@
 
         <div id="character-selection" class="overlay col">
             <div class="selected-container">
+<<<<<<< HEAD
                     <div class="chosen-character">
                         <div class="chosen-character-image-container">    
                             <img class="chosen-character-image" id ="own-chosen-character-image" src="./image/unknown.png" alt="unknown">
@@ -265,11 +408,76 @@
             </div>
         </div>
 
+=======
+                <div class="chosen-character">
+                    <div class="chosen-character-image-container">    
+                        <img class="chosen-character-image" id ="own-chosen-character-image" src="./image/unknown.png" alt="unknown">
+                    </div>
+                    <div class="player-text">YOU</div>
+                </div>
+
+            <div id="versus-button">
+                <img id="versus-image" src="./image/versus.png" alt="versus">
+            </div>
+
+            <div class="chosen-character">
+                <div class="chosen-character-image-container">    
+                    <img class="chosen-character-image" id ="enemy-chosen-character-image" src="./image/unknown.png" alt="unknown">
+                </div>
+                <div class="player-text">Enemy</div>
+            </div>
+        </div>
+        
+        <div class="character-container">
+            <div class="character" id="char 1">
+                <img class="character-image" src="./image/dog1head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 2">
+                <img class="character-image" src="./image/dog2head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 3">
+                <img class="character-image" src="./image/dog3head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 4">
+                <img class="character-image" src="./image/dog4head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 5">
+                <img class="character-image" src="./image/cat1head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 6">
+                <img class="character-image" src="./image/cat2head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 7">
+                <img class="character-image" src="./image/cat3head.png" alt="Nomore monster">
+            </div>
+            <div class="character" id="char 8">
+                <img class="character-image" src="./image/cat4head.png" alt="Nomore monster">
+            </div>
+        </div>
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
     </div>
 
 
 
+<<<<<<< HEAD
 
+=======
+    <div id="game-over-page" class="overlay row">
+        <div class="content shadow row">
+            <button id="restart-button">
+                <i class="material-icons" style="font-size:48px;color:white; font-weight: 1000">replay</i>            </div>
+            </button>            
+        <table>
+            <thread>
+                <tr><th>Rank</th><th>Player</th><th>Percentage of winning</th><th>Average time used for winning</th></tr>
+            </thread>
+            <tbody id="rank-table-body"></tbody>
+        </table>
+    </div>
+
+    </div>
+    </div>
+>>>>>>> b25998400971f4d5a5fa1ba7cfc409a7f3da95a6
 
     <div id="signin-overlay" class="overlay row">
         <div class="content shadow row">
