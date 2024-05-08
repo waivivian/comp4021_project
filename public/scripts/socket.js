@@ -141,17 +141,11 @@ const Socket = (function() {
 		});
 		
 		socket.on("rest", ()=>{
-		
 			GamePanel.rest(3000);
-			
-
 		});
 		
 		socket.on("start", ()=>{
-		
 			GamePanel.start();
-			
-
 		});
 //////////////////////////////////		
 		socket.on("update", (username)=>{
@@ -175,6 +169,25 @@ const Socket = (function() {
 				
 			}
 		});
+		
+		socket.on("update the boost", (username)=>{
+		
+
+			if(username === own_name){
+				
+				GamePanel.ownUse();
+				
+			}
+			
+			else{
+				
+				GamePanel.oppoUse();	
+				
+			}
+		});
+		
+		
+		
 
     };
 
@@ -259,6 +272,7 @@ const Socket = (function() {
 	};
     // This function disconnects the socket from the server
     const disconnect = function() {
+        console.log(own_username+"disconnected");
         socket.disconnect();
         socket = null;
         own_character_id = null;
@@ -295,6 +309,26 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };*/
-    return { getSocket, connect, helpChangeOppoImage, ready,  disconnect, cal_rank, restart_game,signal,restforever};
+	
+	
+	const x2boost_uesd = function(){
+		
+		
+		socket.emit("x2boost used" , own_name);
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+    return { getSocket, connect, helpChangeOppoImage, ready,  disconnect, cal_rank, restart_game,signal,restforever ,x2boost_uesd};
 	
 })();

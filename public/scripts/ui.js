@@ -107,6 +107,7 @@ const WaitingOpponentPanel = (function() {
 
 
 const CharacterSelectionPanel = (function() {
+    let characterId = null;
     const sounds = {
         background: new Audio("./sound/character_select_background.mp3"),        
         select: new Audio("./sound/select.mp3"),        
@@ -163,8 +164,7 @@ const CharacterSelectionPanel = (function() {
         $("#character-selection").hide();
         sounds.background.pause();
         sounds.background.currentTime = 0; // Reset the playback position to the beginning
-
-        
+        characterId = null;
     };
 
     // This function updates the user panel
@@ -189,15 +189,24 @@ const UserPanel = (function() {
                     Socket.disconnect();
                     hide();
                     SignInForm.show();
-                    //WaitingOpponentPanel.hide();
-                    //CharacterSelectionPanel.hide(); 
+                    WaitingOpponentPanel.hide();
+                    CharacterSelectionPanel.hide(); 
                     //GamePanel.hide();
-                    //GameOverPanel.hide();
-                    
+                    GameOverPanel.hide();
                 }
             );
         });
     };
+
+    function openInstructionBox() {
+        var requirementBox = document.getElementById("instructions-box");
+        requirementBox.style.display = "block";
+    }
+
+    function closeInstructionBox() {
+        var requirementBox = document.getElementById("instructions-box");
+        requirementBox.style.display = "none";
+    }
 
     // This function shows the form with the user
     const show = function(user) {
@@ -221,7 +230,7 @@ const UserPanel = (function() {
         }
     };
 
-    return { initialize, show, hide, update };
+    return { initialize, show, hide, update, openInstructionBox, closeInstructionBox};
 })();
 
 
@@ -263,7 +272,6 @@ const GamePanel = (function() {
     };
 
 
-
 /*
 
     const showWinner = function(playerno) {
@@ -272,7 +280,6 @@ const GamePanel = (function() {
     }
 
 */
-
 
 
     // This function updates the user panel
@@ -285,8 +292,6 @@ const GamePanel = (function() {
         own_player = Player(own_name ,  1, own_character_id);
         oppo_player = Player(oppo_name , 2 , oppo_character_id);
         //Socket.generate_timeout_foodtype(); // generate food for the first round
-        //initialize
-        //rest(3000);
         setTimeout(Timer.countDown, 1000); //start the timer ????
     };
 
@@ -306,7 +311,6 @@ const GamePanel = (function() {
                 own_player.back();
                 GameOverPanel.show();
                 end_game(); // cannot be put in end_game() as it will be called by sign_ou
-
             });
         }
         else{
@@ -331,25 +335,16 @@ const GamePanel = (function() {
         Timer.reset();
         Timer.stop();
         // stop the game if signout is pressed when the cover is closed due to the food being eaten
-		/*
-        if (resttimeout){
-            clearTimeout(resttimeout); // stop the start 
-        }
-        // stop the game if signout is pressed when the cover is closed due to timeout
-        if (endtimeout){
-            clearTimeout(endtimeout); // stop the start 
-        }
-        // stop the game if signout is pressed when the cover is opened
-        if (timeout){
-            clearTimeout(timeout); // stop the start 
-        }
-		*/
         $("#gameover-container").hide();
         $("#own-chosen-character-image").attr("src","./image/unknown.png");
         $("#enemy-chosen-character-image").attr("src","./image/unknown.png"); 
         // unset full body character image
-        own_player.cancel_character_image();
-        oppo_player.cancel_character_image();
+        if (typeof own_player !== 'undefined'){  // own_player may be null sometimes when end_game is called for example when sign-out button is clicked in waiting page or character-selection page
+            own_player.cancel_character_image();
+        }
+        if (typeof oppo_player !== 'undefined'){  // own_player may be null sometimes when end_game is called for example when sign-out button is clicked in waiting page or character-selection page
+            oppo_player.cancel_character_image();
+        }
         // Change all heart to gray
         // Perform jQuery operation on all elements with a heart class
         $('.heart').each(function() {
@@ -367,96 +362,46 @@ const GamePanel = (function() {
 	
    const start = function(){
         //Socket.generatefoodtype();//	this maybe wrong
-		//Socket.startgamesignal(); //  this is wrong
         //Food.update();
 		console.log("start");
-        Cover.open();	
-
+        Cover.open();
+		$(document).off("keydown");		
         $(document).on("keydown", function(e){ 
             if (e.keyCode == 32){ // player 1 move using sapce bar
-
 				Socket.signal(own_player.getUsername());
-
             }
         });
     };        
 	
 	
-/*
-	
-    const start = function(){
-
-        Cover.open();	
-        endtimeout = setTimeout(() =>{ // if after certain time the food is not eaten by any player
-            Cover.close().then(() => {
-                // the new food should be generated after the animaion thatcover is closed
-                console.log("timeout then generated");
-                Food.eaten();
-                Socket.generate_timeout_foodtype();
-            });                    
-            //setTimeout(Food.eaten,1000); // why need set time out here? because cover close require 1 second
-             // why need set time out here? because cover close require 1 second
-            rest(3000);
-            } ,4000	
-        );
-        $(document).on("keydown", function(e){ 
-            if (e.keyCode == 32){ // player 1 move using sapce bar
-                own_player.move();
-                console.log("move",$("#player1").attr("x"));
-
-                Socket.update_oppo_own_move(); // update oppo about own move
-                clearTimeout(endtimeout);
-                resttimeout = rest(4000); // start after 4 seconds
-                setTimeout(()=>{
-                    sounds.eat.play();
-                    Food.eaten(); //hide the food when the player reach the food and the player movement require one second
-                    console.log("eaten",Food.getFoodtype());
-                    own_player.update(Food.getFoodtype().effect);
-                    if (own_player.getScore() >= 5){
-                        clearTimeout(resttimeout); // stop the start 
-                        Timer.stop();
-                        showWinner(1); // show winning message of player 1
-                        return false;
-                    }
-                    //Cover.close(() => {
-                    //    // the new food should be generated after the animaion thatcover is closed
-                    //    console.log("eaten then generated");
-                    //    Socket.generatefoodtype();
-                    //}); 
-                    Cover.close().then(() => {
-                        // the new food should be generated after the animaion thatcover is closed
-                        console.log("eaten then generated");
-                        Socket.generatefoodtype();
-                    });                        
-                    own_player.back();
-                },1000); // do the above after move which use 1 second                     
-
-            }
-        });
-    };        
-*/	
 	const ownScored = function(){
 		console.log("ownScored");
 		own_player.move();
-
 		setTimeout(()=>{
 			sounds.eat.play();
 			Food.eaten();
-            own_player.update(Food.getFoodtype().effect);
+			let ratio = 1;
+			if (own_player.isUsingBoost()) {
+				ratio = 2 ;
+				own_player.usedBoost();
+			}
+			if (oppo_player.isUsingBoost()) oppo_player.usedBoost();
+			let total_effect = Food.getFoodtype().effect * ratio;
+			own_player.update(total_effect);
+			
+			
+//            own_player.update(Food.getFoodtype().effect * ratio);
             //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
             if (own_player.getScore() >= 5){
 				Timer.stop();
 				showWinner(1); // show winning message of player 1
 				restforever();
 				///////////////////////////
-				return false;
-                    
+				return false;   
 			}
             Cover.close();
             own_player.back();
 		},1000); // do the above after move which use 1 second 
-		
-
 	}
 
 
@@ -464,23 +409,28 @@ const GamePanel = (function() {
 	const oppoScored = function(){
 		console.log("oppoScored");
 		oppo_player.move();
-
 		setTimeout(()=>{
 			sounds.eat.play();
 			Food.eaten();
-            oppo_player.update(Food.getFoodtype().effect);
+			let ratio = 1;
+			if (oppo_player.isUsingBoost()) {
+				ratio = 2 ;
+				oppo_player.usedBoost();
+			}
+			if (own_player.isUsingBoost()) own_player.usedBoost();
+			let total_effect = Food.getFoodtype().effect * ratio;
+			oppo_player.update(total_effect);
+			
+            //oppo_player.update(Food.getFoodtype().effect * ratio);
             //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
             if (oppo_player.getScore() >= 5){
 				Timer.stop();
 				showWinner(2); // show winning message of player 1
-				return false;
-                    
+				return false;              
 			}
             Cover.close();
             oppo_player.back();
 		},1000); // do the above after move which use 1 second 
-		
-
 	} 
 	
 	const restforever = function(){
@@ -501,14 +451,69 @@ const GamePanel = (function() {
     const rest = function(time){ 
 		console.log("rest");
         $(document).off("keydown");
+		$(document).on("keydown", function(e){ 
+            if (e.keyCode == 40){ // player 1 move using sapce bar
+				if(own_player.isRemainingBoost() && !own_player.isUsingBoost()) Socket.x2boost_uesd(own_player.getUsername());
+            }
+        });
         // start the game
         //let timeout = setTimeout(start,time);
 		return null;
     };
 	
+	
+	
+	
+	const ownUse = function(){
+		console.log("1");
+		own_player.useBoost();
+		
+		
+	}
+	
+	
+	
+	const oppoUse = function(){
+		console.log("2");
+		oppo_player.useBoost();
+		
+	} 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
-    return { initialize, show, hide, update, end_game , noOneEat , rest , restforever,start , ownScored,oppoScored };
+    return { initialize, show, hide, update, end_game , noOneEat , rest , restforever,start , ownScored,oppoScored , ownUse,oppoUse };
 })();
 
 
