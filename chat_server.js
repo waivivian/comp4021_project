@@ -47,7 +47,7 @@ function start(){
 	end_timeout = setTimeout( ()=>{
 		io.emit("no one eat");
 		rest(3000);
-		},4000);
+		},4000); // 4000 is the time the cover open
 };
 
 function rest(time){
@@ -326,13 +326,15 @@ io.on("connection", (socket) => {   //this socket is browser
 		console.log(username);
 		if(allow_to_eat){
 			allow_to_eat=false;
-			clearTimeout(end_timeout);
-			io.emit( "update", username);
-			rest_timeout = rest(4000);
-			start_timeout = rest_timeout.timeout;
-			generate_food_timeout = rest_timeout.foodtimeout;
-
+			////clearTimeout(end_timeout);
+			io.emit("update", username);
+			//rest_timeout = rest(4000);
+			//start_timeout = rest_timeout.timeout;
+			//generate_food_timeout = rest_timeout.foodtimeout;
 		}
+        else{// the food is already eaten by another user 
+            io.emit("move back without food", username);  
+        }
 		
 	});	
 	
@@ -342,13 +344,13 @@ io.on("connection", (socket) => {   //this socket is browser
 
 
 
-    socket.on("update oppo about my move",(oppo_user_name)=>{
+    /*socket.on("update oppo about my move",(oppo_user_name)=>{
         if (sockets[oppo_user_name]){ // if targeted socket exists
             sockets[oppo_user_name].emit("update oppo move and score");
         }
     });
 
-    /*socket.on("get messages", () => {
+    socket.on("get messages", () => {
         // Send the chatroom messages to the browser
         const chatroom  = JSON.parse(fs.readFileSync("./data/chatroom.json"));
         socket.emit("messages", JSON.stringify(chatroom ));

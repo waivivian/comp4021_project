@@ -54,9 +54,9 @@ const Socket = (function() {
         });
 
         // Set up the update oppo score event
-        socket.on("update oppo move and score", () => {
+        /*socket.on("update oppo move and score", () => {
             GamePanel.update_oppo();
-        });
+        });*/
 
         socket.on("own information", (own_user) => {
             // Get the online user list
@@ -140,6 +140,16 @@ const Socket = (function() {
 
 		});
 		
+        socket.on("move back without food", (username)=>{
+			if(username === own_name){
+				setTimeout(GamePanel.own_moveback(), 1000);
+			}
+			else{
+                GamePanel.oppo_moveforward();	
+				setTimeout(GamePanel.oppo_moveback, 1000);
+			}
+    	});
+
 		socket.on("rest", ()=>{
 			GamePanel.rest(3000);
 		});
@@ -238,7 +248,7 @@ const Socket = (function() {
 	
 */
 ///////////////////////////////////////////////////////	
-	const signal = function(username){
+	const signal = function(username){ // a signal tell server I move to the food
 		if (socket){
 			socket.emit("signal",username);
 	
