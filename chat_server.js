@@ -39,51 +39,35 @@ function generate_food_type() {
         const randomFoodtypeKey = foodtypeKey[random];
         const randomFoodtype = foodtype[randomFoodtypeKey];
         io.emit("food type generated", randomFoodtype);
-
-
 };
 
 function start(){
-	
 	allow_to_eat = true;
 	io.emit("start");
 	end_timeout = setTimeout( ()=>{
 		io.emit("no one eat");
 		rest(3000);
 		},4000);
-		
-	
 };
 
 function rest(time){
-	
 	io.emit("rest");
 	const timeout = setTimeout(start,time);
 	const foodtimeout = setTimeout(generate_food_type,time-1000);
 	return {timeout , foodtimeout} ; 
-				
-	
 };
 
 function restforever(){
-	
 	clearTimeout(start_timeout);
 	clearTimeout(generate_food_timeout);
 
 };
 
 
-
-
-
-
-
-
 // Handle the /register endpoint
 app.post("/register", (req, res) => {
     // Get the JSON data from the body (read from user input)
     let { username, name, password } = req.body;
-
     //
     // D. Reading the users.json file (read from backend (our database))
     //
@@ -282,9 +266,12 @@ io.on("connection", (socket) => {   //this socket is browser
 
     //when user sign out, disconnect but still in this connection event as we still need to use this socket variable from the connection event  
     socket.on("disconnect",()=>{
+        console.log("is disconnected!!!!");
         if (socket.request.session.user) { // if this information exist get the use's information
             user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
             const { username, name } = user; 
+            console.log(username+"is disconnected!!!!");
+
             if (onlineUserList[username]){ // if the user is in the current online user list
                 delete onlineUserList[username];
                 // help everyone to update even for those who already connected to servr
@@ -351,7 +338,6 @@ io.on("connection", (socket) => {   //this socket is browser
 	
 	socket.on("restforever",() =>{
 		restforever();
-		
 	});
 
 
@@ -496,9 +482,17 @@ io.on("connection", (socket) => {   //this socket is browser
             } 
         }
     });
+	
+	
+	
+	
+	socket.on("x2boost used", (username) => {
+		
+		io.emit("update the boost" , username);
 
+
+	});
 });
-
 
 
 // Use a web server to listen at port 8000
