@@ -6,6 +6,7 @@ const Timer = (function() {
 
     // This is the sprite object of the player created from the Sprite module.
     const element = $("#timeRemaining");
+    element.text(timeRemaining);
 	
 	
 
