@@ -265,22 +265,26 @@
             </div>
         </div>
 
-        <div id="game-over-page" class="overlay row">
-            <div class="content shadow row">
-                <button id="restart-button">
-                    <i class="material-icons" style="font-size:48px;color:white; font-weight: 1000">replay</i>            </div>
-                </button>            
-                <table>
-            <div class="content shadow row" class="rank-table">
-                <button id="restart-button">
-                    <i class="material-icons" style="font-size:48px;color:white; font-weight: 1000">replay</i>            </div>
-                </button>            
-                <table class="rank-table">
-                    <thread>
-                        <tr><th>Rank</th><th>Player</th><th>Percentage of winning</th><th>Average time used for winning</th></tr>
-                    </thread>
-                    <tbody id="rank-table-body"></tbody>
-                </table>
+        <div id="game-over-page" class="overlay col" id="rank-table-div" style="display: flex;"  >
+            <div class="col" >
+                <div>
+                    <button id="restart-button">
+                        <i class="material-icons" style="font-size:48px;color:white; font-weight: 1000">replay</i>            </div>
+                    </button> 
+                </div>      
+                <div class="spacer-2"></div>     
+                <div>
+                    <text id="game-stat"></text>
+                </div> 
+                <div class="spacer-2"></div>
+                <div >          
+                    <table class="rank-table">
+                        <thread>
+                            <tr><th>Rank</th><th>Player</th><th>Percentage of winning</th><th>Average time used for winning</th></tr>
+                        </thread>
+                        <tbody id="rank-table-body"></tbody>
+                    </table>
+                </div> 
             </div>
         </div>
 

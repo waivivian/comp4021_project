@@ -568,8 +568,8 @@ canvas {
     #game-over-page {
         height: calc(100% - 80px);
         margin-top: 80px;
-        background-color: rgba(183, 245, 248, 0.8);
-        color: rgba(183, 245, 248, 0.8);
+        background-color: rgba(30, 224, 235, 0.8);
+        color: rgba(30, 224, 235, 0.8);
         border: none;
       }
   
@@ -628,4 +628,25 @@ canvas {
         background-color: #ffb6c1;
       }
   
-                       
+    #game-stat{
+        font-family: 'Calligraffitti', cursive;
+        font-weight: 700;
+        font-size: 2rem;
+        position: absolute;
+        text-shadow: -15px 5px 20px #ced0d3;
+        transform: translate(-50%,-50%);
+        letter-spacing: 0.02em;
+        text-align: center;
+        color: #F9f1cc;
+        text-shadow: 2px 2px 0px #FFB650, 
+          4px 4px 0px #FFD662, 
+          6px 6px 0px  #FF80BF, 
+          8px 8px 0px #EF5097, 
+          10px 10px 0px #6868AC, 
+          12px 12px 0px #90B1E0;
+      }
+    
+      #rank-table-div{
+        overflow-y: auto;
+        max-height: 80vh; /* Set a maximum height for the box */
+    }

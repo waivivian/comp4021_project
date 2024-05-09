@@ -317,7 +317,7 @@ const GamePanel = (function() {
             sounds.win.addEventListener('ended', function() {
                 // ensure players are at origianl position
                 own_player.back();
-                GameOverPanel.show();
+                GameOverPanel.show(true, Timer.getTimeUsed());
                 end_game(); // cannot be put in end_game() as it will be called by sign_ou
             });
         }
@@ -328,7 +328,7 @@ const GamePanel = (function() {
             sounds.lose.addEventListener('ended', function() {
                 // ensure players are at origianl position
                 oppo_player.back();
-                GameOverPanel.show(); // cannot be put in end_game() as it will be called by sign_out
+                GameOverPanel.show(false, own_player.getScore()); // cannot be put in end_game() as it will be called by sign_out
                 end_game();
             });        
         }
@@ -404,7 +404,7 @@ const GamePanel = (function() {
 			
 //            own_player.update(Food.getFoodtype().effect * ratio);
             //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
-            if (own_player.getScore() >= 5){
+            if (own_player.getScore() >= 1){
 				Timer.stop();
 				showWinner(1); // show winning message of player 1
 				restforever();
@@ -435,7 +435,7 @@ const GamePanel = (function() {
 			
             //oppo_player.update(Food.getFoodtype().effect * ratio);
             //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
-            if (oppo_player.getScore() >= 5){
+            if (oppo_player.getScore() >= 1){
 				Timer.stop();
 				showWinner(2); // show winning message of player 1
 				return false;              
@@ -550,7 +550,23 @@ const GameOverPanel = (function() {
     };
 
     // This function shows the form with the user
-    const show = function() {
+    const show = function(win, stat) { // stat will be the time for the game if the user win, else it will be the hearts earned
+        console.log("sadasdsad")
+        let text = "";
+        if(win){
+            text = "Congrats! You have won the game within "+String(stat)+"s";
+        }
+        else{
+            if(stat<=2){
+                text = "You lose and you obtained "+ String(stat)+" hearts, next time play harder!";
+            }
+            else{
+                text = "You lose but you still did a good job and obtained "+ String(stat)+" hearts. Next time you should win!";
+            }
+        }
+        console.log(text);
+
+        $("#game-stat").text(text);
         $("#game-over-page").show();
 
     };
@@ -565,6 +581,7 @@ const GameOverPanel = (function() {
 
     // This function updates the user panel
     const update = function(game_rank) {
+
         let rank_table_body = $("#rank-table-body");
                 //let rank_table_body = $("#rank-table-body");
 

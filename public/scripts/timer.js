@@ -32,6 +32,7 @@ const Timer = (function() {
 	
 	const reset = function() {
 		timeRemaining = initialTime;
+		element.text(timeRemaining);
     };
 
 	const getTimeUsed = function(){
