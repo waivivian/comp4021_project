@@ -159,7 +159,7 @@ const Socket = (function() {
 			}
 			else{
                 GamePanel.oppo_moveforward();	
-				setTimeout(GamePanel.oppo_moveback, 1000);
+				setTimeout(GamePanel.oppo_moveback, 500);
 			}
     	});
 

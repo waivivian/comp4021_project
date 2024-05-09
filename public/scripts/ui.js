@@ -374,7 +374,7 @@ const GamePanel = (function() {
 		console.log("start");
 
         Cover.open();
-		  $(document).off("keydown");		
+		$(document).off("keydown");		
         Cover.open();	
         $(document).on("keydown", function(e){ 
             if (e.keyCode == 32){ // player 1 move using sapce bar
@@ -404,7 +404,7 @@ const GamePanel = (function() {
 			
 //            own_player.update(Food.getFoodtype().effect * ratio);
             //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
-            if (own_player.getScore() >= 1){
+            if (own_player.getScore() >= 5){
 				Timer.stop();
 				showWinner(1); // show winning message of player 1
 				restforever();
@@ -435,7 +435,7 @@ const GamePanel = (function() {
 			
             //oppo_player.update(Food.getFoodtype().effect * ratio);
             //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
-            if (oppo_player.getScore() >= 1){
+            if (oppo_player.getScore() >= 5){
 				Timer.stop();
 				showWinner(2); // show winning message of player 1
 				return false;              
@@ -474,8 +474,6 @@ const GamePanel = (function() {
     };
 	
 	
-	
-	
 	const ownUse = function(){
 		console.log("1");
 		own_player.useBoost();
@@ -491,40 +489,6 @@ const GamePanel = (function() {
 		
 	} 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
     return { initialize, show, hide, update, end_game , noOneEat , rest , restforever,start , ownScored,oppoScored, ownUse,oppoUse, own_moveback, oppo_moveback, oppo_moveforward};
 })();
 
@@ -551,7 +515,6 @@ const GameOverPanel = (function() {
 
     // This function shows the form with the user
     const show = function(win, stat) { // stat will be the time for the game if the user win, else it will be the hearts earned
-        console.log("sadasdsad")
         let text = "";
         if(win){
             text = "Congrats! You have won the game within "+String(stat)+"s";
