@@ -54,9 +54,9 @@ const Socket = (function() {
         });
 
         // Set up the update oppo score event
-        socket.on("update oppo move and score", () => {
+        /*socket.on("update oppo move and score", () => {
             GamePanel.update_oppo();
-        });
+        });*/
 
         socket.on("own information", (own_user) => {
             // Get the online user list
@@ -111,7 +111,20 @@ const Socket = (function() {
             CharacterSelectionPanel.update(image);
         });
 
-
+        // This function is used when a player have its opponent disconnected
+        socket.on("restart game due to disconnected_oppo",() => {
+            //forget about previous player
+            alert("Your opponent is disconnected! Now you will need to wait for another opponent.");
+            console.log(":( my oppo user quit");
+            oppo_user = null;
+            oppo_character_id = null;
+            GamePanel.end_game();
+            console.log(":( my oppo user quit");
+            WaitingOpponentPanel.show();
+            //GamePanel.hide();
+            CharacterSelectionPanel.hide();
+            socket.emit("available to match with another user", own_username);
+        });
 
 	
         socket.on("food type generated",(food_type_generated) => {
@@ -140,8 +153,18 @@ const Socket = (function() {
 
 		});
 		
+        socket.on("move back without food", (username)=>{
+			if(username === own_name){
+				setTimeout(GamePanel.own_moveback(), 1000);
+			}
+			else{
+                GamePanel.oppo_moveforward();	
+				setTimeout(GamePanel.oppo_moveback, 1000);
+			}
+    	});
+
 		socket.on("rest", ()=>{
-			GamePanel.rest(3000);
+			GamePanel.rest(); // don't let user to move
 		});
 		
 		socket.on("start", ()=>{
@@ -257,14 +280,14 @@ const Socket = (function() {
 	
 */
 ///////////////////////////////////////////////////////	
-	const signal = function(username){
+	const signal = function(username){ // a signal tell server I move to the food
 		if (socket){
 			socket.emit("signal",username);
 	
 		}
 	};
 	
-	const restforever = function(){
+	const restforever = function(){ // call when someone win
 		if (socket){
 		socket.emit("restforever");
 		
@@ -272,8 +295,11 @@ const Socket = (function() {
 	};
     // This function disconnects the socket from the server
     const disconnect = function() {
-        console.log(own_username+"disconnected");
-        socket.disconnect();
+        if (oppo_user){ // if your oppo_user does not sign out as well
+            console.log(own_username+"disconnected",oppo_user["username"]);
+            socket.emit("notify oppo user about disconnect",oppo_user["username"]); // disconnect with oppo user
+        }
+        socket.disconnect(); // disconnect with server
         socket = null;
         own_character_id = null;
         own_username = null;
@@ -296,6 +322,11 @@ const Socket = (function() {
         socket.emit("available to match with another user", own_username);
     };
 
+    const times_up = function() {
+        //forget about previous player
+        socket.emit("times up");
+    };
+
     // This function sends a post message event to the server
     /*const postMessage = function(content) {
         if (socket && socket.connected) {
@@ -309,6 +340,7 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };*/
+
 	
 	
 	const x2boost_uesd = function(){
@@ -320,15 +352,6 @@ const Socket = (function() {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-    return { getSocket, connect, helpChangeOppoImage, ready,  disconnect, cal_rank, restart_game,signal,restforever ,x2boost_uesd};
+    return { getSocket, connect, helpChangeOppoImage, ready,  disconnect, cal_rank, restart_game,signal,restforever, times_up ,x2boost_uesd};
 	
 })();
