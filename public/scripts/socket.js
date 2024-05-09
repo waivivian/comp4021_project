@@ -155,11 +155,12 @@ const Socket = (function() {
 		
         socket.on("move back without food", (username)=>{
 			if(username === own_name){
-				setTimeout(GamePanel.own_moveback(), 1000);
+				GamePanel.own_moveforward();
+				setTimeout(GamePanel.own_moveback, 1000);
 			}
 			else{
-                GamePanel.oppo_moveforward();	
-				setTimeout(GamePanel.oppo_moveback, 500);
+                		GamePanel.oppo_moveforward();	
+				setTimeout(GamePanel.oppo_moveback, 1000);
 			}
     	});
 
