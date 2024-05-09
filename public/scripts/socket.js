@@ -119,6 +119,7 @@ const Socket = (function() {
             oppo_user = null;
             oppo_character_id = null;
             GamePanel.end_game();
+            console.log(":( my oppo user quit");
             WaitingOpponentPanel.show();
             //GamePanel.hide();
             CharacterSelectionPanel.hide();
@@ -163,7 +164,7 @@ const Socket = (function() {
     	});
 
 		socket.on("rest", ()=>{
-			GamePanel.rest(3000);
+			GamePanel.rest(); // don't let user to move
 		});
 		
 		socket.on("start", ()=>{
@@ -267,7 +268,7 @@ const Socket = (function() {
 		}
 	};
 	
-	const restforever = function(){
+	const restforever = function(){ // call when someone win
 		if (socket){
 		socket.emit("restforever");
 		
@@ -302,7 +303,10 @@ const Socket = (function() {
         socket.emit("available to match with another user", own_username);
     };
 
-
+    const times_up = function() {
+        //forget about previous player
+        socket.emit("times up");
+    };
 
     // This function sends a post message event to the server
     /*const postMessage = function(content) {
@@ -317,6 +321,6 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };*/
-    return { getSocket, connect, helpChangeOppoImage, ready,  disconnect, cal_rank, restart_game, signal,restforever};
+    return { getSocket, connect, helpChangeOppoImage, ready,  disconnect, cal_rank, restart_game, signal,restforever, times_up};
 	
 })();

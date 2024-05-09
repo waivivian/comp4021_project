@@ -125,7 +125,6 @@ const CharacterSelectionPanel = (function() {
         const charactersArray = Array.from(characters);
         
         // The index of the character selected
-        let characterId = null;
         // Use forEach on the array-like object
         charactersArray.forEach(character => {
             character.addEventListener('click', () => {
@@ -439,7 +438,7 @@ const GamePanel = (function() {
 		
 	}
 
-    const rest = function(time){ 
+    const rest = function(){ 
 		console.log("rest");
         $(document).off("keydown");
         // start the game

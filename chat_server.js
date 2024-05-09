@@ -52,19 +52,20 @@ function start(){
 
 function rest(time){
 	io.emit("rest");
-	const timeout = setTimeout(start,time);
-	const foodtimeout = setTimeout(generate_food_type,time-1000);
-	return {timeout , foodtimeout} ; 
+	start_timeout = setTimeout(start,time);
+	generate_food_timeout = setTimeout(generate_food_type,time-1000);
+	//return {timeout , foodtimeout} ; 
 };
 
-function restforever(){
+function restforever(){ // call when someone win or someone signout
+    console.log("ffff");
+    allow_to_eat = false;
     clearTimeout(end_timeout);
-	rest_timeout = rest(4000);
-	start_timeout = rest_timeout.timeout;
-	generate_food_timeout = rest_timeout.foodtimeout;
-	clearTimeout(start_timeout);
-	clearTimeout(generate_food_timeout);
-
+	//rest_timeout = rest(4000); 
+	//start_timeout = rest_timeout.timeout; //ensure start_timeout is declared
+	//generate_food_timeout = rest_timeout.foodtimeout; //ensure foodtimeout is declared
+	clearTimeout(start_timeout); // don't start again
+	clearTimeout(generate_food_timeout); // don't generate food again
 };
 
 
@@ -270,6 +271,7 @@ io.on("connection", (socket) => {   //this socket is browser
 
     //when user sign out, disconnect but still in this connection event as we still need to use this socket variable from the connection event  
     socket.on("disconnect",()=>{
+        restforever(); // stop to generate food and open cover
         console.log("is disconnected!!!!");
         if (socket.request.session.user) { // if this information exist get the use's information
             user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
@@ -286,6 +288,7 @@ io.on("connection", (socket) => {   //this socket is browser
     });
 
     socket.on("notify oppo user about disconnect",(notify_user)=>{
+        restforever(); // stop to generate food and open cover
         console.log("gggggg",notify_user);
         // notify the oppo user about the signout of the other user
         if(sockets[notify_user]){ // this user exists in socket list (in general should be true)
@@ -319,6 +322,10 @@ io.on("connection", (socket) => {   //this socket is browser
         if (sockets[to]){ // if targeted socket exists
             sockets[to].emit("update oppo image",image);
         }
+    });
+
+    socket.on("times up",()=>{
+        restforever();
     });
 
     socket.on("chosen character id",(data)=>{
@@ -356,8 +363,6 @@ io.on("connection", (socket) => {   //this socket is browser
 	socket.on("restforever",() =>{
 		restforever();
 	});
-
-
 
     /*socket.on("update oppo about my move",(oppo_user_name)=>{
         if (sockets[oppo_user_name]){ // if targeted socket exists
@@ -400,7 +405,8 @@ io.on("connection", (socket) => {   //this socket is browser
         }
         else{ // create a new ranking for this user who have not had a rank yet
          
-                       number_of_win = 0;number_of_lose = 1;  
+                number_of_win = 0;
+                number_of_lose = 1;  
                 average_winning_time = null; // the user never win
                 percentage_winning = 0;               
         }

@@ -16,13 +16,22 @@ const Timer = (function() {
     const countDown = function() {
         timeRemaining = timeRemaining - 1;
 		element.text(timeRemaining);
-		if (timeRemaining > 0) timer = setTimeout(countDown, 1000);
-		else alert("times up"); // add game over picture later
+		if (timeRemaining > 0){
+			timer = setTimeout(countDown, 1000);
+		} 
+		else{
+			alert("times up"); // add game over picture later	
+			GamePanel.end_game(); ////	
+			WaitingOpponentPanel.show();
+            UserPanel.show();
+            Socket.restart_game();
+			Socket.times_up();
+		} 
 		
     };
 	
 	const reset = function() {
-		timeRemaining = 180;
+		timeRemaining = initialTime;
     };
 
 	const getTimeUsed = function(){
