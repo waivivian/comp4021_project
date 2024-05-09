@@ -132,7 +132,6 @@ const Authentication = (function() {
                 if (onSuccess){                 
                     user = null;
                     onSuccess();
-
                 }
             }
 

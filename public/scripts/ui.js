@@ -364,8 +364,10 @@ const GamePanel = (function() {
         //Socket.generatefoodtype();//	this maybe wrong
         //Food.update();
 		console.log("start");
+
         Cover.open();
-		$(document).off("keydown");		
+		  $(document).off("keydown");		
+        Cover.open();	
         $(document).on("keydown", function(e){ 
             if (e.keyCode == 32){ // player 1 move using sapce bar
 				Socket.signal(own_player.getUsername());
