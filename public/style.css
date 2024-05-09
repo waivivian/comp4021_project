@@ -77,6 +77,7 @@ body {
     background: var(--overlay-background);
 }
 .overlay .caption {
+    
     font-size: 120%;
     color: var(--overlay-caption-color);
 }
@@ -175,12 +176,16 @@ button.icon:active {
 }
 #title {
     font-family: Rocher;
-    base-palette: 6;
     font-size: 300%;
     text-transform: uppercase;
-    color: var(--title-color);
+    font-palette: --Mint;
     user-select: none;
 }
+@font-palette-values --Mint {
+    font-family: Rocher;
+    base-palette: 7;
+}
+
 #title .material-icons {
     color: var(--title-color);
     font-size: 36px;
@@ -303,12 +308,12 @@ canvas {
     height: calc(100% - 80px);
     margin-top: 80px;
     width: 100%;
-    background: rgb(200, 64, 200, 0.4);
+    background: rgb(200, 64, 200);
 }
 
 #waiting-text {
     font-size: 5vw;
-    font-family: 'Circular', sans-serif;
+    font-family: Rocher;
     text-anchor: middle;
     color: yellow
   }
@@ -328,6 +333,8 @@ canvas {
   }
 
   #waiting-text::after {
+    font-family: Rocher;
+    color: yellow;
     content: "WAITING FOR OPPONENT";
     animation: dots 1.5s linear infinite;
   } 
