@@ -98,6 +98,7 @@ const Player = function( userName, playerNo, character_id ) {
 	*/
 	
 	const playerscore = gameScore(playerno);
+	const playerboost = Boost(playerno);
 	
     
     // The methods are returned as an object here.
@@ -107,7 +108,11 @@ const Player = function( userName, playerNo, character_id ) {
 		back: back,
 		update: playerscore.update,
 		getScore : playerscore.getScore,
-		getUsername : getUsername
-		
+		getUsername : getUsername,
+		useBoost : playerboost.use,
+		isUsingBoost : playerboost.isUsing ,
+		usedBoost : playerboost.used ,
+		isRemainingBoost : playerboost.isRemaining ,
+			
     };
 };

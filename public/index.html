@@ -178,6 +178,20 @@
                         </g>                      
                     </g>
                 </g>
+
+				
+				<g>
+					<circle id="x2boost1" cx="35" cy="110" r="25"  fill="white" />
+					<text x="20" y="120" fill="red" font-size="30px" font-weight="900" >x2</text>
+				</g>
+				
+				<g>
+					<circle id="x2boost2" cx="965" cy="110" r="25"  fill="white" />
+					<text x="950" y="120" fill="red" font-size="30px" font-weight="900" >x2</text>
+				</g>
+				
+				
+
                 <image id="food" href="image/cake.svg" x="450" y="225" height="100" width="100" />
                 <image id="cover" href="image/cover.svg" x="400" y="160" height="200" width="200" />
                 <image id="player1"  x="50" y="110" height="200" width="200" />
@@ -252,6 +266,11 @@
         </div>
 
         <div id="game-over-page" class="overlay row">
+            <div class="content shadow row">
+                <button id="restart-button">
+                    <i class="material-icons" style="font-size:48px;color:white; font-weight: 1000">replay</i>            </div>
+                </button>            
+                <table>
             <div class="content shadow row" class="rank-table">
                 <button id="restart-button">
                     <i class="material-icons" style="font-size:48px;color:white; font-weight: 1000">replay</i>            </div>
@@ -319,6 +338,7 @@
 	<script src="scripts/timer.js"></script>
 	<script src="scripts/score.js"></script>
 	<script src="scripts/player.js"></script>
+	<script src="scripts/boost.js"></script>
     <script>
     $(function() {
         // Initialize the UI

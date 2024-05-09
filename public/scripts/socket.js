@@ -169,6 +169,25 @@ const Socket = (function() {
 				
 			}
 		});
+		
+		socket.on("update the boost", (username)=>{
+		
+
+			if(username === own_name){
+				
+				GamePanel.ownUse();
+				
+			}
+			
+			else{
+				
+				GamePanel.oppoUse();	
+				
+			}
+		});
+		
+		
+		
 
     };
 
@@ -290,6 +309,26 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };*/
-    return { getSocket, connect, helpChangeOppoImage, ready,  disconnect, cal_rank, restart_game,signal,restforever};
+	
+	
+	const x2boost_uesd = function(){
+		
+		
+		socket.emit("x2boost used" , own_name);
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+    return { getSocket, connect, helpChangeOppoImage, ready,  disconnect, cal_rank, restart_game,signal,restforever ,x2boost_uesd};
 	
 })();

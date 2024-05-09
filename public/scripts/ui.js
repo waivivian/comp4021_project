@@ -364,6 +364,9 @@ const GamePanel = (function() {
         //Socket.generatefoodtype();//	this maybe wrong
         //Food.update();
 		console.log("start");
+
+        Cover.open();
+		  $(document).off("keydown");		
         Cover.open();	
         $(document).on("keydown", function(e){ 
             if (e.keyCode == 32){ // player 1 move using sapce bar
@@ -379,7 +382,17 @@ const GamePanel = (function() {
 		setTimeout(()=>{
 			sounds.eat.play();
 			Food.eaten();
-            own_player.update(Food.getFoodtype().effect);
+			let ratio = 1;
+			if (own_player.isUsingBoost()) {
+				ratio = 2 ;
+				own_player.usedBoost();
+			}
+			if (oppo_player.isUsingBoost()) oppo_player.usedBoost();
+			let total_effect = Food.getFoodtype().effect * ratio;
+			own_player.update(total_effect);
+			
+			
+//            own_player.update(Food.getFoodtype().effect * ratio);
             //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
             if (own_player.getScore() >= 5){
 				Timer.stop();
@@ -401,7 +414,16 @@ const GamePanel = (function() {
 		setTimeout(()=>{
 			sounds.eat.play();
 			Food.eaten();
-            oppo_player.update(Food.getFoodtype().effect);
+			let ratio = 1;
+			if (oppo_player.isUsingBoost()) {
+				ratio = 2 ;
+				oppo_player.usedBoost();
+			}
+			if (own_player.isUsingBoost()) own_player.usedBoost();
+			let total_effect = Food.getFoodtype().effect * ratio;
+			oppo_player.update(total_effect);
+			
+            //oppo_player.update(Food.getFoodtype().effect * ratio);
             //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
             if (oppo_player.getScore() >= 5){
 				Timer.stop();
@@ -431,14 +453,69 @@ const GamePanel = (function() {
     const rest = function(time){ 
 		console.log("rest");
         $(document).off("keydown");
+		$(document).on("keydown", function(e){ 
+            if (e.keyCode == 40){ // player 1 move using sapce bar
+				if(own_player.isRemainingBoost() && !own_player.isUsingBoost()) Socket.x2boost_uesd(own_player.getUsername());
+            }
+        });
         // start the game
         //let timeout = setTimeout(start,time);
 		return null;
     };
 	
+	
+	
+	
+	const ownUse = function(){
+		console.log("1");
+		own_player.useBoost();
+		
+		
+	}
+	
+	
+	
+	const oppoUse = function(){
+		console.log("2");
+		oppo_player.useBoost();
+		
+	} 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
-    return { initialize, show, hide, update, end_game , noOneEat , rest , restforever,start , ownScored,oppoScored };
+    return { initialize, show, hide, update, end_game , noOneEat , rest , restforever,start , ownScored,oppoScored , ownUse,oppoUse };
 })();
 
 
