@@ -505,9 +505,17 @@ io.on("connection", (socket) => {   //this socket is browser
             } 
         }
     });
+	
+	
+	
+	
+	socket.on("x2boost used", (username) => {
+		
+		io.emit("update the boost" , username);
 
+
+	});
 });
-
 
 
 // Use a web server to listen at port 8000
