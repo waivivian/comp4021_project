@@ -125,7 +125,6 @@ const CharacterSelectionPanel = (function() {
         const charactersArray = Array.from(characters);
         
         // The index of the character selected
-        let characterId = null;
         // Use forEach on the array-like object
         charactersArray.forEach(character => {
             character.addEventListener('click', () => {
@@ -271,6 +270,15 @@ const GamePanel = (function() {
         $("#game-panel").hide();
     };
 
+    const own_moveback = function(){ // used when I fail to catch the food
+        own_player.back();
+    };
+    const oppo_moveforward = function(){// used when opponent fail to catch the food
+        oppo_player.move();
+    };    
+    const oppo_moveback = function(){// used when opponent fail to catch the food
+        oppo_player.back();
+    };
 
 /*
 
@@ -370,7 +378,10 @@ const GamePanel = (function() {
         Cover.open();	
         $(document).on("keydown", function(e){ 
             if (e.keyCode == 32){ // player 1 move using sapce bar
-				Socket.signal(own_player.getUsername());
+                own_player.move();
+                $(document).off("keydown") // only the first movement of user will be detected for each time the cover open
+                console.log("I moved");
+                Socket.signal(own_player.getUsername());
             }
         });
     };        
@@ -378,7 +389,6 @@ const GamePanel = (function() {
 	
 	const ownScored = function(){
 		console.log("ownScored");
-		own_player.move();
 		setTimeout(()=>{
 			sounds.eat.play();
 			Food.eaten();
@@ -450,7 +460,7 @@ const GamePanel = (function() {
 		
 	}
 
-    const rest = function(time){ 
+    const rest = function(){ 
 		console.log("rest");
         $(document).off("keydown");
 		$(document).on("keydown", function(e){ 
@@ -515,7 +525,7 @@ const GamePanel = (function() {
 	
 
 
-    return { initialize, show, hide, update, end_game , noOneEat , rest , restforever,start , ownScored,oppoScored , ownUse,oppoUse };
+    return { initialize, show, hide, update, end_game , noOneEat , rest , restforever,start , ownScored,oppoScored, ownUse,oppoUse, own_moveback, oppo_moveback, oppo_moveforward};
 })();
 
 

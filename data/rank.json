@@ -8,23 +8,23 @@
  },
  "tony": {
   "name": "Tony Lee",
-  "number_of_win": 3,
-  "number_of_lose": 0,
-  "average_winning_time": 145,
-  "percentage_winning": 100
+  "number_of_win": 5,
+  "number_of_lose": 1,
+  "average_winning_time": 108.4,
+  "percentage_winning": 83.33333333333334
  },
  "youu": {
   "name": "12",
-  "number_of_win": 13,
-  "number_of_lose": 11,
-  "average_winning_time": 42.92307692307692,
-  "percentage_winning": 54.166666666666664
+  "number_of_win": 38,
+  "number_of_lose": 16,
+  "average_winning_time": 21,
+  "percentage_winning": 70.37037037037037
  },
  "you": {
   "name": "hi",
-  "number_of_win": 9,
-  "number_of_lose": 15,
-  "average_winning_time": 54.22222222222222,
-  "percentage_winning": 37.5
+  "number_of_win": 14,
+  "number_of_lose": 41,
+  "average_winning_time": 53.214285714285715,
+  "percentage_winning": 25.454545454545453
  }
 }
