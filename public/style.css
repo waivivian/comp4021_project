@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Abel&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Dosis:wght@700&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&family=Calligraffitti&display=swap');
+@font-face {
+    font-family: 'Rocher';
+    src: url(https://assets.codepen.io/9632/RocherColorGX.woff2);
+  }
 :root {
     --material-icons-color: black;
     --field-color: gray;
@@ -170,7 +174,8 @@ button.icon:active {
     padding: 0 20px;
 }
 #title {
-    font-family: Abel, sans-serif;
+    font-family: Rocher;
+    base-palette: 6;
     font-size: 300%;
     text-transform: uppercase;
     color: var(--title-color);
