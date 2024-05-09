@@ -58,6 +58,10 @@ function rest(time){
 };
 
 function restforever(){
+    clearTimeout(end_timeout);
+	rest_timeout = rest(4000);
+	start_timeout = rest_timeout.timeout;
+	generate_food_timeout = rest_timeout.foodtimeout;
 	clearTimeout(start_timeout);
 	clearTimeout(generate_food_timeout);
 
