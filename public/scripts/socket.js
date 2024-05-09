@@ -111,7 +111,19 @@ const Socket = (function() {
             CharacterSelectionPanel.update(image);
         });
 
-
+        // This function is used when a player have its opponent disconnected
+        socket.on("restart game due to disconnected_oppo",() => {
+            //forget about previous player
+            alert("Your opponent is disconnected! Now you will need to wait for another opponent.");
+            console.log(":( my oppo user quit");
+            oppo_user = null;
+            oppo_character_id = null;
+            GamePanel.end_game();
+            WaitingOpponentPanel.show();
+            //GamePanel.hide();
+            CharacterSelectionPanel.hide();
+            socket.emit("available to match with another user", own_username);
+        });
 
 	
         socket.on("food type generated",(food_type_generated) => {
@@ -263,8 +275,11 @@ const Socket = (function() {
 	};
     // This function disconnects the socket from the server
     const disconnect = function() {
-        console.log(own_username+"disconnected");
-        socket.disconnect();
+        if (oppo_user){ // if your oppo_user does not sign out as well
+            console.log(own_username+"disconnected",oppo_user["username"]);
+            socket.emit("notify oppo user about disconnect",oppo_user["username"]); // disconnect with oppo user
+        }
+        socket.disconnect(); // disconnect with server
         socket = null;
         own_character_id = null;
         own_username = null;
@@ -287,6 +302,8 @@ const Socket = (function() {
         socket.emit("available to match with another user", own_username);
     };
 
+
+
     // This function sends a post message event to the server
     /*const postMessage = function(content) {
         if (socket && socket.connected) {
@@ -300,6 +317,6 @@ const Socket = (function() {
             socket.emit("type message");
         }
     };*/
-    return { getSocket, connect, helpChangeOppoImage, ready,  disconnect, cal_rank, restart_game,signal,restforever};
+    return { getSocket, connect, helpChangeOppoImage, ready,  disconnect, cal_rank, restart_game, signal,restforever};
 	
 })();

@@ -298,7 +298,7 @@ canvas {
     height: calc(100% - 80px);
     margin-top: 80px;
     width: 100%;
-    background: rgb(200, 64, 200);
+    background: rgb(200, 64, 200, 0.4);
 }
 
 #waiting-text {

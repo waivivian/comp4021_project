@@ -285,6 +285,17 @@ io.on("connection", (socket) => {   //this socket is browser
         }
     });
 
+    socket.on("notify oppo user about disconnect",(notify_user)=>{
+        console.log("gggggg",notify_user);
+        // notify the oppo user about the signout of the other user
+        if(sockets[notify_user]){ // this user exists in socket list (in general should be true)
+            if(onlineUserList[notify_user]){ // this user exists in onlineUser list (in general should be true)
+                sockets[notify_user].emit("restart game due to disconnected_oppo"); // notify the user to restart game as the oppo_user is gone
+            } 
+        }
+
+    });
+
     // allow newly sign in user to know the existing user
     socket.on("get users", () => { // send to browser(socket)
         if(Object.keys(availableUserList).length >  1){ // there are other user in this list

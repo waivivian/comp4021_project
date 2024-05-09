@@ -14,7 +14,6 @@ const Timer = (function() {
 
 
     const countDown = function() {
-
         timeRemaining = timeRemaining - 1;
 		element.text(timeRemaining);
 		if (timeRemaining > 0) timer = setTimeout(countDown, 1000);
