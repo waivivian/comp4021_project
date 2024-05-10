@@ -4,15 +4,8 @@ const Timer = (function() {
 	let timeRemaining = initialTime;
 	let timer;
 
-    // This is the sprite object of the player created from the Sprite module.
     const element = $("#timeRemaining");
     element.text(timeRemaining);
-	
-	
-
-    // The sprite object is configured for the player sprite here.
-    
-
 
     const countDown = function() {
         timeRemaining = timeRemaining - 1;
@@ -37,8 +30,7 @@ const Timer = (function() {
     };
 
 	const getTimeUsed = function(){
-		
-		
+
 		let timeUsed = initialTime - timeRemaining;
 		return timeUsed;
 	

@@ -130,11 +130,9 @@ const CharacterSelectionPanel = (function() {
             character.addEventListener('click', () => {
                 sounds.select.play();
                 characterId = character.id;
-                console.log(characterId);
                 // change the chosen-character image to the  selected character's image
                 selected_image_src = document.getElementById(characterId).childNodes[1].src;
                 $("#own-chosen-character-image").attr("src",selected_image_src);
-                console.log("selected_image_src",selected_image_src.substring(selected_image_src.lastIndexOf('/') + 1));
                 Socket.helpChangeOppoImage(selected_image_src.substring(selected_image_src.lastIndexOf('/') + 1));  //don't pass the local path to server as well
             });
         });
@@ -220,11 +218,9 @@ const UserPanel = (function() {
     // This function updates the user panel
     const update = function(user) {
         if (user) {
-            //$("#user-panel .user-avatar").html(Avatar.getCode(user.avatar));
             $("#user-panel .user-name").text(user.name);
         }
         else {
-            //$("#user-panel .user-avatar").html("");
             $("#user-panel .user-name").text("");
         }
     };
@@ -241,22 +237,10 @@ const GamePanel = (function() {
             lose: new Audio("./sound/lose_sound.wav"),
             eat: new Audio("./sound/eating_sound.wav"),
     };
-	/*
-    let resttimeout = null;
-    let endtimeout = null;
-    let timeout = null;
-	*/
+
     // This function initializes the UI
     const initialize = function() {
-        // Hide it
-        //const cv = $("canvas").get(0);
-        //context = cv.getContext("2d");
-        /*let table_image = new Image();
-        table_image.onload = function(){
-            context.drawImage(table_image,
-                90, 90,100,50);
-        };*/
-        //table_image.src = "./image/table.png";
+ 	;
     };
 
     // This function shows the form with the user
@@ -283,18 +267,7 @@ const GamePanel = (function() {
         oppo_player.back();
     };
 
-/*
-
-    const showWinner = function(playerno) {
-        $("#result").text(playerno);
-        $("#gameover-container").show(); 
-    }
-
-*/
-
-
     // This function updates the user panel
-	//done
     const update = function(own_character_id, oppo_character_id, own_name, oppo_name) {
 		console.log("update");
         // generate player objects for 2 player 
@@ -302,13 +275,10 @@ const GamePanel = (function() {
         sounds.background.play()
         own_player = Player(own_name ,  1, own_character_id);
         oppo_player = Player(oppo_name , 2 , oppo_character_id);
-        //Socket.generate_timeout_foodtype(); // generate food for the first round
         setTimeout(Timer.countDown, 1000); //start the timer ????
     };
 
     const showWinner = function(playerno) {
-		console.log("showWinner");
-        //$("#result").text(playerno);
         sounds.background.pause();
         sounds.background.currentTime = 0; // Reset the playback position to the beginning
         $(document).off("keydown");
@@ -339,7 +309,6 @@ const GamePanel = (function() {
     }
 	
     const end_game= function(){
-		console.log("end_game");
         sounds.background.pause();
         sounds.background.currentTime = 0; // Reset the playback position to the beginning
         Cover.close();
@@ -372,18 +341,12 @@ const GamePanel = (function() {
     }
 	
    const start = function(){
-        //Socket.generatefoodtype();//	this maybe wrong
-        //Food.update();
-		console.log("start");
-
         Cover.open();
-		$(document).off("keydown");		
-        Cover.open();	
+	$(document).off("keydown");		
         $(document).on("keydown", function(e){ 
             if (e.keyCode == 32){ // player 1 move using sapce bar
                 own_player.move();
                 $(document).off("keydown") // only the first movement of user will be detected for each time the cover open
-                console.log("I moved");
                 Socket.signal(own_player.getUsername());
             }
         });
@@ -391,7 +354,6 @@ const GamePanel = (function() {
 	
 	
 	const ownScored = function(){
-		console.log("ownScored");
 		setTimeout(()=>{
 			sounds.eat.play();
 			Food.eaten();
@@ -403,15 +365,11 @@ const GamePanel = (function() {
 			if (oppo_player.isUsingBoost()) oppo_player.usedBoost();
 			let total_effect = Food.getFoodtype().effect * ratio;
 			own_player.update(total_effect);
-			
-			
-//            own_player.update(Food.getFoodtype().effect * ratio);
-            //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
+
             if (own_player.getScore() >= 5){
 				Timer.stop();
 				showWinner(1); // show winning message of player 1
 				restforever();
-				///////////////////////////
 				return false;   
 			}
             Cover.close();
@@ -422,7 +380,6 @@ const GamePanel = (function() {
 
 	
 	const oppoScored = function(){
-		console.log("oppoScored");
 		oppo_player.move();
 		setTimeout(()=>{
 			sounds.eat.play();
@@ -435,9 +392,7 @@ const GamePanel = (function() {
 			if (own_player.isUsingBoost()) own_player.usedBoost();
 			let total_effect = Food.getFoodtype().effect * ratio;
 			oppo_player.update(total_effect);
-			
-            //oppo_player.update(Food.getFoodtype().effect * ratio);
-            //Socket.update_oppo_own_move(own_player.getScore()); // update oppo about own move
+
             if (oppo_player.getScore() >= 5){
 				Timer.stop();
 				showWinner(2); // show winning message of player 1
@@ -449,14 +404,12 @@ const GamePanel = (function() {
 	} 
 	
 	const restforever = function(){
-		console.log("restforever");
 		Socket.restforever();
 	
 		
 	}
 	
 	const noOneEat = function(){
-		console.log("noOneEat");
 		Cover.close();
         setTimeout(Food.eaten,1000); // why need set time out here?
         //rest(3000);
@@ -464,21 +417,17 @@ const GamePanel = (function() {
 	}
 
     const rest = function(){ 
-		console.log("rest");
         $(document).off("keydown");
-		$(document).on("keydown", function(e){ 
+	$(document).on("keydown", function(e){ 
             if (e.keyCode == 40){ // player 1 move using sapce bar
-				if(own_player.isRemainingBoost() && !own_player.isUsingBoost()) Socket.x2boost_uesd(own_player.getUsername());
+		if(own_player.isRemainingBoost() && !own_player.isUsingBoost()) Socket.x2boost_uesd(own_player.getUsername());
             }
         });
-        // start the game
-        //let timeout = setTimeout(start,time);
 		return null;
     };
 	
 	
 	const ownUse = function(){
-		console.log("1");
 		own_player.useBoost();
 		
 		
@@ -487,7 +436,6 @@ const GamePanel = (function() {
 	
 	
 	const oppoUse = function(){
-		console.log("2");
 		oppo_player.useBoost();
 		
 	} 
@@ -498,11 +446,9 @@ const GamePanel = (function() {
 
 const GameOverPanel = (function() {
     const sounds = {
-        //background: new Audio("./sound/character_select_background.mp3"),        
-        //select: new Audio("./sound/select.mp3"),        
-        //versus: new Audio("./sound/versus.mp3")
+ 
     };
-    // This function initializes the UI
+
     const initialize = function() {
         // Hide it
         $("#game-over-page").hide();
@@ -530,7 +476,6 @@ const GameOverPanel = (function() {
                 text = "You lose but you still did a good job and obtained "+ String(stat)+" hearts. Next time you should win!";
             }
         }
-        console.log(text);
 
         $("#game-stat").text(text);
         $("#game-over-page").show();
@@ -549,14 +494,11 @@ const GameOverPanel = (function() {
     const update = function(game_rank) {
 
         let rank_table_body = $("#rank-table-body");
-                //let rank_table_body = $("#rank-table-body");
-
         let game_rank_result = JSON.parse(game_rank);
         console.log(game_rank_result);
         var rank = 0;
         let table_content="";
         for (var key in game_rank_result) {
-            console.log(rank);
             rank++;
             table_content+="<tr><td>"+String(rank)
             +"</td><td>"+game_rank_result[key]["name"]
@@ -579,8 +521,6 @@ const UI = (function() {
     // This function gets the user display
     const getUserDisplay = function(user) {
         return $("<div class='field-content row shadow'></div>")
-            //.append($("<span class='user-avatar'>" +
-			 //       Avatar.getCode(user.avatar) + "</span>"))
             .append($("<span class='user-name'>" + user.name + "</span>"));
     };
 
