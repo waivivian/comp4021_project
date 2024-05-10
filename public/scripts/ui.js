@@ -270,6 +270,9 @@ const GamePanel = (function() {
         $("#game-panel").hide();
     };
 
+    const own_moveforward = function(){ // used when I fail to catch the food
+        own_player.move();
+    };
     const own_moveback = function(){ // used when I fail to catch the food
         own_player.back();
     };

@@ -600,7 +600,8 @@ canvas {
       }
 
     .rank-table {
-        width: 80vw;
+        /*width: 80vw;*/
+	width: 100vw;
         margin: 0 auto;
         border-spacing: 0;
         border-radius: 10px;
@@ -610,7 +611,8 @@ canvas {
       .rank-table th,
       .rank-table td {
         font-family: Arial, sans-serif;
-        padding: 20px 10px;
+        /*padding: 20px 10px;*/
+	padding: 10px 10px;      
         text-align: center;
         border-bottom: 1px solid #ddd;
       }
@@ -644,11 +646,11 @@ canvas {
         font-family: 'Calligraffitti', cursive;
         font-weight: 700;
         font-size: 2rem;
-        position: absolute;
+        /*position: absolute;*/
         text-shadow: -15px 5px 20px #ced0d3;
         transform: translate(-50%,-50%);
         letter-spacing: 0.02em;
-        text-align: center;
+        /*text-align: center;*/
         color: #F9f1cc;
         text-shadow: 2px 2px 0px #FFB650, 
           4px 4px 0px #FFD662, 
