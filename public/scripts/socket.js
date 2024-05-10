@@ -254,21 +254,6 @@ const Socket = (function() {
         socket.emit("times up");
     };
 
-    // This function sends a post message event to the server
-    /*const postMessage = function(content) {
-        if (socket && socket.connected) {
-            socket.emit("post message", content);
-        }
-    };
-
-    // This function sends a type message event to the server
-    const typeMessage = function() {
-        if (socket && socket.connected) {
-            socket.emit("type message");
-        }
-    };*/
-
-	
 	
 	const x2boost_uesd = function(){
 		
