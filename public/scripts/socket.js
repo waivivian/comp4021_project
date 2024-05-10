@@ -155,11 +155,11 @@ const Socket = (function() {
 		
         socket.on("move back without food", (username)=>{
 			if(username === own_name){
-				GamePanel.own_moveforward();
+				//GamePanel.own_moveforward();
 				setTimeout(GamePanel.own_moveback, 1000);
 			}
 			else{
-                		GamePanel.oppo_moveforward();	
+                GamePanel.oppo_moveforward();	
 				setTimeout(GamePanel.oppo_moveback, 1000);
 			}
     	});
@@ -169,14 +169,17 @@ const Socket = (function() {
 		});
 		
         socket.on("disconnect due to reload", (disconnected_username)=>{
-            console.log(disconnected_username,oppo_user["username"]);
-            if (disconnected_username == oppo_user["username"]){ // if your oppo_user does not sign out as well
-                console.log("byeeee"+own_username+"disconnected");
-                socket.emit("notify oppo user about disconnect",own_username, false); // notify oneself as the disconnect user cannot notify you
-            }
-            oppo_user = null;
-            oppo_character_id = null;
+            if (oppo_user["username"]){
+                console.log("hhhh",disconnected_username,oppo_user["username"]);
+                if (disconnected_username == oppo_user["username"]){ // if your oppo_user does not sign out as well
+                    console.log("byeeee"+own_username+"disconnected");
+                    socket.emit("notify oppo user about disconnect",own_username, false); // notify oneself as the disconnect user cannot notify you
+                }
+                oppo_user = null;
+                oppo_character_id = null;
             GamePanel.end_game();
+            }
+
         });
 		
 		socket.on("start", ()=>{

@@ -4,6 +4,7 @@
     <title>Food Frenzy: Dog vs Cat</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -20,7 +21,7 @@
                     <span class="user-name">-</span>
                 </div>
                 <button id="signout-button" class="icon"><span class="material-icons">logout</span></button>
-                <button onclick="UserPanel.openInstructionBox()">Open Requirement Box</button>
+                <button onclick="UserPanel.openInstructionBox()"><i class="fa fa-info-circle" style="font-size:24px;color:white"></i> &nbsp <span style ="font-size: large; color: white">Instruction Box</span> </button>
             </div>
         </div>
 
@@ -59,22 +60,22 @@
                             A pink heart (if you have any) will be reducded when you eat <br> 
                             <div style="display:inline-flex;">a battery   <image src="image/battery.svg" height="100" width="100" /></div>
                         </li>
-			<li> There is a (cheating) boosting tool<br> 
-				<div style="display:inline-flex;"> 
-					<svg width="100" height="50" xmlns="http://www.w3.org/2000/svg"> 
-						<circle cx="25" cy="25" r="25"  fill="blue" />
-						<text x="10" y="35" fill="red" font-size="30px" font-weight="900" >x2</text> 
-					</svg> 
-					that you can use by pressing the arrow down key<br> 
-				</div> 
-				to double your heart obtained or reduced if you succesfully eat the food later when the cover is open<br> 
-				After you have used that tools it will become this<br>
-				<div style="display:inline-flex;"> 
-					<svg width="100" height="50" xmlns="http://www.w3.org/2000/svg"> 
-						<circle cx="25" cy="25" r="25"  fill="grey" /> 
-						<text x="10" y="35" fill="red" font-size="30px" font-weight="900" >x2</text> 
-					</svg> that you cannot use it again later throughout the game<br>
-			</li>
+			            <li> There is a (cheating) boosting tool<br> 
+				            <div style="display:inline-flex;"> 
+					            <svg width="100" height="50" xmlns="http://www.w3.org/2000/svg"> 
+						            <circle cx="25" cy="25" r="25"  fill="blue" />
+						            <text x="10" y="35" fill="red" font-size="30px" font-weight="900" >x2</text> 
+					            </svg> 
+					            that you can use by pressing the arrow down key<br> 
+				            </div> 
+				            to double your heart obtained or reduced if you succesfully eat the food later when the cover is open<br> 
+				            After you have used that tools it will become this<br>
+				            <div style="display:inline-flex;"> 
+					            <svg width="100" height="50" xmlns="http://www.w3.org/2000/svg"> 
+						            <circle cx="25" cy="25" r="25"  fill="grey" /> 
+						            <text x="10" y="35" fill="red" font-size="30px" font-weight="900" >x2</text> 
+					            </svg> that you cannot use it again later throughout the game<br>
+			            </li>
                     </ul>
 
                 </li>

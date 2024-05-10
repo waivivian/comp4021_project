@@ -280,7 +280,6 @@ io.on("connection", (socket) => {   //this socket is browser
                 io.emit("disconnect due to reload", username);
             }
         }
-        signout_button_triggered = false;
         restforever(); // stop to generate food and open cover
         if (socket.request.session.user) { // if this information exist get the use's information
             user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
