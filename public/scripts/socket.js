@@ -15,7 +15,6 @@ const Socket = (function() {
     // This function connects the server and initializes the socket
     const connect = function() {
         socket = io();
-        console.log("socket.....",socket);
         // Wait for the socket to connect successfully
         socket.on("connect", () => {
             // Get the online user list
@@ -29,83 +28,32 @@ const Socket = (function() {
             oppo_user = JSON.parse(oppoUsers);
             WaitingOpponentPanel.hide();
             CharacterSelectionPanel.show();
-            //onlineUsers = JSON.parse(onlineUsers);
-            // Show the online users
-            //OnlineUsersPanel.update(onlineUsers);
         });
 
         // Set up the update oppo character id event
         socket.on("update oppo character id", (oppo_selected_character_id) => {
             oppo_character_id = oppo_selected_character_id;
             // Add the online user
-            console.log("oppo_character_id",oppo_user["name"],oppo_character_id);
         });
 
         // Set up the start game event
         socket.on("start game", (oppo_selected_character_id) => {
             oppo_character_id = oppo_selected_character_id;
             WaitingOpponentPanel.hide();
-            console.log("start oppo_character_id",oppo_character_id);
             GamePanel.update(own_character_id,oppo_character_id, own_name, oppo_user["name"]);
-            //////go to game panel!!!!!!!!
-            ////
-            ////
-            ////
         });
 
-        // Set up the update oppo score event
-        /*socket.on("update oppo move and score", () => {
-            GamePanel.update_oppo();
-        });*/
+
 
         socket.on("own information", (own_user) => {
-            // Get the online user list
-            //socket.emit("get users");
+
             const {username, name} = JSON.parse(own_user);
             own_username = username;
             own_name = name;
-            // Get the chatroom messages
-            //socket.emit("get messages");
         });
 
-        /*// Set up the add user event
-        socket.on("add user", (user) => {
-            user = JSON.parse(user);
-            // Add the online user
-            OnlineUsersPanel.addUser(user);
-        });
 
-        // Set up the remove user event
-        socket.on("remove user", (user) => {
-            user = JSON.parse(user);
-
-            // Remove the online user
-            OnlineUsersPanel.removeUser(user);
-        });
-        */
-        /*// Set up the messages event
-        socket.on("messages", (chatroom) => {
-            chatroom = JSON.parse(chatroom);
-
-            // Show the chatroom messages
-            ChatPanel.update(chatroom);
-        });
-
-        // Set up the add message event
-        socket.on("add message", (message) => {
-            message = JSON.parse(message);
-
-            // Add the message to the chatroom
-            ChatPanel.addMessage(message);
-        });
-
-        // Set up the type message event
-        socket.on("type message", (name) => {
-            if (name != Authentication.getUser().name) { // only show if not the user itself is typing
-                ChatPanel.addTyping(name);
-            }
-        });
-        */
+  
         // Update the oppo image of this browser
         socket.on("update oppo image",(image) => {
             CharacterSelectionPanel.update("./image/"+image);
@@ -115,13 +63,12 @@ const Socket = (function() {
         socket.on("restart game due to disconnected_oppo",() => {
             //forget about previous player
             alert("Your opponent is disconnected! Now you will need to wait for another opponent.");
-            console.log(":( my oppo user quit");
+
             oppo_user = null;
             oppo_character_id = null;
             GamePanel.end_game();
-            console.log(":( my oppo user quit");
+
             WaitingOpponentPanel.show();
-            //GamePanel.hide();
             CharacterSelectionPanel.hide();
             socket.emit("available to match with another user", own_username);
         });
@@ -129,7 +76,6 @@ const Socket = (function() {
 	
         socket.on("food type generated",(food_type_generated) => {
             Food.update(food_type_generated);
-            //console.log("new food");
         });
 
         socket.on("added to available list", () => {
@@ -170,9 +116,7 @@ const Socket = (function() {
 		
         socket.on("disconnect due to reload", (disconnected_username)=>{
             if (oppo_user["username"]){
-                console.log("hhhh",disconnected_username,oppo_user["username"]);
                 if (disconnected_username == oppo_user["username"]){ // if your oppo_user does not sign out as well
-                    console.log("byeeee"+own_username+"disconnected");
                     socket.emit("notify oppo user about disconnect",own_username, false); // notify oneself as the disconnect user cannot notify you
                 }
                 oppo_user = null;
@@ -185,15 +129,7 @@ const Socket = (function() {
 		socket.on("start", ()=>{
 			GamePanel.start();
 		});
-//////////////////////////////////		
 		socket.on("update", (username)=>{
-			/*
-			console.log(username === own_name);
-			console.log(username);
-			console.log(own_name);
-			console.log(oppo_character_id);
-			console.log(oppo_user);
-			*/
 
 			if(username === own_name){
 				
@@ -233,7 +169,6 @@ const Socket = (function() {
 
     // This function will send message to notify server to help us notify our opponent that we have select our character
     const helpChangeOppoImage = function(selected_image_src) {
-        console.log("oppo_user",oppo_user);
         if (oppo_user != null){
             socket.emit("change oppo image", JSON.stringify({
                 to: oppo_user["username"],
@@ -247,7 +182,6 @@ const Socket = (function() {
     const ready = function(selected_character_id) {
         own_character_id = selected_character_id; //finalise own chosen character
         if (oppo_character_id != null){ // we can start the game as opponent is also ready
-            //socket.emit("chosen character id", selected_character_id);
             socket.emit("game can start", JSON.stringify({ // onlty one of the competining browser will emit this
                 to: oppo_user["username"],
                 selected_character_id: selected_character_id
@@ -274,27 +208,7 @@ const Socket = (function() {
     
     // This function will notify server to tell opposite browser about my move and my updated score
 	
-	/*
-    const update_oppo_own_move = function() {
-        if (oppo_user != null){
-            socket.emit("update oppo about my move", oppo_user["username"],);
-        }
-    };
-    
-    const generatefoodtype = function() {
-        if (socket){
-            socket.emit("generate food type");
-        }
-    };
 
-    const generate_timeout_foodtype = function() {
-        if (socket){
-            socket.emit("generate food type due to timeout");
-        }
-    };    
-	
-*/
-///////////////////////////////////////////////////////	
 	const signal = function(username){ // a signal tell server I move to the food
 		if (socket){
 			socket.emit("signal",username);
@@ -304,8 +218,7 @@ const Socket = (function() {
 	
 	const restforever = function(){ // call when someone win
 		if (socket){
-		socket.emit("restforever");
-		
+		socket.emit("restforever");	
 		}
 	};
     // This function disconnects the socket from the server
