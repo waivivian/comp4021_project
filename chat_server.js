@@ -141,13 +141,9 @@ app.post("/signin", (req, res) => {
     // Get the JSON data from the body
     const { username, password } = req.body;
 
-    //
-    // D. Reading the users.json file
-    //
+
     const users = JSON.parse(fs.readFileSync("./data/users.json"));
-    //
-    // E. Checking for username/password
-    //
+
     if (!(username in users)){
         res.json({
             status: "error",
@@ -171,9 +167,7 @@ app.post("/signin", (req, res) => {
         name: users[username]["name"]
         
     }/* user account */;
-    //
-    // G. Sending a success response with the user account
-    //
+
     res.json({ status: "success", 
         user:{
             username: username,
@@ -182,18 +176,16 @@ app.post("/signin", (req, res) => {
         }
     });
 
-    // Delete when appropriate
-    //res.json({ status: "error", error: "This endpoint is not yet implemented." });
+
+ 
 });
 // Handle the /validate endpoint
 app.get("/validate", (req, res) => {
 
-    //
-    // B. Getting req.session.user
-    //
+ 
     
     if (req.session.user === undefined) {
-        /////////////////////////////////i don't know when to have error
+   
         res.json({
             status: "error",
             error: "username not exits"
@@ -202,9 +194,7 @@ app.get("/validate", (req, res) => {
     }
     let { username, name } = req.session.user;
 
-    //
-    // D. Sending a success response with the user account
-    //
+ 
     res.json({ status: "success", 
         user:{
             username: username,
@@ -212,23 +202,17 @@ app.get("/validate", (req, res) => {
         
         }
     });
-    // Delete when appropriate
-    //res.json({ status: "error", error: "This endpoint is not yet implemented." });
+
 });
 
 // Handle the /signout endpoint
 app.get("/signout", (req, res) => {
 
-    //
-    // Deleting req.session.user
-    //
+ 
     delete req.session.user;
-    //
-    // Sending a success response
-    //
+
     res.json({ status: "success"});
-    // Delete when appropriate
-    //res.json({ status: "error", error: "This endpoint is not yet implemented." });
+
 });
 
 
@@ -252,7 +236,7 @@ io.use((socket, next) => { //for socket server it doesn't use session if you don
     chatSession(socket.request, {}, next);
 });
 
-//create a connection when someone sign in (reload will diconnect and connect again)
+
 io.on("connection", (socket) => {   //this socket is browser
     let user = null; 
     if (socket.request.session.user) { // if this information exist get the use's information
@@ -263,13 +247,10 @@ io.on("connection", (socket) => {   //this socket is browser
         sockets[username]=socket;
         // add the usr into the list of online user
         onlineUserList[username] = user;
-        //console.log("onlineUserList",onlineUserList);
+
         availableUserList[username] = user;
         socket.emit("own information", JSON.stringify(user));
-        //console.log("availableUserList",availableUserList);
-        //console.log(onlineUserList);
-        // help everyone to update even for those who already connected to servr
-        //io.emit('add user', JSON.stringify(user)); // not use socket but io because socket is dedicate to each user but io is for broadcasting
+
     }
 
     //when user sign out, disconnect but still in this connection event as we still need to use this socket variable from the connection event  
@@ -370,17 +351,6 @@ io.on("connection", (socket) => {   //this socket is browser
 		restforever();
 	});
 
-    /*socket.on("update oppo about my move",(oppo_user_name)=>{
-        if (sockets[oppo_user_name]){ // if targeted socket exists
-            sockets[oppo_user_name].emit("update oppo move and score");
-        }
-    });
-
-    socket.on("get messages", () => {
-        // Send the chatroom messages to the browser
-        const chatroom  = JSON.parse(fs.readFileSync("./data/chatroom.json"));
-        socket.emit("messages", JSON.stringify(chatroom ));
-    });*/
 
     socket.on("get ranking", (win_username, lose_username, win_name, lose_name, time_used) => {
         // read the game rank records
@@ -460,46 +430,7 @@ io.on("connection", (socket) => {   //this socket is browser
     
     //  This is to generate a food type and broadcast to all user food is generated at server such that both users can see the same food
 	
-/*
-    socket.on("generate food type", () => { 
-        //  Broadcast the type of food being generated to all playes 
-        const foodtype = {
-            cake:{ name:"cake" , effect:1 },
-            fruit:{ name:"fruit" , effect:1 },
-            battery : { name:"battery" , effect:-1 }
-        };
-        const foodtypeKey = Object.keys(foodtype)
-        const random = Math.floor(Math.random() * foodtypeKey.length);
-        const randomFoodtypeKey = foodtypeKey[random];
-        const randomFoodtype = foodtype[randomFoodtypeKey];
-        io.emit("food type generated", randomFoodtype);
 
-    });
-   
-    //  This is to generate a food type due to timeout but not eaten by player and broadcast to all user food is generated at server such that both users can see the same food
-    socket.on("generate food type due to timeout", () => {
-        console.log(food_already_generated); 
-        if (!food_already_generated){ // no one have notify the server about the timeout yet
-            
-            //  Broadcast the type of food being generated to all playes 
-            food_already_generated = true;
-            const foodtype = {
-                cake:{ name:"cake" , effect:1 },
-                fruit:{ name:"fruit" , effect:1 },
-                battery : { name:"battery" , effect:-1 }
-            };
-            const foodtypeKey = Object.keys(foodtype)
-            const random = Math.floor(Math.random() * foodtypeKey.length);
-            const randomFoodtypeKey = foodtypeKey[random];
-            const randomFoodtype = foodtype[randomFoodtypeKey];
-            io.emit("food type generated", randomFoodtype);
-            console.log("food type generated", randomFoodtype);
-        }
-        else{ // another player already notify the server about the timeout and to update the food
-            food_already_generated = false;
-        }
-    });
-*/
     socket.on("available to match with another user", (user_name) => {
         console.log("ava",availableUserList);
         if(sockets[user_name]){ // this user exists in socket list (in general should be true)
@@ -514,11 +445,9 @@ io.on("connection", (socket) => {   //this socket is browser
     });
 	
 	
-	
-	
 	socket.on("x2boost used", (username) => {
 		
-		io.emit("update the boost" , username);
+	io.emit("update the boost" , username);
 
 
 	});
