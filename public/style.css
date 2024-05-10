@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Abel&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Dosis:wght@700&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&family=Calligraffitti&display=swap');
+@import url('https://fonts.cdnfonts.com/css/cute');
 @font-face {
     font-family: 'Rocher';
     src: url(https://assets.codepen.io/9632/RocherColorGX.woff2);
@@ -11,9 +12,9 @@
     --field-background: white;
     --field-background-hover: #eee;
     --input-background: #eee;
-    --overlay-background: rgba(245, 158, 114, 0.8);
-    --overlay-caption-color: #eb4a40;
-    --overlay-content-background: linear-gradient(white, #fde0c5);
+    --overlay-background: rgba(149, 142, 255, 0.5);
+    --overlay-caption-color: #9e2ffe;
+    --overlay-content-background: linear-gradient(white, #f4fdc5);
 
     --header-background: linear-gradient(to right, #eb4a40, #f59e72);
     --game-panel-background: linear-gradient(rgb(64, 206, 227), #fde0c5);
@@ -26,7 +27,7 @@
     --font-color: black;
     --date-color: gray;
 
-    --register-form-background: linear-gradient(#fde0c5, #facba6);
+    --register-form-background: linear-gradient(#f7f4a1, #fbf8a6);
     --warning-color: red;
 
     --button-color: white;
@@ -77,8 +78,8 @@ body {
     background: var(--overlay-background);
 }
 .overlay .caption {
-    
-    font-size: 120%;
+    font-family: 'Cute', sans-serif;
+    font-size: 150%;
     color: var(--overlay-caption-color);
 }
 .overlay .content {
