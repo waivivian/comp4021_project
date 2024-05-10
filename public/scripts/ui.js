@@ -168,7 +168,7 @@ const CharacterSelectionPanel = (function() {
 
     // This function updates the user panel
     const update = function(selected_image_src) {
-        $("#enemy-chosen-character-image").attr("src","http:/localhost:8000/image/cat1head.png");
+        $("#enemy-chosen-character-image").attr("src",selected_image_src);
     };
 
     return { initialize, show, hide, update };
