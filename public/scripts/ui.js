@@ -134,8 +134,8 @@ const CharacterSelectionPanel = (function() {
                 // change the chosen-character image to the  selected character's image
                 selected_image_src = document.getElementById(characterId).childNodes[1].src;
                 $("#own-chosen-character-image").attr("src",selected_image_src);
-                console.log("selected_image_src",selected_image_src);
-                Socket.helpChangeOppoImage(selected_image_src);  
+                console.log("selected_image_src",selected_image_src.substring(selected_image_src.lastIndexOf('/') + 1));
+                Socket.helpChangeOppoImage(selected_image_src.substring(selected_image_src.lastIndexOf('/') + 1));  //don't pass the local path to server as well
             });
         });
         // Click event for the start game button

@@ -108,7 +108,7 @@ const Socket = (function() {
         */
         // Update the oppo image of this browser
         socket.on("update oppo image",(image) => {
-            CharacterSelectionPanel.update(image);
+            CharacterSelectionPanel.update("./image/"+image);
         });
 
         // This function is used when a player have its opponent disconnected
