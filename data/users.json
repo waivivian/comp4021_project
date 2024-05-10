@@ -22,5 +22,13 @@
  "youuuuuuuu": {
   "name": "hi",
   "password": "$2b$10$ZdXdMhYkL4AgMjhM6KRr8elrCkbub9fvPtrjlsT5Bx3t3WIgyuZvm"
+ },
+ "bye": {
+  "name": "bye",
+  "password": "$2b$10$/tatUsA73cEWOtBLdSV8VuxrKkm4sDroX3PI2kQMIwII.OOQus4uq"
+ },
+ "me": {
+  "name": "me",
+  "password": "$2b$10$Y4EeClVsjuSyXQdd4Xo2o.UdAbn07MwFy5gLIxMhX.s2OHO/bPRN2"
  }
 }

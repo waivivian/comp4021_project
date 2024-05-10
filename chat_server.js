@@ -256,6 +256,7 @@ io.use((socket, next) => { //for socket server it doesn't use session if you don
 io.on("connection", (socket) => {   //this socket is browser
     let user = null; 
     if (socket.request.session.user) { // if this information exist get the use's information
+        console.log("ava",availableUserList);
         user = socket.request.session.user;
         const { username, name } = user;   
         console.log(username+"I am connected");

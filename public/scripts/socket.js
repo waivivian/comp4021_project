@@ -38,7 +38,7 @@ const Socket = (function() {
         socket.on("update oppo character id", (oppo_selected_character_id) => {
             oppo_character_id = oppo_selected_character_id;
             // Add the online user
-            console.log("oppo_character_id",oppo_character_id);
+            console.log("oppo_character_id",oppo_user["name"],oppo_character_id);
         });
 
         // Set up the start game event
