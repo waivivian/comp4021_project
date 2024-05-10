@@ -30,7 +30,6 @@ const Authentication = (function() {
             body: data
         })
         .then((res)=>{
-            console.log("whyyyyy"); //why is this not printed
             return res.json();
         })
         // F. Processing any error returned by the server
