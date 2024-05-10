@@ -492,7 +492,7 @@ const GamePanel = (function() {
 		
 	} 
 	
-    return { initialize, show, hide, update, end_game , noOneEat , rest , restforever,start , ownScored,oppoScored, ownUse,oppoUse, own_moveback, oppo_moveback, oppo_moveforward};
+    return { initialize, show, hide, update, end_game , noOneEat , rest , restforever,start , ownScored,oppoScored, ownUse,oppoUse,own_moveforward,own_moveback, oppo_moveback, oppo_moveforward};
 })();
 
 
