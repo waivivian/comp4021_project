@@ -8,27 +8,6 @@ const gameScore = function(playerno) {
 
     // The update display function
     const updateDisplay = function(Score) {
-		/*
-        if (increase){
-            // turn a heart to red
-            // Change the fill attribute of the first path element
-            $("#heart"+String(playerno)+String(score)+" path").eq(0).attr("fill","#F44336");
-            // Change the fill attribute of the second path element
-            $("#heart"+String(playerno)+String(score)+" path").eq(1).attr("fill","#C62828");
-            // Change the fill attribute of the third path element
-            $("#heart"+String(playerno)+String(score)+" path").eq(2).attr("fill","#FF847A");
-        }
-        else{
-            // turn a heart to gray
-            // Change the fill attribute of the first path element
-            $("#heart"+String(playerno)+String(score+1)+" path").eq(0).attr("fill","#CCCCCC");
-            // Change the fill attribute of the second path element
-            $("#heart"+String(playerno)+String(score+1)+" path").eq(1).attr("fill","#808080");
-            // Change the fill attribute of the third path element
-            $("#heart"+String(playerno)+String(score+1)+" path").eq(2).attr("fill","#FFFFFF");
-        }
-    };
-		*/
 		
 		for (let i = 1 ;i <=5;i++){
 			
@@ -69,18 +48,6 @@ const gameScore = function(playerno) {
             score = 0;
         }
 		updateDisplay(score);
-		/*
-        else{
-            if (effect > 0){
-                updateDisplay(true);
-            }
-            else{
-                updateDisplay(false);
-            }
-        }
-		*/
-		
-		
 		
     };
 	
@@ -90,9 +57,6 @@ const gameScore = function(playerno) {
 
 	};
 
-    
-
-    // Return (expose) the required functions
     return {
         update: update,
 		getScore : getScore
