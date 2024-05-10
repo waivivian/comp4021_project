@@ -1,8 +1,3 @@
-// This function defines the Player module.
-// - `ctx` - A canvas context for drawing
-// - `x` - The initial x position of the player
-// - `y` - The initial y position of the player
-// - `gameArea` - The bounding box of the game area
 const Player = function( userName, playerNo, character_id ) {
 
     const username = userName;
@@ -80,22 +75,6 @@ const Player = function( userName, playerNo, character_id ) {
 		return username;
 	};
 	
-	/*
-	$(function (){
-		element.on("animationend", function() {
-
-				// You need to stop the animation here
-				element.css("animation-name", "none");
-			
-			});
-			
-	});
-	
-	
-	const stop = function(){
-		element.css("animation-play-state", "paused");
-	};
-	*/
 	
 	const playerscore = gameScore(playerno);
 	const playerboost = Boost(playerno);
@@ -104,7 +83,7 @@ const Player = function( userName, playerNo, character_id ) {
     // The methods are returned as an object here.
     return {
 		cancel_character_image: cancel_character_image,
-        move: move,
+        	move: move,
 		back: back,
 		update: playerscore.update,
 		getScore : playerscore.getScore,
