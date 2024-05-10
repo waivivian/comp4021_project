@@ -247,16 +247,18 @@ let allow_to_eat = false;
 let end_timeout;
 let start_timeout;
 let generate_food_timeout;
+let signout_button_triggered = false;
 io.use((socket, next) => { //for socket server it doesn't use session if you don't ask for it, we need to explictly ask for the session
     chatSession(socket.request, {}, next);
 });
 
-//create a connection when someone sign in
+//create a connection when someone sign in (reload will diconnect and connect again)
 io.on("connection", (socket) => {   //this socket is browser
     let user = null; 
     if (socket.request.session.user) { // if this information exist get the use's information
         user = socket.request.session.user;
         const { username, name } = user;   
+        console.log(username+"I am connected");
         sockets[username]=socket;
         // add the usr into the list of online user
         onlineUserList[username] = user;
@@ -271,13 +273,18 @@ io.on("connection", (socket) => {   //this socket is browser
 
     //when user sign out, disconnect but still in this connection event as we still need to use this socket variable from the connection event  
     socket.on("disconnect",()=>{
+        if (!signout_button_triggered){ //handle disconnect probably due to reload
+            if (socket.request.session.user) { // if this information exist get the use's information
+                user = socket.request.session.user;
+                const { username, name } = user;   
+                io.emit("disconnect due to reload", username);
+            }
+        }
+        signout_button_triggered = false;
         restforever(); // stop to generate food and open cover
-        console.log("is disconnected!!!!");
         if (socket.request.session.user) { // if this information exist get the use's information
             user = socket.request.session.user;   // this also make use of   user = json.user; // theis will also display user name on right hand corner
             const { username, name } = user; 
-            console.log(username+"is disconnected!!!!");
-
             if (onlineUserList[username]){ // if the user is in the current online user list
                 delete onlineUserList[username];
                 // help everyone to update even for those who already connected to servr
@@ -287,9 +294,9 @@ io.on("connection", (socket) => {   //this socket is browser
         }
     });
 
-    socket.on("notify oppo user about disconnect",(notify_user)=>{
+    socket.on("notify oppo user about disconnect",(notify_user, browser_signout_button_triggered = false)=>{
+        signout_button_triggered = browser_signout_button_triggered;
         restforever(); // stop to generate food and open cover
-        console.log("gggggg",notify_user);
         // notify the oppo user about the signout of the other user
         if(sockets[notify_user]){ // this user exists in socket list (in general should be true)
             if(onlineUserList[notify_user]){ // this user exists in onlineUser list (in general should be true)
@@ -345,7 +352,6 @@ io.on("connection", (socket) => {   //this socket is browser
 
 
 	socket.on("signal",(username) =>{
-		console.log(username);
 		if(allow_to_eat){
 			allow_to_eat=false;
 			////clearTimeout(end_timeout);
@@ -495,6 +501,7 @@ io.on("connection", (socket) => {   //this socket is browser
     });
 */
     socket.on("available to match with another user", (user_name) => {
+        console.log("ava",availableUserList);
         if(sockets[user_name]){ // this user exists in socket list (in general should be true)
             if(onlineUserList[user_name]){ // this user exists in onlineUser list (in general should be true)
                 user = socket.request.session.user;

@@ -168,6 +168,17 @@ const Socket = (function() {
 			GamePanel.rest(); // don't let user to move
 		});
 		
+        socket.on("disconnect due to reload", (disconnected_username)=>{
+            console.log(disconnected_username,oppo_user["username"]);
+            if (disconnected_username == oppo_user["username"]){ // if your oppo_user does not sign out as well
+                console.log("byeeee"+own_username+"disconnected");
+                socket.emit("notify oppo user about disconnect",own_username, false); // notify oneself as the disconnect user cannot notify you
+            }
+            oppo_user = null;
+            oppo_character_id = null;
+            GamePanel.end_game();
+        });
+		
 		socket.on("start", ()=>{
 			GamePanel.start();
 		});
@@ -297,8 +308,7 @@ const Socket = (function() {
     // This function disconnects the socket from the server
     const disconnect = function() {
         if (oppo_user){ // if your oppo_user does not sign out as well
-            console.log(own_username+"disconnected",oppo_user["username"]);
-            socket.emit("notify oppo user about disconnect",oppo_user["username"]); // disconnect with oppo user
+            socket.emit("notify oppo user about disconnect",oppo_user["username"], true); // disconnect with oppo user
         }
         socket.disconnect(); // disconnect with server
         socket = null;
