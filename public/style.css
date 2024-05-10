@@ -207,7 +207,7 @@ button.icon:active {
     width: 50vw;
     max-height: 80vh; /* Set a maximum height for the box */
     padding: 20px;
-    background: #ffffff;
+    background: hsl(60, 70%, 91%);
     border: 1px solid #000000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     z-index: 9999; /* Ensure the requirement box appears on top */
@@ -586,12 +586,12 @@ canvas {
         border: none;
       }
   
-      #restart-button {
+      .restart {
         width: 60px;
         height: 60px;
       }
   
-      #restart-button i {
+      .restart i {
         font-size: 48px;
         color: white;
         position: relative;
